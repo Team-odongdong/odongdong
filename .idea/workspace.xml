@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2cebc9ab-9c2a-4d37-bce9-8ef0873afc76" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/src/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +79,8 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;cb1ce50dc092ac5283ed67369d10fdc0&quot;
   }
 }</component>
   <component name="RunManager" selected="Spring Boot.OdondongApplication">
@@ -155,6 +156,8 @@
       <option name="presentableId" value="Default" />
       <updated>1664808038486</updated>
       <workItem from="1664808039880" duration="224000" />
+      <workItem from="1664812849117" duration="52000" />
+      <workItem from="1664814923981" duration="66000" />
     </task>
     <servers />
   </component>
