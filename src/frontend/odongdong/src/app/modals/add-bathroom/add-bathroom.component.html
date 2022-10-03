@@ -1,0 +1,67 @@
+<ion-content>
+  <div class="empty-space__10"></div>
+
+  <ion-label>화장실 이름</ion-label>
+  <div class="input__container">
+    <ion-input
+      placeholder="화장실 이름을 입력하세요"
+      [(ngModel)]="bathroomName"
+    ></ion-input>
+  </div>
+
+  <div class="empty-space__20"></div>
+
+  <ion-label>위치</ion-label>
+  <div class="input__container">
+    <ion-input
+      placeholder="주소를 입력하세요."
+      [(ngModel)]="bathroomAddress"
+    ></ion-input>
+    <ion-input
+      placeholder="상세주소를 입력하세요"
+      [(ngModel)]="bathroomAddressDetail"
+    ></ion-input>
+  </div>
+
+  <div class="empty-space__20"></div>
+
+  <div class="camera__container">
+    <ion-label>사진 첨부</ion-label>
+    <ion-button
+      expand="block"
+      fill="outline"
+    >
+      <img src="../../../assets/svg/map/camera.svg" alt="camera">
+      <p>사진 첨부</p>
+    </ion-button>
+    <p class="camera__container--warning">
+      공공화장실 실내 촬영은 불법입니다.<br>화장실 외부를 촬영해주세요.
+    </p>
+  </div>
+
+  <div class="empty-space__20"></div>
+
+  <ion-label>별점</ion-label>
+  <div class="rating__container">
+    <ionic-rating-component #rating
+      activeIcon = "star"
+      defaultIcon = "star"
+      halfStar="true"
+      activeColor = var(--secondary_blue)
+      defaultColor = var(--middle_gray)
+      readonly="false"
+      fontSize = "32px"
+      (ratingChanged)="onRatingChange($event)"
+    >
+    </ionic-rating-component>
+  </div>
+
+  <div class="empty-space__30"></div>
+
+  <ion-button
+    class="save-button"
+    expand="block"
+    (click)="onClickSaveButton()"
+  >저장하기</ion-button>
+
+</ion-content>

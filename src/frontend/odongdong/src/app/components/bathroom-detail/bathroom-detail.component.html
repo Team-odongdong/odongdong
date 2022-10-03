@@ -1,0 +1,37 @@
+<div class="container elevation__3">
+  <div class="container__header">
+    <div class="title">
+      <p class="title__name">{{bathroomName}}</p>
+      <div class="title__rate">
+        <ionic-rating-component #rating
+          activeIcon = "star"
+          defaultIcon = "star"
+          halfStar="true"
+          activeColor = var(--secondary_blue)
+          defaultColor = var(--middle_gray)
+          readonly="true"
+          fontSize = "12px"
+          (ratingChanged)="onRatingChange($event)"
+        ></ionic-rating-component>
+      </div>
+    </div>
+    <div class="locker">
+      <ion-img
+        class="locker__img"
+        src="../../../assets/svg/map/locked.svg"
+      ></ion-img>
+    </div>
+  </div>
+  <div class="images">
+    <ion-img
+      src="https://user-images.githubusercontent.com/59170680/192495661-8146d8ec-a9d9-486e-af6f-20c7fb5bd44c.png"
+      height="190px"
+    ></ion-img>
+  </div>
+  <div class="container__body">
+    <p class="available">이용 가능 - 비밀번호 있음</p>
+    <p class="operation-time">{{operationTime}}</p>
+    <p class="address">{{address}}</p>
+  </div>
+  <div class="empty-space__30"></div>
+</div>

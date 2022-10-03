@@ -1,0 +1,59 @@
+.container {
+    background: var(--bg_white);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        margin: -3px 16px;
+
+        .title {
+
+            &__name {
+                font-weight: bold;
+                font-size: 16px;
+                margin-bottom: 0;
+            }
+
+            &__rate {
+                margin-bottom: 14px;
+            }
+        }
+
+        .locker {
+            line-height: 47px;
+
+            &__img {
+                display: inline;
+            }
+        }
+    }
+
+    &__body {
+        margin: -3px 16px;
+
+        .available {
+            color: var(--primary_blue);
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: -10px;
+        }
+
+        .operation-time {
+            font-size: 14px;
+            color: var(--outline_gray);
+        }
+
+        .address {
+            margin-top: 20px;
+            margin-bottom: 7px;
+
+            font-size: 14px;
+            color: var(--surface_gray);
+        }
+    }
+}
+
+ion-img {
+    height: max(100%, 150px);
+    
+}
