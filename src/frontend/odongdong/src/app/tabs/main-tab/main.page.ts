@@ -26,6 +26,9 @@ export class MainPage implements OnInit {
   public defaultMarker;
   public clickedMarker;
 
+  public markerClicked = false;
+  public selectedMarker = null;
+
   public tempLat = 37.574445;
   public tempLng = 126.906140;
 
@@ -54,6 +57,7 @@ export class MainPage implements OnInit {
 
   createMap() {
     setTimeout(() => {
+      //맵 생성 -> 카메라의 중앙, 확대 정도 지정
       const options = {
           center: new kakao.maps.LatLng(this.tempLat, this.tempLng),
           level: 3
@@ -62,8 +66,16 @@ export class MainPage implements OnInit {
       this.map = new kakao.maps.Map(document.getElementById('map'), options);
 
       this.setMarkerImages();
-      this.addPlaces();
+      this.addMarkers();
+
+      //맵 클릭 이벤트 리스너
+      kakao.maps.event.addListener(this.map, 'click', () => {
+        this.markerClicked = false;
+        this.selectedMarker.setImage(this.defaultMarker);
+      });
+
     }, 300);
+
   }
 
   async checkPermissions() {
@@ -81,30 +93,51 @@ export class MainPage implements OnInit {
       iconUrl,
       new kakao.maps.Size(25, 25),
       {
-        offset: new kakao.maps.Point(13, 34),
+        // offset: new kakao.maps.Point(13, 34),
         alt: 'marker img',
       }
     );
 
     this.clickedMarker = new kakao.maps.MarkerImage(
       clickedIconUrl,
-      new kakao.maps.Size(25, 25),
+      new kakao.maps.Size(70, 70),
       {
-        offset: new kakao.maps.Point(13, 34),
+        offset: new kakao.maps.Point(35, 52),
         alt: 'marker img',
       }
     );
   }
 
-  addPlaces() {
-    this.markers.forEach((place) => {      
+  addMarkers() {
+    this.markers.forEach((place) => {
       const marker = new kakao.maps.Marker({
-          clickable: true,
+          map: this.map,
           position: new kakao.maps.LatLng(place.lat, place.lng),
           image: this.defaultMarker
       });
+      marker.defaultMarker = this.defaultMarker;
 
-      marker.setMap(this.map);
+      //마커 클릭 리스너
+      kakao.maps.event.addListener(marker, 'click', () => {  
+        //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
+        if(!this.markerClicked) {
+          this.markerClicked = true;
+          this.selectedMarker = marker;
+          marker.setImage(this.clickedMarker);
+        }
+  
+        //클릭된 마커가 현재 마커가 아닌 경우
+        if(this.selectedMarker !== marker) {          
+          //새로 클릭된 마커는 이미지를 변경한다.
+          marker.setImage(this.clickedMarker);
+  
+          //기존에 선택되어 있는 마커는 기본으로 바꾼다.
+          this.selectedMarker.setImage(this.defaultMarker);
+        }
+  
+        //현재 클릭된 마커를 선택된 마커로 업데이트한다.
+        this.selectedMarker = marker;
+      });
     });
   }
 

@@ -1,3 +1,9 @@
 <ion-content class="container">
     <div id="map" class="map"></div>
+    <div 
+        class="container__detail"
+        *ngIf="markerClicked"
+    >
+        <app-bathroom-detail></app-bathroom-detail>
+    </div>
 </ion-content>

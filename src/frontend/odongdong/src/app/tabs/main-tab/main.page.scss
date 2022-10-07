@@ -9,11 +9,12 @@
         height: 89%;
     }
 
-    // &__detail {
-    //     background: var(--bg_white);
-    //     position: absolute;
-    //     bottom: 17%;
-    //     left: 10px;
-    //     right: 10px;
-    // }
+    &__detail {
+        background: var(--bg_white);
+        position: absolute;
+        bottom: 17%;
+        left: 10px;
+        right: 10px;
+        z-index: 3;
+    }
 }
