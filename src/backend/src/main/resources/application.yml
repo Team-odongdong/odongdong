@@ -10,3 +10,8 @@ spring:
     url:
     username:
     password:
+
+logging:
+  slack:
+    webhook-uri:
+  config:
