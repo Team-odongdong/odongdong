@@ -3,6 +3,7 @@ package com.graduate.odondong.service;
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.repository.BathroomRepository;
+import com.graduate.odondong.util.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,7 @@ public class BathroomService {
         return bathroomRepository.findAll();
     }
 
-    public List<Bathroom> RegisterBathroomList() {
+    public List<Bathroom> RegisterBathroomList() throws BaseException {
         return bathroomRepository.findBathroomsByRegisterIsTrue();
     }
 
