@@ -45,9 +45,9 @@ export class MainPage implements OnInit {
     public changeDetectorRef: ChangeDetectorRef,
   ) {}
 
-  ngOnInit(): void {
-    this.checkPermissions();
-    this.createMap();
+  async ngOnInit() {
+    await this.checkPermissions();
+    await this.createMap();
   }
 
   async ionViewDidEnter() {
@@ -55,8 +55,28 @@ export class MainPage implements OnInit {
 
   }
 
-  createMap() {
-    setTimeout(() => {
+  async createMap() {
+    // setTimeout(() => {
+    //   //맵 생성 -> 카메라의 중앙, 확대 정도 지정
+    //   const options = {
+    //       center: new kakao.maps.LatLng(this.tempLat, this.tempLng),
+    //       level: 3
+    //   };
+
+    //   this.map = new kakao.maps.Map(document.getElementById('map'), options);
+
+    //   this.setMarkerImages();
+    //   this.addMarkers();
+
+    //   //맵 클릭 이벤트 리스너
+    //   kakao.maps.event.addListener(this.map, 'click', () => {
+    //     this.markerClicked = false;
+    //     this.selectedMarker.setImage(this.defaultMarker);
+    //   });
+
+    // }, 300);
+
+    kakao.maps.load(() => {
       //맵 생성 -> 카메라의 중앙, 확대 정도 지정
       const options = {
           center: new kakao.maps.LatLng(this.tempLat, this.tempLng),
@@ -74,7 +94,7 @@ export class MainPage implements OnInit {
         this.selectedMarker.setImage(this.defaultMarker);
       });
 
-    }, 300);
+    });
 
   }
 
