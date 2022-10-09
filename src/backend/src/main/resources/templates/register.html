@@ -1,0 +1,65 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <th:block layout:fragment="head"></th:block>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        async function register(event) {
+            let parent = event.target.parentElement;
+            let value = parent.value;
+            console.log(value);
+            await axios({
+                method: "post",
+                url: "/register-bathroom",
+                params : {
+                    id: value
+                }});
+
+            parent.remove();
+        }
+
+        async function deleteFun(event) {
+            let parent = event.target.parentElement;
+            let value = parent.value;
+            console.log(value);
+            axios({
+                method: "delete",
+                url: "/register-bathroom",
+                params : {
+                    id: value
+                }});
+
+            parent.remove();
+        }
+    </script>
+    <div>
+        <ul th:each="bathroom : ${bathrooms}">
+            <li th:name="${bathroom.getId()}" th:value="${bathroom.getId()}">
+                <a th:text="${bathroom.getId()}"></a>
+                <a>/</a>
+                <a th:text="${bathroom.getTitle()}"></a>
+                <a>/</a>
+                <a th:text="${bathroom.getLatitude()}"></a>
+                <a>/</a>
+                <a th:text="${bathroom.getLongitude()}"></a>
+                <a>/</a>
+                <a th:text="${bathroom.getRegister()}"></a>
+                <a>/</a>
+                <a th:text="${bathroom.getAddress()}"></a>
+                <a>/</a>
+                <a th:text="${bathroom.getAddressDetail()}"></a>
+                <a>/</a>
+                <a th:text="${bathroom.getIsLocked()}"></a>
+                <a>/</a>
+                <a th:text="${bathroom.getCreated_at()}"></a>
+                <a>/</a>
+                <a th:text="${bathroom.getUpdated_at()}"></a>
+                <a>/</a>
+                <button onclick="register(event)">등록</button>
+                <button onclick="deleteFun(event)">제거</button>
+            </li>
+        </ul>
+    </div>
+</html>

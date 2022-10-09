@@ -31,7 +31,7 @@ public class SecurityConfig {
                 .antMatchers("/health").permitAll()
                 .and()
                 .authorizeRequests()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
 
         return http.build();
     }

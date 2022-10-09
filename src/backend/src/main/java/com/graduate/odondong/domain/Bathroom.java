@@ -24,8 +24,8 @@ public class Bathroom {
     private Long id;
 
     private String title;
-    private Float latitude;
-    private Float longitude;
+    private Double latitude;
+    private Double longitude;
 
     private String isLocked;
     private String address;
@@ -40,7 +40,7 @@ public class Bathroom {
     private LocalDateTime updated_at;
 
     @Builder
-    public Bathroom(Long id, String title, Float latitude, Float longitude, String isLocked, String address, String addressDetail, String imageUrl, Boolean register) {
+    public Bathroom(Long id, String title, Double latitude, Double longitude, String isLocked, String address, String addressDetail, String imageUrl, Boolean register) {
         this.id = id;
         this.title = title;
         this.latitude = latitude;
