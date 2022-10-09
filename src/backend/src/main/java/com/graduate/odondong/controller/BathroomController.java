@@ -2,24 +2,23 @@ package com.graduate.odondong.controller;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
-import com.graduate.odondong.service.BathroomService;
-import com.graduate.odondong.util.BaseException;
-import com.graduate.odondong.util.BaseResponse;
-import com.graduate.odondong.util.ErrorLogWriter;
+import com.graduate.odondong.dto.CoordinateInfoDto;
+import com.graduate.odondong.service.BathroomService.BathroomService;
+import com.graduate.odondong.util.ChangeByGeocoder;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RestController
 @RequiredArgsConstructor
 public class BathroomController {
 
     private final BathroomService bathroomService;
+    private final ChangeByGeocoder changeByGeocoder;
 
     @ResponseBody
     @GetMapping("/")
@@ -29,21 +28,14 @@ public class BathroomController {
 
     @ResponseBody
     @GetMapping("/bathroom")
-    public BaseResponse<List<Bathroom>> RegisterBathroomList (HttpServletRequest request){
-
-        try {
-            return new BaseResponse<>(bathroomService.RegisterBathroomList());
-        }
-        catch (BaseException e){
-            ErrorLogWriter.writeExceptionWithRequest(e,request);
-            return new BaseResponse<>(e.getStatus());
-        }
+    public List<Bathroom> RegisterBathroomList () {
+        return bathroomService.RegisterBathroomList();
     }
 
     @ResponseBody
     @PostMapping("/api/bathroom/add")
     public String RegisterBathroomRequest (@RequestBody BathroomRequestDto bathroomRequestDto) {
-            return bathroomService.RegisterBathroomRequest(bathroomRequestDto);
+        return bathroomService.RegisterBathroomRequest(bathroomRequestDto);
     }
 
     @GetMapping("/not-register-bathroom")
@@ -57,6 +49,24 @@ public class BathroomController {
     public String RegisterBathroom(@RequestParam("id") Long id){
         bathroomService.UpdateBathroom(id);
         return "redirect:/not-register-bathroom";
+    }
+
+    @DeleteMapping("/register-bathroom")
+    @ResponseBody
+    public String DeleteBathroom(@RequestParam("id") Long id){
+        bathroomService.DeleteBathroom(id);
+        return "Delete";
+    }
+    @ResponseBody
+    @GetMapping("/api/getBathroomInfo")
+    public CoordinateInfoDto AllAddressInfo(@RequestParam("latitude") Double x, @RequestParam("longitude") Double y) throws JSONException {
+        return changeByGeocoder.getAddressByCoordinate(x, y);
+    }
+
+    @ResponseBody
+    @GetMapping("/api/bathroom/list")
+    public List<Bathroom> get1kmBathroom(@RequestParam("latitude") Double x, @RequestParam("longitude") Double y) {
+        return bathroomService.get1kmByLongitudeLatitude(x, y);
     }
 
 }
