@@ -13,7 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class BathroomService {
-
     private final BathroomRepository bathroomRepository;
 
     public List<Bathroom> bathroomList() {
