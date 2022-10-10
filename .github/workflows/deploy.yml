@@ -79,9 +79,9 @@ jobs:
             echo -e "\
              >>>>>> git pull... "
             cd "/home/ubuntu/odongdong" || exit 1
-            git fetch https://Team-odongdong:${{ secrets.TOKEN }}@github.com/Team-odongdong/odongdong.git || exit 1
+            git fetch --all || exit 1
             git reset --hard origin/main || exit 1
-            git pull https://Team-odongdong:${{ secrets.TOKEN }}@github.com/Team-odongdong/odongdong.git || exit 1
+            git pull origin main || exit 1
             chmod +x ./scripts/build.sh || exit 1
             chmod +x ./scripts/stop.sh || exit 1
             chmod +x ./scripts/start.sh || exit 1

@@ -6,7 +6,7 @@ echo -e "\
  +------------------------------------+"
 
 PROJECT_ROOT="/home/ubuntu/odongdong/src/backend"
-JAR_FILE="$PROJECT_ROOT/build/libs/Graduate_Prj-0.0.1-SNAPSHOT.jar"
+JAR_FILE="$PROJECT_ROOT/build/libs/odondong-0.0.1-SNAPSHOT.jar"
 
 APP_LOG="$PROJECT_ROOT/application.log"
 ERROR_LOG="$PROJECT_ROOT/error.log"
