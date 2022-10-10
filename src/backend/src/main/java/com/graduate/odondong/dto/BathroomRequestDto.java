@@ -6,12 +6,11 @@ import lombok.Data;
 public class BathroomRequestDto {
 
     private String title;
-    private Float latitude;
-    private Float longitude;
+    private Double latitude;
+    private Double longitude;
     private String isLocked;
     private String address;
     private String addressDetail;
     private String imageUrl;
     private Float rate;
 }
-
