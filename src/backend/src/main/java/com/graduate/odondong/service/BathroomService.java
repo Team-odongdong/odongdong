@@ -12,7 +12,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class BathroomService {
-
     private final BathroomRepository bathroomRepository;
 
     public List<Bathroom> bathroomList() {
