@@ -11,6 +11,26 @@ export class BathroomService {
         public commonService: CommonService,
     ) {}
 
+    async get1kmBathroomList(lat, lng) {
+        const data = {
+            latitude: lat,
+            longitude: lng,
+        };
+
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${environment.apiUrl}/api/bathroom/list?latitude=${lat}&longitude=${lng}`,
+                // data: data,
+                responseType: 'json',
+            });
+            return response;
+        } catch(error) {
+            return error.response;
+        }
+
+    }
+
     async addBathroom(data) {
         if(!(await this.commonService.checkNetworkStatus())) return;
         try {
