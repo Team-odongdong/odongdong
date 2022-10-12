@@ -78,7 +78,7 @@ export class MainPage implements OnInit {
         //맵 생성 -> 카메라의 중앙, 확대 정도 지정
         const options = {
             center: new kakao.maps.LatLng(this.tempLat, this.tempLng),
-            level: 5
+            level: 4
         };
 
         const mapRef = document.getElementById('map');
@@ -142,10 +142,12 @@ export class MainPage implements OnInit {
       });
       marker.defaultMarker = this.defaultMarker;
 
-      const movedLocation = new kakao.maps.LatLng(place.longitude-0.005, place.latitude);
-
       //마커 클릭 리스너
-      kakao.maps.event.addListener(marker, 'click', () => {  
+      kakao.maps.event.addListener(marker, 'click', () => {
+        //마커 클릭 시 카메라 이동 정의
+        const cameraMov = this.getCameraMovement(this.map.getLevel());
+        const movedLocation = new kakao.maps.LatLng(place.longitude-cameraMov, place.latitude);
+
         //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
         if(!this.markerClicked) {
           this.markerClicked = true;
@@ -168,6 +170,12 @@ export class MainPage implements OnInit {
         this.map.panTo(movedLocation);
       });
     });
+  }
+
+  getCameraMovement(level) {
+    const levels = [0.00035, 0.0007, 0.0013, 0.003];
+    
+    return levels[level-1];
   }
 
   async getCurrentLocation() {
