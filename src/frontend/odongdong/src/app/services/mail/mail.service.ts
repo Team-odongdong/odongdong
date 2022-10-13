@@ -18,6 +18,7 @@ export class MailService {
             const response = await axios({
                 method: 'post',
                 url: `${environment.apiUrl}/api/mail/send`,
+                data: content,
                 responseType: 'json',
             });
             return response;

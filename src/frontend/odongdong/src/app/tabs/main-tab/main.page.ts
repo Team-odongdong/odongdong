@@ -23,24 +23,13 @@ export class MainPage implements OnInit {
   public initLatitude;
   public initLongitude;
   public locationSubscription: any;
+  public bathroomList = [];
+  
   public defaultMarker;
   public clickedMarker;
-
   public markerClicked = false;
   public selectedMarker = null;
 
-  public tempLat = 37.574445;
-  public tempLng = 126.906140;
-
-  public bathroomList = [];
-
-
-  markers = [
-    { name: '공대2호관 쪽문나가는길', lat: this.tempLat+0.0003, lng: this.tempLng+0.0003 },
-    { name: '공대2호관 뒷길(초등학교사이)', lat: this.tempLat+0.0005, lng: this.tempLng },
-    { name: '체육관 좌측', lat: this.tempLat-0.0003, lng: this.tempLng-0.0003 },
-    { name: '박물관뒤 주차장', lat: this.tempLat-0.0005, lng: this.tempLng }
-  ];
 
   constructor(
     public bathroomService: BathroomService,
@@ -50,23 +39,25 @@ export class MainPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.checkPermissions();
+    this.checkPermissions()
+      .then(() => {
+        this.getBathroomList();
+      });
   }
   
   ngAfterViewInit() {
     this.createMap();
   }
-
-  ionViewDidEnter() {
-    this.getBathroomList();
+  
+  ionViewDidEnter() {    
     // this.trackLocation();
   }
 
   async getBathroomList() {
-    const response = await this.bathroomService.get1kmBathroomList(this.tempLng, this.tempLat);
+    const response = await this.bathroomService.get1kmBathroomList(this.initLongitude, this.initLatitude);
     if(response.status === 200) {
       this.bathroomList = response.data;
-      // console.log('bathroom', this.bathroomList);
+      console.log('bathroom', this.bathroomList);
     } else {
       console.log('fail to get list');      
     }
@@ -77,7 +68,7 @@ export class MainPage implements OnInit {
       kakao.maps.load(() => {
         //맵 생성 -> 카메라의 중앙, 확대 정도 지정
         const options = {
-            center: new kakao.maps.LatLng(this.tempLat, this.tempLng),
+            center: new kakao.maps.LatLng(this.initLatitude, this.initLongitude),
             level: 4
         };
 
@@ -100,7 +91,7 @@ export class MainPage implements OnInit {
           }
         });
       });
-    }, 300);    
+    }, 200);    
   }
 
   async checkPermissions() {
@@ -173,9 +164,13 @@ export class MainPage implements OnInit {
   }
 
   getCameraMovement(level) {
-    const levels = [0.00035, 0.0007, 0.0013, 0.003];
+    const levels = [0.00035, 0.0007, 0.0013, 0.003, 0.005, 0.01];
     
-    return levels[level-1];
+    if(level > 7) {
+      return 0.01;
+    } else {
+      return levels[level-1];
+    }
   }
 
   async getCurrentLocation() {
