@@ -41,15 +41,13 @@ public class DeletedBathroom {
 	private Boolean register;
 	private Boolean isUnisex;
 
-	@CreatedDate
-	@Column(updatable = false)
 	private LocalDateTime created_at;
 	@LastModifiedDate
 	private LocalDateTime updated_at;
 
 	@Builder
 	public DeletedBathroom(Long id, String title, Double latitude, Double longitude, String isLocked, String address,
-		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex) {
+		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex, LocalDateTime created_at) {
 		this.id = id;
 		this.title = title;
 		this.latitude = latitude;
@@ -60,6 +58,7 @@ public class DeletedBathroom {
 		this.imageUrl = imageUrl;
 		this.register = register;
 		this.isUnisex = isUnisex;
+		this.created_at = created_at;
 	}
 
 	public void setRegister(Boolean register) {
