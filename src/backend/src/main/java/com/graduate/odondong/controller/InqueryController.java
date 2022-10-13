@@ -12,6 +12,7 @@ public class InqueryController {
 
     private final InqueryService inqueryService;
 
+    @ResponseBody
     @PostMapping("/api/mail/send")
     public void CreateInquery(@RequestBody String contents) {
         inqueryService.createInquery(contents);
