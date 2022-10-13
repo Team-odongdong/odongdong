@@ -59,13 +59,13 @@ public class BathroomController {
     }
     @ResponseBody
     @GetMapping("/api/getBathroomInfo")
-    public CoordinateInfoDto AllAddressInfo(@RequestParam("latitude") Double x, @RequestParam("longitude") Double y) throws JSONException {
+    public CoordinateInfoDto AllAddressInfo(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) throws JSONException {
         return changeByGeocoder.getAddressByCoordinate(x, y);
     }
 
     @ResponseBody
     @GetMapping("/api/bathroom/list")
-    public List<Bathroom> get1kmBathroom(@RequestParam("latitude") Double x, @RequestParam("longitude") Double y) {
+    public List<Bathroom> get1kmBathroom(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
         return bathroomService.get1kmByLongitudeLatitude(x, y);
     }
 
