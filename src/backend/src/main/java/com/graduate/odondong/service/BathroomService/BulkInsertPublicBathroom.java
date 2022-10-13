@@ -49,6 +49,7 @@ public class BulkInsertPublicBathroom {
 
                     String title = null;
                     String address = null;
+                    Boolean unisex = null;
 
                     for(columnindex=0; columnindex<=cells; columnindex++){
                         if(columnindex != 2 && columnindex != 3 && columnindex != 4) {
@@ -79,10 +80,12 @@ public class BulkInsertPublicBathroom {
                         }
                         if(columnindex == 2) {
                             title = value;
-                        } else if (columnindex == 3) {
+                        } else if (columnindex == 3 && value.equals("없음")) {
                             address = value;
                         } else if (columnindex == 4 && address == null) {
                             address = value;
+                        } else if (columnindex == 5 ) {
+                            unisex = !value.equals("N");
                         }
                     }
                     AddressInfoDto addressInfoDto;
@@ -92,15 +95,7 @@ public class BulkInsertPublicBathroom {
                         addressInfoDto= AddressInfoDto.builder().address(address).address_detail("").longitude(0.0).latitude(0.0).build();
                     }
 
-                    Bathroom bathroom = Bathroom.builder()
-                            .title(title)
-                            .latitude(addressInfoDto.getLatitude())
-                            .longitude(addressInfoDto.getLongitude())
-                            .address(addressInfoDto.getAddress())
-                            .addressDetail(addressInfoDto.getAddress_detail())
-                            .isLocked("N")
-                            .register(true)
-                            .build();
+                    Bathroom bathroom = getBathroom(title, addressInfoDto, unisex);
                     bathroomList.add(bathroom);
 
                 }
@@ -112,6 +107,19 @@ public class BulkInsertPublicBathroom {
 
 //        System.out.println("BulkInsertPublicBathroom.BulkInsert = " + bathroomList);
         bathroomRepository.saveAll(bathroomList);
+    }
+
+    private static Bathroom getBathroom(String title, AddressInfoDto addressInfoDto, Boolean unisex) {
+        Bathroom bathroom = Bathroom.builder()
+                .title(title)
+                .latitude(addressInfoDto.getLatitude())
+                .longitude(addressInfoDto.getLongitude())
+                .address(addressInfoDto.getAddress())
+                .addressDetail(addressInfoDto.getAddress_detail())
+                .isLocked("N")
+                .register(unisex)
+                .build();
+        return bathroom;
     }
 
 }
