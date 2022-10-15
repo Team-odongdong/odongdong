@@ -25,5 +25,10 @@ class GraduatePrjApplicationTests {
 		List<Bathroom> kmByLongitudeLatitude = bathroomService.get1kmByLongitudeLatitude(126.966182351829, 37.5911968710618);
 		return;
 	}
+	
+	@Test
+	void 테스트2() {
+		bulkInsertPublicBathroom.BulkInsert("12_04_01_E_공중화장실정보.xlsx");
+	}
 
 }

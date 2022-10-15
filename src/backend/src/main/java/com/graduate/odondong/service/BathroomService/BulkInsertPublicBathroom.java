@@ -28,13 +28,11 @@ public class BulkInsertPublicBathroom {
 	private final BathroomRepository bathroomRepository;
 	private final ChangeByGeocoder changeByGeocoder;
 
-	public void BulkInsert() {
+	public void BulkInsert(String fileName) {
 
 		List<Bathroom> bathroomList = new ArrayList<>();
 
 		try {
-			String fileName = "12_04_01_E_공중화장실정보.xlsx";
-//            String fileName = "test.xlsx";
 			XSSFWorkbook workbook = getXssfSheets(fileName);
 			XSSFSheet sheet = workbook.getSheetAt(0);
 			for (int rowindex = 1; rowindex < sheet.getPhysicalNumberOfRows(); rowindex++) {
@@ -62,29 +60,12 @@ public class BulkInsertPublicBathroom {
 				if (columnIndex != 2 && columnIndex != 3 && columnIndex != 4) {
 					continue;
 				}
-				XSSFCell cell = row.getCell(columnIndex);
+				
 				String value = "";
-				if (cell == null) {
-					continue;
-				} else {
-					switch (cell.getCellType()) {
-						case XSSFCell.CELL_TYPE_FORMULA:
-							value = cell.getCellFormula();
-							break;
-						case XSSFCell.CELL_TYPE_NUMERIC:
-							value = cell.getNumericCellValue() + "";
-							break;
-						case XSSFCell.CELL_TYPE_STRING:
-							value = cell.getStringCellValue() + "";
-							break;
-						case XSSFCell.CELL_TYPE_BLANK:
-							value = cell.getBooleanCellValue() + "";
-							break;
-						case XSSFCell.CELL_TYPE_ERROR:
-							value = cell.getErrorCellValue() + "";
-							break;
-					}
-				}
+				value = getColumnValue(columnIndex, row, value);
+				if(value == null) continue;
+				
+				
 				if (columnIndex == 2) {
 					title = value;
 				} else if (columnIndex == 3 && value.equals("없음")) {
@@ -107,7 +88,33 @@ public class BulkInsertPublicBathroom {
 
 		}
 	}
-
+	
+	private static String getColumnValue(int columnIndex, XSSFRow row, String value) {
+		XSSFCell cell = row.getCell(columnIndex);
+		if (cell == null) {
+			value = null;
+		} else {
+			switch (cell.getCellType()) {
+				case XSSFCell.CELL_TYPE_FORMULA:
+					value = cell.getCellFormula();
+					break;
+				case XSSFCell.CELL_TYPE_NUMERIC:
+					value = cell.getNumericCellValue() + "";
+					break;
+				case XSSFCell.CELL_TYPE_STRING:
+					value = cell.getStringCellValue() + "";
+					break;
+				case XSSFCell.CELL_TYPE_BLANK:
+					value = cell.getBooleanCellValue() + "";
+					break;
+				case XSSFCell.CELL_TYPE_ERROR:
+					value = cell.getErrorCellValue() + "";
+					break;
+			}
+		}
+		return value;
+	}
+	
 	private static XSSFWorkbook getXssfSheets(String fileName) throws IOException {
 		Path relativePath = Paths.get("");
 		String path = relativePath.toAbsolutePath().toString() + "\\src\\main\\resources\\BathroomFile\\" + fileName;
