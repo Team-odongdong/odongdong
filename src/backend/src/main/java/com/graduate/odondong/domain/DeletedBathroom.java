@@ -1,24 +1,29 @@
 package com.graduate.odondong.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-
-import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Data
 @NoArgsConstructor
 @Setter
 @EntityListeners(AuditingEntityListener.class)
-public class Bathroom {
+public class DeletedBathroom {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,15 +41,13 @@ public class Bathroom {
 	private Boolean register;
 	private Boolean isUnisex;
 
-	@CreatedDate
-	@Column(updatable = false)
 	private LocalDateTime created_at;
 	@LastModifiedDate
 	private LocalDateTime updated_at;
 
 	@Builder
-	public Bathroom(Long id, String title, Double latitude, Double longitude, String isLocked, String address,
-		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex) {
+	public DeletedBathroom(Long id, String title, Double latitude, Double longitude, String isLocked, String address,
+		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex, LocalDateTime created_at) {
 		this.id = id;
 		this.title = title;
 		this.latitude = latitude;
@@ -55,6 +58,7 @@ public class Bathroom {
 		this.imageUrl = imageUrl;
 		this.register = register;
 		this.isUnisex = isUnisex;
+		this.created_at = created_at;
 	}
 
 	public void setRegister(Boolean register) {
