@@ -5,7 +5,9 @@ import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.AddressInfoDto;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.util.ChangeByGeocoder;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -38,7 +40,6 @@ public class BulkInsertPublicBathroom {
 			for (int rowindex = 1; rowindex < sheet.getPhysicalNumberOfRows(); rowindex++) {
 				addElementBathroomList(bathroomList, rowindex, sheet);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -51,42 +52,42 @@ public class BulkInsertPublicBathroom {
 		XSSFRow row = sheet.getRow(rowindex);
 		if (row != null) {
 			int cells = row.getPhysicalNumberOfCells();
-
-			String title = null;
-			String address = null;
-			Boolean unisex = null;
-
-			for (columnIndex = 0; columnIndex <= cells; columnIndex++) {
-				if (columnIndex != 2 && columnIndex != 3 && columnIndex != 4) {
-					continue;
-				}
-				
-				String value = "";
-				value = getColumnValue(columnIndex, row, value);
-				if(value == null) continue;
-				
-				
-				if (columnIndex == 2) {
-					title = value;
-				} else if (columnIndex == 3 && value.equals("없음")) {
-					address = value;
-				} else if (columnIndex == 4 && address == null) {
-					address = value;
-				} else if (columnIndex == 5) {
-					unisex = !value.equals("N");
-				}
-			}
+			CellDto cellDto = getCellDto(row, cells);
 			AddressInfoDto addressInfoDto;
 			try {
-				addressInfoDto = changeByGeocoder.getCoordinateByAddress(address);
+				addressInfoDto = changeByGeocoder.getCoordinateByAddress(cellDto.getAddress());
 			} catch (Exception e) {
-				addressInfoDto = AddressInfoDto.builder().address(address).address_detail("").longitude(0.0).latitude(0.0).build();
+				addressInfoDto = AddressInfoDto.builder().address(cellDto.getAddress()).address_detail("").longitude(0.0).latitude(0.0).build();
 			}
-
-			Bathroom bathroom = getBathroom(title, addressInfoDto, unisex);
+			Bathroom bathroom = getBathroom(cellDto.getTitle(), addressInfoDto, cellDto.getUnisex());
 			bathroomList.add(bathroom);
-
 		}
+	}
+	
+	private CellDto getCellDto(XSSFRow row, int cells) {
+		int columnIndex;
+		CellDto cellDto = new CellDto();
+		for (columnIndex = 0; columnIndex <= cells; columnIndex++) {
+			if (columnIndex != 2 && columnIndex != 3 && columnIndex != 4) {
+				continue;
+			}
+			
+			String value = "";
+			value = getColumnValue(columnIndex, row, value);
+			if(value == null) continue;
+			
+			
+			if (columnIndex == 2) {
+				cellDto.setTitle(value);
+			} else if (columnIndex == 3 && value.equals("없음")) {
+				cellDto.setAddress(value);
+			} else if (columnIndex == 4 && cellDto.getAddress() == null) {
+				cellDto.setAddress(value);
+			} else if (columnIndex == 5) {
+				cellDto.setUnisex(!value.equals("N"));
+			}
+		}
+		return cellDto;
 	}
 	
 	private static String getColumnValue(int columnIndex, XSSFRow row, String value) {
@@ -136,4 +137,21 @@ public class BulkInsertPublicBathroom {
 		return bathroom;
 	}
 
+	@Setter
+	@Getter
+	private class CellDto {
+		String title;
+		String address;
+		Boolean unisex;
+		
+		public CellDto() {
+		}
+		
+		public CellDto(String title, String address, Boolean unisex) {
+			this.title = title;
+			this.address = address;
+			this.unisex = unisex;
+		}
+	}
+	
 }
