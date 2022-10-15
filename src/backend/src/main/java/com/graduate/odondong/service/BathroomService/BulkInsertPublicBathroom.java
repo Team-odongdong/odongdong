@@ -68,7 +68,7 @@ public class BulkInsertPublicBathroom {
 		int columnIndex;
 		CellDto cellDto = new CellDto();
 		for (columnIndex = 0; columnIndex <= cells; columnIndex++) {
-			if (columnIndex != 2 && columnIndex != 3 && columnIndex != 4) {
+			if (columnIndex != 2 && columnIndex != 3 && columnIndex != 4 && columnIndex != 5) {
 				continue;
 			}
 			
