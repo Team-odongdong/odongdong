@@ -3,7 +3,11 @@ package com.graduate.odondong.controller;
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.CoordinateInfoDto;
+import com.graduate.odondong.dto.RatingRequestDto;
 import com.graduate.odondong.service.BathroomService.BathroomService;
+import com.graduate.odondong.util.BaseException;
+import com.graduate.odondong.util.BaseResponse;
+import com.graduate.odondong.util.BaseResponseStatus;
 import com.graduate.odondong.util.ChangeByGeocoder;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
@@ -13,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static com.graduate.odondong.util.BaseResponseStatus.SUCCESS;
+
 @Controller
+@RestController
 @RequiredArgsConstructor
 public class BathroomController {
 
@@ -67,6 +74,16 @@ public class BathroomController {
     @GetMapping("/api/bathroom/list")
     public List<Bathroom> get1kmBathroom(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
         return bathroomService.get1kmByLongitudeLatitude(x, y);
+    }
+
+    @PostMapping("/api/bathroom/rating")
+    public BaseResponse<String> postBathroomRate(@RequestBody RatingRequestDto ratingRequestDto) {
+        try {
+            return new BaseResponse<>(bathroomService.createRating(ratingRequestDto));
+        }
+        catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
 }

@@ -2,16 +2,21 @@ package com.graduate.odondong.service.BathroomService;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.DeletedBathroom;
+import com.graduate.odondong.domain.Rating;
 import com.graduate.odondong.dto.BathroomRequestDto;
+import com.graduate.odondong.dto.RatingRequestDto;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.DeletedBathroomRepository;
 
+import com.graduate.odondong.util.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -71,6 +76,19 @@ public class BathroomService {
             return "SUCCESS";
         } catch (Exception e) {
             return "FAIL";
+        }
+    }
+
+    public String createRating(RatingRequestDto ratingRequestDto) throws BaseException {
+        try {
+            Rating rating = Rating.builder()
+                    .score(ratingRequestDto.getScore())
+                    .bathroomId(ratingRequestDto.getBathroomId())
+                    .userId(ratingRequestDto.getUserId())
+                    .build();
+            return "SUCCESS";
+        } catch(Exception e) {
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 
