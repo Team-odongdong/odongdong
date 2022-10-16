@@ -54,7 +54,7 @@ export class MainPage implements OnInit {
   }
 
   async getBathroomList() {
-    const response = await this.bathroomService.get1kmBathroomList(this.initLongitude, this.initLatitude);
+    const response = await this.bathroomService.get1kmBathroomList(this.initLatitude, this.initLongitude);
     if(response.status === 200) {
       this.bathroomList = response.data;
       console.log('bathroom', this.bathroomList);
