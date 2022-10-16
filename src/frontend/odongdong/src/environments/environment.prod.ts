@@ -9,5 +9,6 @@ export const environment = {
 
   // apiUrl: 'http://localhost:9003',
   // apiUrl: 'http://13.125.245.177:9003',
-  apiUrl: 'http://odongdong.site:9003',
+  // apiUrl: 'http://odongdong.site:9003',
+  apiUrl: 'https://odongdong.site',
 };

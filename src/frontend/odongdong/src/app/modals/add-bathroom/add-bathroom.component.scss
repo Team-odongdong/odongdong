@@ -15,7 +15,11 @@ ion-input {
 .input {
     &__container {
         margin-top: 10px;
-    }
+    }    
+}
+#bathroom-name {
+    padding-right: 50px;
+    z-index: 1;
 }
 
 .camera {
@@ -60,4 +64,24 @@ ion-input {
 
     margin: 16px 0;
     font-weight: 700;
+}
+
+.valid-text {    
+    
+    &__name {
+        color: var(--error_red);
+        font-size: 12px;
+
+        margin: 0 16px;
+    }
+}
+
+.warning {
+    width: 20px;
+    height: 20px;
+
+    position: absolute;
+    right: 27px;
+
+    transform: translateY(-175%);
 }
