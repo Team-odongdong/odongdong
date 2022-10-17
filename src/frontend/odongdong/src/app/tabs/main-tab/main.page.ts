@@ -20,9 +20,13 @@ const clickedIconUrl = '../assets/svg/map/marker-clicked.svg';
 export class MainPage implements OnInit {
   map: any;
 
-  public initLatitude;
-  public initLongitude;
-  public locationSubscription: any;
+  public initLatitude = 37.540372;
+  public initLongitude = 127.069276;
+  public currentLat;
+  public currentLng;
+
+  // public locationSubscription: any;
+
   public bathroomList = [];
   
   public defaultMarker;
@@ -39,28 +43,39 @@ export class MainPage implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.createMap();
+  }
+  
+  ngAfterViewInit() {
+  }
+  
+  ionViewDidEnter() {    
+    // this.trackLocation();
     this.checkPermissions()
       .then(() => {
         this.getBathroomList();
       });
   }
-  
-  ngAfterViewInit() {
-    this.createMap();
-  }
-  
-  ionViewDidEnter() {    
-    // this.trackLocation();
-  }
 
   async getBathroomList() {
-    const response = await this.bathroomService.get1kmBathroomList(this.initLatitude, this.initLongitude);
+    const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
     if(response.status === 200) {
       this.bathroomList = response.data;
       console.log('bathroom', this.bathroomList);
+
+      //TODO: 카메라 이동
+      this.moveToCurrentLocation(this.currentLat, this.currentLng);
+
+      //add markers
+      this.addMarkers();  
     } else {
-      console.log('fail to get list');      
+      console.log('fail to get list');
     }
+  }
+
+  moveToCurrentLocation(lat, lng) {
+    const currentLocation = new kakao.maps.LatLng(lat, lng);
+    this.map.panTo(currentLocation);
   }
 
   createMap() {
@@ -77,7 +92,6 @@ export class MainPage implements OnInit {
         this.map = new kakao.maps.Map(mapRef, options);
 
         this.setMarkerImages();
-        this.addMarkers();
 
         // 맵 클릭 이벤트 리스너
         kakao.maps.event.addListener(this.map, 'click', () => {
@@ -91,7 +105,7 @@ export class MainPage implements OnInit {
           }
         });
       });
-    }, 200);    
+    }, 300);    
   }
 
   async checkPermissions() {
@@ -125,19 +139,22 @@ export class MainPage implements OnInit {
   }
 
   addMarkers() {
+    console.log('adding markers');
+    
     this.bathroomList.forEach((place) => {
       const marker = new kakao.maps.Marker({
           map: this.map,
           position: new kakao.maps.LatLng(place.longitude, place.latitude),
           image: this.defaultMarker
       });
-      marker.defaultMarker = this.defaultMarker;
+      // marker.defaultMarker = this.defaultMarker;
 
       //마커 클릭 리스너
       kakao.maps.event.addListener(marker, 'click', () => {
         //마커 클릭 시 카메라 이동 정의
         const cameraMov = this.getCameraMovement(this.map.getLevel());
         const movedLocation = new kakao.maps.LatLng(place.longitude-cameraMov, place.latitude);
+        this.map.panTo(movedLocation);
 
         //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
         if(!this.markerClicked) {
@@ -157,10 +174,11 @@ export class MainPage implements OnInit {
   
         //현재 클릭된 마커를 선택된 마커로 업데이트한다.
         this.selectedMarker = marker;
-
-        this.map.panTo(movedLocation);
       });
     });
+
+    console.log('added markers');
+    
   }
 
   getCameraMovement(level) {
@@ -186,10 +204,10 @@ export class MainPage implements OnInit {
   }
 
   async setLatLng(coord: any) {
-    this.initLatitude = coord.latitude;
-    this.initLongitude = coord.longitude;
+    this.currentLat = coord.latitude;
+    this.currentLng = coord.longitude;
 
-    console.log(this.initLatitude, this.initLongitude);    
+    console.log(this.currentLat, this.currentLng);
   }
   
   // async trackLocation() {
