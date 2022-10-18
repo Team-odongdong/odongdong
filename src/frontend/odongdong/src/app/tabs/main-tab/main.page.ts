@@ -56,10 +56,6 @@ export class MainPage implements OnInit {
     this.createMap();
   }
   
-  ngAfterContentInit() {
-    
-  }
-  
   ionViewDidEnter() {    
     setTimeout(() => {
       this.checkPermissions()
@@ -192,8 +188,6 @@ export class MainPage implements OnInit {
   }
 
   addMarkers() {
-    console.log('adding markers');
-    
     this.bathroomList.forEach((place) => {
       const marker = new kakao.maps.Marker({
           map: this.map,
@@ -208,9 +202,7 @@ export class MainPage implements OnInit {
 
       //마커 클릭 리스너
       kakao.maps.event.addListener(marker, 'click', () => {
-        this.bathroomInfo = marker.bathroomInfo;
-        console.log('from main', this.bathroomInfo);
-        
+        this.bathroomInfo = marker.bathroomInfo;        
 
         //마커 클릭 시 카메라 이동 정의
         const cameraMov = this.getCameraMovement(this.map.getLevel());
@@ -229,7 +221,7 @@ export class MainPage implements OnInit {
         if(this.selectedMarker !== marker) {
           this.markerClicked = false;
           this.changeDetectorRef.detectChanges();
-          
+
           //새로 클릭된 마커는 이미지를 변경한다.
           marker.setImage(this.clickedMarkerIcon);
   
