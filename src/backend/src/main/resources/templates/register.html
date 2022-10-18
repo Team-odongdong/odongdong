@@ -12,7 +12,7 @@
             console.log(value);
             await axios({
                 method: "post",
-                url: "/register-bathroom",
+                url: "/admin/bathroom/register",
                 params : {
                     id: value
                 }});
@@ -26,7 +26,7 @@
             console.log(value);
             axios({
                 method: "delete",
-                url: "/register-bathroom",
+                url: "/admin/bathroom/delete",
                 params : {
                     id: value
                 }});

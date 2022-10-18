@@ -4,7 +4,7 @@ package com.graduate.odondong.service.BathroomService;
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.AddressInfoDto;
 import com.graduate.odondong.repository.BathroomRepository;
-import com.graduate.odondong.util.ChangeByGeocoder;
+import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,7 +28,7 @@ import java.util.List;
 public class BulkInsertPublicBathroom {
 
 	private final BathroomRepository bathroomRepository;
-	private final ChangeByGeocoder changeByGeocoder;
+	private final ChangeByGeocoderKakao changeByGeocoder;
 
 	public void BulkInsert(String fileName) {
 
