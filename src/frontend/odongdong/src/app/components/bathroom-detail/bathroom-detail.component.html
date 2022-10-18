@@ -17,17 +17,18 @@
     </div>
     <div class="locker">
       <ion-img
+        *ngIf="isLocked === 'N'"
         class="locker__img"
         src="../../../assets/svg/map/locked.svg"
       ></ion-img>
     </div>
   </div>
-  <div class="images">
+  <!-- <div *ngIf="imageUrl !== null" class="images">
     <ion-img
-      src="https://user-images.githubusercontent.com/59170680/192495661-8146d8ec-a9d9-486e-af6f-20c7fb5bd44c.png"
+      src={{imageUrl}}
       height="190px"
     ></ion-img>
-  </div>
+  </div> -->
   <div class="container__body">
     <p class="available">이용 가능 - 비밀번호 있음</p>
     <p class="operation-time">{{operationTime}}</p>

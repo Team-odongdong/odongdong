@@ -6,22 +6,36 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./bathroom-detail.component.scss'],
 })
 export class BathroomDetailComponent implements OnInit {
+  @Input() bathroomInfo: any;
   
-  public bathroomName;
+  public bathroomName: string;
   public rate;
-  public isLocked;
-  public images;
-  public operationTime;
-  public address;
+  public isLocked: string;
+  public imageUrl: string;
+  public operationTime: string;
+  public address: string;
 
   constructor() { }
 
   ngOnInit() {
-    this.bathroomName = '공중화장실 가중나무공원';
-    this.rate = 4;
-    this.isLocked = 'N';
-    this.operationTime = '07:00 ~ 22:00';
-    this.address = '서울특별시 광진구 화양동 32-1';
+    // this.bathroomName = "name bathroom";
+    // this.rate = 4;
+    // this.isLocked = 'N';
+    // this.operationTime = '07:00 ~ 22:00';
+    // this.address = 'addr bahtron';
+    // this.imageUrl = null;
+
+
+    this.bathroomName = this.bathroomInfo.title;
+    this.rate = 4; //서버 구현중
+    this.isLocked = this.bathroomInfo.isLocked;
+    this.operationTime = '07:00 ~ 22:00'; //서버 구현중
+    this.address = this.bathroomInfo.address;
+    this.imageUrl = this.bathroomInfo.address;
+
+    console.log('bathroom detail compo', this.bathroomInfo);
+    // console.log('img', this.bathroomInfo.imageUrl);
+    
   }
 
   onRatingChange(rating) {

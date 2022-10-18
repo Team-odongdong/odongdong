@@ -20,7 +20,9 @@ const addIconUrl = '../assets/svg/map/add-new.svg'
 })
 
 export class MainPage implements OnInit {
-  public map: any;
+  @ViewChild('detailContainer') detailContainer: ElementRef<HTMLElement>;
+
+  map: any;
 
   public initLatitude = 37.540372;
   public initLongitude = 127.069276;
@@ -30,6 +32,7 @@ export class MainPage implements OnInit {
   // public locationSubscription: any;
 
   public bathroomList = [];
+  public bathroomInfo: any;
   
   public defaultMarkerIcon: any;
   public clickedMarkerIcon: any;
@@ -37,7 +40,7 @@ export class MainPage implements OnInit {
 
   public markerClicked = false;
   public selectedMarker = null;
-  public addMarker;
+  public addMarker: any;
 
   constructor(
     public bathroomService: BathroomService,
@@ -99,10 +102,7 @@ export class MainPage implements OnInit {
         };
 
         const mapRef = document.getElementById('map');
-        this.map = new kakao.maps.Map(mapRef, options);
-        
-        console.log('create', this.map);
-        
+        this.map = new kakao.maps.Map(mapRef, options);        
 
         this.setMarkerImages();
 
@@ -111,8 +111,7 @@ export class MainPage implements OnInit {
           //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
           this.markerClicked = false;
           if(this.addMarker) {
-            console.log('removing marker', this.addMarker);
-            this.addMarker.setMap(null);            
+            this.addMarker.setMap(null);
           }
 
           if(this.selectedMarker) {
@@ -133,7 +132,7 @@ export class MainPage implements OnInit {
           }
           
           //TODO: show adding marker on map, and show component when click marker
-          let currentLocation = mouseEvent.latLng;
+          const currentLocation = mouseEvent.latLng;
           // this.addMarker.setPosition(currentLocation);
 
           console.log('dblclick', currentLocation.getLat(), currentLocation.getLng());
@@ -201,17 +200,23 @@ export class MainPage implements OnInit {
           position: new kakao.maps.LatLng(place.longitude, place.latitude),
           image: this.defaultMarkerIcon
       });
-      marker.defaultMarkerIcon = this.defaultMarkerIcon;
+
+      //detail component를 위한 값 세팅
+      marker.bathroomInfo = this.genBathroomInfo(place);
       
       marker.setMap(this.map);
 
       //마커 클릭 리스너
       kakao.maps.event.addListener(marker, 'click', () => {
+        this.bathroomInfo = marker.bathroomInfo;
+        console.log('from main', this.bathroomInfo);
+        
+
         //마커 클릭 시 카메라 이동 정의
         const cameraMov = this.getCameraMovement(this.map.getLevel());
-        const movedLocation = new kakao.maps.LatLng(place.longitude-cameraMov, place.latitude);
-        
+        const movedLocation = new kakao.maps.LatLng(place.longitude-cameraMov, place.latitude);        
         this.map.panTo(movedLocation);
+
 
         //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
         if(!this.markerClicked) {
@@ -221,18 +226,25 @@ export class MainPage implements OnInit {
         }
   
         //클릭된 마커가 현재 마커가 아닌 경우
-        if(this.selectedMarker !== marker) {          
+        if(this.selectedMarker !== marker) {
+          this.markerClicked = false;
+          this.changeDetectorRef.detectChanges();
+          
           //새로 클릭된 마커는 이미지를 변경한다.
           marker.setImage(this.clickedMarkerIcon);
   
           //기존에 선택되어 있는 마커는 기본으로 바꾼다.
           this.selectedMarker.setImage(this.defaultMarkerIcon);
+
+          this.markerClicked = true;
+          this.changeDetectorRef.detectChanges();
         }
-  
+        
         //현재 클릭된 마커를 선택된 마커로 업데이트한다.
         this.selectedMarker = marker;
+
       });
-    });    
+    });
   }
 
   getCameraMovement(level) {
@@ -321,6 +333,20 @@ export class MainPage implements OnInit {
       backdropBreakpoint: 0.75,
     });
     await modal.present();
+  }
+
+  genBathroomInfo(data) {
+    const info = {
+      title: data.title,
+      // rating: data.rating, //서버 구현중
+      isLocked: data.isLocked,
+      imageUrl: data.imageUrl,
+      // isOpen: data.isOpen, //서버 구현중
+      // operationTime: data.operationTime //서버 구현중
+      address: data.address + ' ' + data.addressDetail,
+    }
+    
+    return info;
   }
 
 }
