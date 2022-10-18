@@ -70,7 +70,6 @@ export class MainPage implements OnInit {
     const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
     if(response.status === 200) {
       this.bathroomList = response.data;
-      console.log('bathroom', this.bathroomList);
 
       //TODO: 카메라 이동
       this.moveToCurrentLocation(this.currentLat, this.currentLng);
@@ -94,7 +93,8 @@ export class MainPage implements OnInit {
         //맵 생성 -> 카메라의 중앙, 확대 정도 지정
         const options = {
             center: new kakao.maps.LatLng(this.initLatitude, this.initLongitude),
-            level: 4
+            level: 4,
+            disableDoubleClickZoom: true,
         };
 
         const mapRef = document.getElementById('map');
@@ -122,6 +122,7 @@ export class MainPage implements OnInit {
 
         //맵 클릭 이벤트 리스너 (우클릭)
         kakao.maps.event.addListener(this.map, 'dblclick', (mouseEvent) => {
+          //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
           this.markerClicked = false;
           if(this.addMarker) {
             this.addMarker.setMap(null);
@@ -129,8 +130,9 @@ export class MainPage implements OnInit {
           
           //TODO: show adding marker on map, and show component when click marker
           const currentLocation = mouseEvent.latLng;
-          // this.addMarker.setPosition(currentLocation);
 
+          // console.log('rightclick center', this.map.getCenter());
+          
           console.log('dblclick', currentLocation.getLat(), currentLocation.getLng());
           
           this.addMarker = new kakao.maps.Marker({
@@ -139,11 +141,12 @@ export class MainPage implements OnInit {
             image: this.addMarkerIcon,
           });
 
+          this.addMarker.setMap(this.map);
+
           kakao.maps.event.addListener(this.addMarker, 'click', () => {
             //show add bathroom component
             this.showAddBathroomModal(currentLocation.getLat(), currentLocation.getLng());
           });
-
         });
       });
     }, 300);    
@@ -179,9 +182,9 @@ export class MainPage implements OnInit {
 
     this.addMarkerIcon = new kakao.maps.MarkerImage(
       addIconUrl,
-      new kakao.maps.Size(70, 70),
+      new kakao.maps.Size(60, 60),
       {
-        // offset: new kakao.maps.Point(35, 52),
+        offset: new kakao.maps.Point(29, 43),
         alt: 'marker img',
       }
     );
