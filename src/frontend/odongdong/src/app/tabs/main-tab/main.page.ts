@@ -77,9 +77,9 @@ export class MainPage implements OnInit {
     }
   }
 
-  moveToCurrentLocation(lat, lng) {
-    const currentLocation = new kakao.maps.LatLng(lat, lng);
-    this.map.panTo(currentLocation);
+  async moveToCurrentLocation(lat, lng) {
+    const currentLocation = await new kakao.maps.LatLng(lat, lng);
+    await this.map.panTo(currentLocation);
   }
 
   createMap() {
@@ -116,13 +116,17 @@ export class MainPage implements OnInit {
         });
 
         //맵 클릭 이벤트 리스너 (우클릭)
-        kakao.maps.event.addListener(this.map, 'rightclick', (mouseEvent) => {
+        kakao.maps.event.addListener(this.map, 'dblclick', (mouseEvent) => {
           this.markerClicked = false;
+          if(this.addMarker) {
+            this.addMarker.setMap(null);
+          }
           
           //TODO: show adding marker on map, and show component when click marker
-          const currentLocation = mouseEvent.latLng;
+          let currentLocation = mouseEvent.latLng;
+          // this.addMarker.setPosition(currentLocation);
 
-          console.log('rightclick', currentLocation.getLat(), currentLocation.getLng());
+          console.log('dblclick', currentLocation.getLat(), currentLocation.getLng());
           
           this.addMarker = new kakao.maps.Marker({
             map: this.map,
@@ -132,7 +136,7 @@ export class MainPage implements OnInit {
 
           kakao.maps.event.addListener(this.addMarker, 'click', () => {
             //show add bathroom component
-            // this.showAddBathroomModal(currentLocation.getLat(), currentLocation.getLng());
+            this.showAddBathroomModal(currentLocation.getLat(), currentLocation.getLng());
           });
 
         });
@@ -169,7 +173,7 @@ export class MainPage implements OnInit {
     );
 
     this.addMarkerIcon = new kakao.maps.MarkerImage(
-      iconUrl,
+      addIconUrl,
       new kakao.maps.Size(70, 70),
       {
         // offset: new kakao.maps.Point(35, 52),
@@ -293,6 +297,10 @@ export class MainPage implements OnInit {
     
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
+      componentProps: {
+        lat: lat,
+        lng: lng
+      },
       showBackdrop: false,
       canDismiss: true,
 

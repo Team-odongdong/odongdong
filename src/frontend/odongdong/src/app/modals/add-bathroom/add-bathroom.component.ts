@@ -12,11 +12,11 @@ import { BathroomService } from 'src/app/services/bathroom/bathroom.service';
   styleUrls: ['./add-bathroom.component.scss'],
 })
 export class AddBathroomComponent implements OnInit {
-  // @Input() lat;
-  // @Input() lng;
+  @Input() lat;
+  @Input() lng;
 
-  public lat = 37.540372;
-  public lng = 127.069276;
+  public currentLat;
+  public currentLng;
 
   public latitude;
   public longitude;
@@ -37,13 +37,23 @@ export class AddBathroomComponent implements OnInit {
   ngOnInit() {}
 
   ionViewDidEnter() {
-    this.getAddressWithLatLng();
+    this.getCurrentLocation();
   }
 
-  async getAddressWithLatLng() {
+  async getCurrentLocation() {
+    //add bathroom with clicked marker location
+    if(this.lat) {
+      await this.getAddressWithLatLng(this.lat, this.lng);
+    } else { //add bathroom with current location
+      const currentLocation = await Geolocation.getCurrentPosition()
+      await this.getAddressWithLatLng(currentLocation.coords.latitude, currentLocation.coords.longitude);
+    }
+  }
+
+  async getAddressWithLatLng(lat, lng) {
     const response = await this.bathroomService.getAddressName(
-      this.lat,
-      this.lng,
+      lat,
+      lng,
     );
 
     if(response.status === 200) {
@@ -60,9 +70,9 @@ export class AddBathroomComponent implements OnInit {
 
   async failToGetBathroomAddress() {
     const toast = await this.toastController.create({
-      header: '서버에서 주소를 가져오지 못했습니다',
+      header: '서버에서 주소를 가져오지 못했습니다.',
       message: '직접 주소를 입력해주세요!',
-      duration: 2000,
+      duration: 4000,
     });
     await toast.present();
   }
