@@ -78,6 +78,11 @@ export class AddBathroomComponent implements OnInit {
   }
 
   bathroomInformation() {
+    if(!this.lat) {
+      this.lat = this.currentLat;
+      this.lng = this.currentLng;
+    }
+    
     const info = {
       latitude: this.lat,
       longitude: this.lng,
