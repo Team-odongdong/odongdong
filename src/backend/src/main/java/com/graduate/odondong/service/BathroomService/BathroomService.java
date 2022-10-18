@@ -1,29 +1,25 @@
 package com.graduate.odondong.service.BathroomService;
 
 import com.graduate.odondong.domain.Bathroom;
-import com.graduate.odondong.domain.DeletedBathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.repository.BathroomRepository;
-import com.graduate.odondong.repository.DeletedBathroomRepository;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderNaver;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class BathroomService {
     private final BathroomRepository bathroomRepository;
-    private final DeletedBathroomRepository deletedBathroomRepository;
     private final ChangeByGeocoderKakao changeByGeocoderKakao;
     private final ChangeByGeocoderNaver changeByGeocoderNaver;
+    private final DeletedBathroomService deletedBathroomService;
 
     public List<Bathroom> bathroomList() {
         return bathroomRepository.findAll();
@@ -45,18 +41,7 @@ public class BathroomService {
 
     public void DeleteBathroom(Long id) {
         Bathroom bathroom = bathroomRepository.findById(id).orElseThrow();
-        deletedBathroomRepository.save(DeletedBathroom.builder()
-                .title(bathroom.getTitle())
-                .isUnisex(bathroom.getIsUnisex())
-                .latitude(bathroom.getLatitude())
-                .longitude(bathroom.getLongitude())
-                .register(bathroom.getRegister())
-                .isLocked(bathroom.getIsLocked())
-                .imageUrl(bathroom.getImageUrl())
-                .addressDetail(bathroom.getAddressDetail())
-                .address(bathroom.getAddress())
-                .created_at(bathroom.getCreated_at())
-            .build());
+        deletedBathroomService.AddDeletedBathroom(bathroom);
         bathroomRepository.deleteById(id);
     }
 
