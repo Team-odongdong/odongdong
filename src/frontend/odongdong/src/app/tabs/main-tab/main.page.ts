@@ -20,7 +20,7 @@ const addIconUrl = '../assets/svg/map/add-new.svg'
 })
 
 export class MainPage implements OnInit {
-  map: any;
+  public map: any;
 
   public initLatitude = 37.540372;
   public initLongitude = 127.069276;
@@ -47,17 +47,23 @@ export class MainPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.createMap();
   }
   
   ngAfterViewInit() {
-    this.checkPermissions()
-      .then(() => {
-        this.getBathroomList();
-      });
+    this.createMap();
+  }
+  
+  ngAfterContentInit() {
+    
   }
   
   ionViewDidEnter() {    
+    setTimeout(() => {
+      this.checkPermissions()
+        .then(() => {
+            this.getBathroomList();
+          });
+    }, 300);
     // this.trackLocation();
   }
 
@@ -77,9 +83,10 @@ export class MainPage implements OnInit {
     }
   }
 
-  async moveToCurrentLocation(lat, lng) {
-    const currentLocation = await new kakao.maps.LatLng(lat, lng);
-    await this.map.panTo(currentLocation);
+  moveToCurrentLocation(lat, lng) {
+    const currentLocation = new kakao.maps.LatLng(lat, lng);
+    
+    this.map.panTo(currentLocation);
   }
 
   createMap() {
@@ -93,6 +100,9 @@ export class MainPage implements OnInit {
 
         const mapRef = document.getElementById('map');
         this.map = new kakao.maps.Map(mapRef, options);
+        
+        console.log('create', this.map);
+        
 
         this.setMarkerImages();
 
@@ -191,13 +201,16 @@ export class MainPage implements OnInit {
           position: new kakao.maps.LatLng(place.longitude, place.latitude),
           image: this.defaultMarkerIcon
       });
-      // marker.defaultMarkerIcon = this.defaultMarkerIcon;
+      marker.defaultMarkerIcon = this.defaultMarkerIcon;
+      
+      marker.setMap(this.map);
 
       //마커 클릭 리스너
       kakao.maps.event.addListener(marker, 'click', () => {
         //마커 클릭 시 카메라 이동 정의
         const cameraMov = this.getCameraMovement(this.map.getLevel());
         const movedLocation = new kakao.maps.LatLng(place.longitude-cameraMov, place.latitude);
+        
         this.map.panTo(movedLocation);
 
         //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
@@ -247,8 +260,6 @@ export class MainPage implements OnInit {
   async setLatLng(coord: any) {
     this.currentLat = coord.latitude;
     this.currentLng = coord.longitude;
-
-    console.log(this.currentLat, this.currentLng);
   }
   
   // async trackLocation() {
