@@ -15,8 +15,14 @@ export class MailService {
     async sendMail(content) {
         if(!(await this.commonService.checkNetworkStatus())) return;
         try {
+            const headers = { 'Content-Type': 'text/plain' };
+
+            console.log('sending text', content);
+            
+
             const response = await axios({
                 method: 'post',
+                headers,
                 url: `${environment.apiUrl}/api/mail/send`,
                 data: content,
                 responseType: 'json',
