@@ -4,7 +4,7 @@ import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.service.BathroomService.BathroomService;
-import com.graduate.odondong.util.ChangeByGeocoder;
+import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.springframework.stereotype.Controller;
@@ -18,16 +18,15 @@ import java.util.List;
 public class BathroomController {
 
     private final BathroomService bathroomService;
-    private final ChangeByGeocoder changeByGeocoder;
 
     @ResponseBody
-    @GetMapping("/")
+    @GetMapping("/admin/bathroom/all")
     public List<Bathroom> AllBathroomList () {
         return bathroomService.bathroomList();
     }
 
     @ResponseBody
-    @GetMapping("/bathroom")
+    @GetMapping("/admin/bathroom/registered")
     public List<Bathroom> RegisterBathroomList () {
         return bathroomService.RegisterBathroomList();
     }
@@ -38,29 +37,29 @@ public class BathroomController {
         return bathroomService.RegisterBathroomRequest(bathroomRequestDto);
     }
 
-    @GetMapping("/not-register-bathroom")
+    @GetMapping("/admin/bathroom/not-registered")
     public String NotRegisterBathroomList (Model model) {
         List<Bathroom> bathrooms = bathroomService.NotRegisterBathroomList();
         model.addAttribute("bathrooms", bathrooms);
         return "register";
     }
 
-    @PostMapping("/register-bathroom")
+    @PostMapping("/admin/bathroom/register")
     public String RegisterBathroom(@RequestParam("id") Long id){
         bathroomService.UpdateBathroom(id);
         return "redirect:/not-register-bathroom";
     }
 
-    @DeleteMapping("/register-bathroom")
+    @DeleteMapping("/admin/bathroom/delete")
     @ResponseBody
     public String DeleteBathroom(@RequestParam("id") Long id){
         bathroomService.DeleteBathroom(id);
         return "Delete";
     }
     @ResponseBody
-    @GetMapping("/api/getBathroomInfo")
-    public CoordinateInfoDto AllAddressInfo(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) throws JSONException {
-        return changeByGeocoder.getAddressByCoordinate(x, y);
+    @GetMapping("/api/bathroom/address")
+    public CoordinateInfoDto AllAddressInfo(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y){
+        return bathroomService.getAddressByCoordinate(x, y);
     }
 
     @ResponseBody
