@@ -11,7 +11,7 @@ export class BathroomService {
         public commonService: CommonService,
     ) {}
 
-    async get1kmBathroomList(lat, lng) {
+    async get1kmBathroomList(lat: number, lng: number) {
         try {
             const response = await axios({
                 method: 'get',
@@ -39,7 +39,7 @@ export class BathroomService {
         }
     }
 
-    async getAddressName(lat, lng) {
+    async getAddressName(lat: number, lng: number) {
         try {
             const response = await axios({
                 method: 'get',

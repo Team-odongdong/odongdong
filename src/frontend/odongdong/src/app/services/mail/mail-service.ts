@@ -12,7 +12,7 @@ export class MailService {
         public commonService: CommonService,
     ) {}
 
-    async sendMail(content) {
+    async sendMail(content: string) {
         if(!(await this.commonService.checkNetworkStatus())) return;
         try {
             const headers = { 'Content-Type': 'text/plain' };            
