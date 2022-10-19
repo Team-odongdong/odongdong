@@ -35,10 +35,10 @@ public class Rating {
     private LocalDateTime updated_at;
 
     @Builder
-    public Rating(Long id, Double score, Long bathroomId, Long userId) {
+    public Rating(Long id, Double score, Bathroom bathroom, Long userId) {
         this.id = id;
         this.score = score;
-        this.bathroomId = bathroomId;
+        this.bathroom = bathroom;
         this.userId = userId;
     }
 

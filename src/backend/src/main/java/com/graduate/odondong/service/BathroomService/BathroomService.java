@@ -70,19 +70,6 @@ public class BathroomService {
         }
     }
 
-    public String createRating(RatingRequestDto ratingRequestDto) throws BaseException {
-        try {
-            Rating rating = Rating.builder()
-                    .score(ratingRequestDto.getScore())
-                    .bathroomId(ratingRequestDto.getBathroomId())
-                    .userId(ratingRequestDto.getUserId())
-                    .build();
-            return "SUCCESS";
-        } catch(Exception e) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
 
     public List<Bathroom> get1kmByLongitudeLatitude(Double x, Double y) {
         double lati_minus = x - 0.0091;
