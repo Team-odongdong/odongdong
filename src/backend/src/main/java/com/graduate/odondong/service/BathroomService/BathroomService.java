@@ -1,9 +1,13 @@
 package com.graduate.odondong.service.BathroomService;
 
 import com.graduate.odondong.domain.Bathroom;
+import com.graduate.odondong.domain.Rating;
 import com.graduate.odondong.dto.BathroomRequestDto;
-import com.graduate.odondong.dto.CoordinateInfoDto;
+import com.graduate.odondong.dto.RatingRequestDto;
 import com.graduate.odondong.repository.BathroomRepository;
+
+import com.graduate.odondong.util.BaseException;
+import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderNaver;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
 
 @Service
 @RequiredArgsConstructor

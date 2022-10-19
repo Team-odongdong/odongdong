@@ -3,17 +3,20 @@ package com.graduate.odondong.controller;
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.CoordinateInfoDto;
+import com.graduate.odondong.dto.RatingRequestDto;
 import com.graduate.odondong.service.BathroomService.BathroomService;
-import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
+import com.graduate.odondong.util.BaseException;
+import com.graduate.odondong.util.BaseResponse;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @Controller
+@RestController
 @RequiredArgsConstructor
 public class BathroomController {
 
