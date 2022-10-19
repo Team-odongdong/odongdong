@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import axios from "axios";
 import { environment } from "src/environments/environment";
-import { CommonService } from "../common/common.service";
+import { CommonService } from "../common/common-service";
 
 @Injectable({
     providedIn: 'root',
@@ -43,7 +43,7 @@ export class BathroomService {
         try {
             const response = await axios({
                 method: 'get',
-                url: `${environment.apiUrl}/api/getBathroomInfo?latitude=${lat}&longitude=${lng}`,
+                url: `${environment.apiUrl}/api/bathroom/address?latitude=${lat}&longitude=${lng}`,
                 responseType: 'json',
             });
             return response;

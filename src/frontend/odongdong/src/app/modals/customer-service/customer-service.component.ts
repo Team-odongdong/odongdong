@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ModalController, ToastController } from '@ionic/angular';
-import { MailService } from 'src/app/services/mail/mail.service';
+import { MailService } from 'src/app/services/mail/mail-service';
 
 @Component({
   selector: 'app-customer-service',

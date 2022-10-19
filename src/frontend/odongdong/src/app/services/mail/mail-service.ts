@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
-import { CommonService } from "../common/common.service";
+import { CommonService } from "../common/common-service";
 
 const axios = require('axios');
 
@@ -15,10 +15,7 @@ export class MailService {
     async sendMail(content) {
         if(!(await this.commonService.checkNetworkStatus())) return;
         try {
-            const headers = { 'Content-Type': 'text/plain' };
-
-            console.log('sending text', content);
-            
+            const headers = { 'Content-Type': 'text/plain' };            
 
             const response = await axios({
                 method: 'post',

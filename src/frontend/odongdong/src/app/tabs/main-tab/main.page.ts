@@ -3,7 +3,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { AlertController, ModalController } from '@ionic/angular';
 
 import { Geolocation } from '@capacitor/geolocation';
-import { BathroomService } from 'src/app/services/bathroom/bathroom.service';
+import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 import { AddBathroomComponent } from 'src/app/modals/add-bathroom/add-bathroom.component';
 
 declare let kakao;
@@ -130,10 +130,8 @@ export class MainPage implements OnInit {
           
           //TODO: show adding marker on map, and show component when click marker
           const currentLocation = mouseEvent.latLng;
-
-          // console.log('rightclick center', this.map.getCenter());
           
-          console.log('dblclick', currentLocation.getLat(), currentLocation.getLng());
+          // console.log('dblclick', currentLocation.getLat(), currentLocation.getLng());
           
           this.addMarker = new kakao.maps.Marker({
             map: this.map,
@@ -311,8 +309,6 @@ export class MainPage implements OnInit {
   }
 
   async showAddBathroomModal(lat, lng) {
-    console.log('add bathroom modal', lat, lng);
-    
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
       componentProps: {

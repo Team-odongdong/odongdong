@@ -4,7 +4,7 @@ import { ModalController, ToastController } from '@ionic/angular';
 
 import { Geolocation } from '@capacitor/geolocation';
 
-import { BathroomService } from 'src/app/services/bathroom/bathroom.service';
+import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 
 @Component({
   selector: 'app-add-bathroom',
@@ -98,7 +98,6 @@ export class AddBathroomComponent implements OnInit {
   
   onRatingChange(rating){
     this.rate = rating;
-    console.log('changed rating: ',rating);
   }
 
   async onClickSaveButton() {
@@ -108,13 +107,11 @@ export class AddBathroomComponent implements OnInit {
     }
 
     const info = this.bathroomInformation();
-    console.log('sending info', info);    
     const response = await this.bathroomService.addBathroom(
       info
     );
 
     if(response.status === 200) {
-      console.log('success');      
       this.successAddBathroom();
     } else {
       this.failAddBathroom();

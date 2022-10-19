@@ -28,6 +28,5 @@ export class BathroomDetailComponent implements OnInit {
 
   onRatingChange(rating) {
     this.rate = rating;
-    console.log('rating clicked', rating);    
   }  
 }
