@@ -12,18 +12,16 @@ import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
   styleUrls: ['./add-bathroom.component.scss'],
 })
 export class AddBathroomComponent implements OnInit {
-  @Input() lat;
-  @Input() lng;
+  @Input() lat: number;
+  @Input() lng: number;
 
-  public currentLat;
-  public currentLng;
+  public currentLat: number;
+  public currentLng: number;
 
-  public latitude;
-  public longitude;
-  public bathroomName;
-  public bathroomAddress;
-  public bathroomAddressDetail;
-  public bathroomImageUrl;
+  public bathroomName: string;
+  public bathroomAddress: string;
+  public bathroomAddressDetail: string;
+  public bathroomImageUrl: string;
   public rate;
 
   public isValid = true;
@@ -45,7 +43,7 @@ export class AddBathroomComponent implements OnInit {
     if(this.lat) {
       await this.getAddressWithLatLng(this.lat, this.lng);
     } else { //add bathroom with current location
-      const currentLocation = await Geolocation.getCurrentPosition()
+      const currentLocation = await Geolocation.getCurrentPosition();
       await this.getAddressWithLatLng(currentLocation.coords.latitude, currentLocation.coords.longitude);
     }
   }

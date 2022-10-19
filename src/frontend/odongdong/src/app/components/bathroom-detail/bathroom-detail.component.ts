@@ -18,12 +18,16 @@ export class BathroomDetailComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    this.setBathroomDetailInfo();
+  }
+  
+  setBathroomDetailInfo() {
     this.bathroomName = this.bathroomInfo.title;
     this.rate = 4; //서버 구현중
     this.isLocked = this.bathroomInfo.isLocked;
     this.operationTime = '07:00 ~ 22:00'; //서버 구현중
     this.address = this.bathroomInfo.address;
-    this.imageUrl = this.bathroomInfo.address;    
+    this.imageUrl = this.bathroomInfo.imageUrl;    
   }
 
   onRatingChange(rating) {
