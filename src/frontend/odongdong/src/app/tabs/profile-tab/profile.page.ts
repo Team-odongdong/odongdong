@@ -9,8 +9,6 @@ export class ProfilePage implements OnInit {
 
   constructor() {}
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
   
 }

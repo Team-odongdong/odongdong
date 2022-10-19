@@ -47,14 +47,14 @@ export class AddBathroomComponent implements OnInit {
       await this.getAddressWithLatLng(currentLocation.coords.latitude, currentLocation.coords.longitude);
     }
   }
-
-  async getAddressWithLatLng(lat, lng) {
+  
+  async getAddressWithLatLng(lat: number, lng: number) {
     const response = await this.bathroomService.getAddressName(
       lat,
       lng,
     );
 
-    if(response.status === 200) {
+    if(response.status === 200) {      
       this.fetchBathroomAddress(response.data);
     } else {
       this.failToGetBathroomAddress();

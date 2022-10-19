@@ -44,7 +44,6 @@ export class TabsPage {
   }
 
   currentTab() {
-    console.log(this.tabs.getSelected());
     if (this.tabs.getSelected() === 'profile') {
       this.onClickProfile();
     }

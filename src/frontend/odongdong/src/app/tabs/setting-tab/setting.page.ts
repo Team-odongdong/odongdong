@@ -12,7 +12,7 @@ import { Constants } from 'src/constants';
   styleUrls: ['setting.page.scss']
 })
 export class SettingPage implements OnInit {
-  public app_version;
+  public app_version: string;
 
   constructor(
     public navController: NavController,

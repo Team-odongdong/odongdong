@@ -71,19 +71,19 @@ export class MainPage implements OnInit {
     if(response.status === 200) {
       this.bathroomList = response.data;
 
-      //TODO: 카메라 이동
+      //move camera to current location
       this.moveToCurrentLocation(this.currentLat, this.currentLng);
 
       //add markers
       this.addMarkers();  
     } else {
+      //todo: show user something
       console.log('fail to get list');
     }
   }
 
-  moveToCurrentLocation(lat, lng) {
+  moveToCurrentLocation(lat: number, lng: number) {
     const currentLocation = new kakao.maps.LatLng(lat, lng);
-    
     this.map.panTo(currentLocation);
   }
 
@@ -103,49 +103,11 @@ export class MainPage implements OnInit {
         this.setMarkerImages();
 
         //맵 클릭 이벤트 리스너 (좌클릭)
-        kakao.maps.event.addListener(this.map, 'click', () => {
-          //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
-          this.markerClicked = false;
-          if(this.addMarker) {
-            this.addMarker.setMap(null);
-          }
-
-          if(this.selectedMarker) {
-            this.selectedMarker.setImage(this.defaultMarkerIcon);
-          }
-
-          this.modalController.getTop()
-            .then((v) => {
-              v? this.modalController.dismiss(): {}
-            });
-        });
+        this.mapLeftClickListener();
 
         //맵 클릭 이벤트 리스너 (우클릭)
-        kakao.maps.event.addListener(this.map, 'dblclick', (mouseEvent) => {
-          //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
-          this.markerClicked = false;
-          if(this.addMarker) {
-            this.addMarker.setMap(null);
-          }
-          
-          //TODO: show adding marker on map, and show component when click marker
-          const currentLocation = mouseEvent.latLng;
-          
-          // console.log('dblclick', currentLocation.getLat(), currentLocation.getLng());
-          
-          this.addMarker = new kakao.maps.Marker({
-            map: this.map,
-            position: new kakao.maps.LatLng(currentLocation.getLat(), currentLocation.getLng()),
-            image: this.addMarkerIcon,
-          });
-
-          this.addMarker.setMap(this.map);
-
-          kakao.maps.event.addListener(this.addMarker, 'click', () => {
-            //show add bathroom component
-            this.showAddBathroomModal(currentLocation.getLat(), currentLocation.getLng());
-          });
-        });
+        this.mapRightClickListener();
+        
       });
     }, 300);    
   }
@@ -188,6 +150,54 @@ export class MainPage implements OnInit {
     );
   }
 
+  mapLeftClickListener() {
+    kakao.maps.event.addListener(this.map, 'click', () => {
+      this.resetMarkersOnMap();
+
+      if(this.selectedMarker) {
+        this.selectedMarker.setImage(this.defaultMarkerIcon);
+      }
+
+      this.modalController.getTop()
+        .then((v) => {
+          v? this.modalController.dismiss(): {}
+        });
+    });
+  }
+
+  mapRightClickListener() {
+    kakao.maps.event.addListener(this.map, 'dblclick', (mouseEvent) => {
+      this.resetMarkersOnMap();
+      
+      const currentLocation = mouseEvent.latLng;
+      // console.log('dblclick', currentLocation.getLat(), currentLocation.getLng());
+      
+      //TODO: refactor (addmarker & addmarkers)
+      //show add marker on map
+      this.addMarker = new kakao.maps.Marker({
+        map: this.map,
+        position: new kakao.maps.LatLng(currentLocation.getLat(), currentLocation.getLng()),
+        image: this.addMarkerIcon,
+      });
+
+      this.addMarker.setMap(this.map);
+
+      //show add bathroom component
+      kakao.maps.event.addListener(this.addMarker, 'click', () => {
+        this.showAddBathroomModal(currentLocation.getLat(), currentLocation.getLng());
+      });
+    });
+  }
+
+  resetMarkersOnMap() {
+    //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
+    this.markerClicked = false;
+    if(this.addMarker) {
+      this.addMarker.setMap(null);
+    }
+  }
+
+  //TODO: refactor (addmarker & addmarkers)
   addMarkers() {
     this.bathroomList.forEach((place) => {
       const marker = new kakao.maps.Marker({
@@ -258,7 +268,7 @@ export class MainPage implements OnInit {
       await this.setLatLng(coordinates.coords);
     } else {
       await this.failGetLocationAlert();
-      console.log('fail to get current location');
+      console.log('fail to get current location'); //TODO: show something to user
     }
   }
 
@@ -308,7 +318,7 @@ export class MainPage implements OnInit {
     await alert.present();
   }
 
-  async showAddBathroomModal(lat, lng) {
+  async showAddBathroomModal(lat: number, lng: number) {
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
       componentProps: {
