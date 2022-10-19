@@ -4,12 +4,14 @@ import { AlertController, ModalController } from '@ionic/angular';
 
 import { Geolocation } from '@capacitor/geolocation';
 import { BathroomService } from 'src/app/services/bathroom/bathroom.service';
+import { AddBathroomComponent } from 'src/app/modals/add-bathroom/add-bathroom.component';
 
 declare let kakao;
 
 const myIconUrl = '../assets//svg/map/current-location.svg';
 const iconUrl = '../assets/svg/map/map-marker.svg';
 const clickedIconUrl = '../assets/svg/map/marker-clicked.svg';
+const addIconUrl = '../assets/svg/map/add-new.svg'
 
 @Component({
   selector: 'app-main',
@@ -18,18 +20,27 @@ const clickedIconUrl = '../assets/svg/map/marker-clicked.svg';
 })
 
 export class MainPage implements OnInit {
+  @ViewChild('detailContainer') detailContainer: ElementRef<HTMLElement>;
+
   map: any;
 
-  public initLatitude;
-  public initLongitude;
-  public locationSubscription: any;
+  public initLatitude = 37.540372;
+  public initLongitude = 127.069276;
+  public currentLat: number;
+  public currentLng: number;
+
+  // public locationSubscription: any;
+
   public bathroomList = [];
+  public bathroomInfo: any;
   
-  public defaultMarker;
-  public clickedMarker;
+  public defaultMarkerIcon: any;
+  public clickedMarkerIcon: any;
+  public addMarkerIcon: any;
+
   public markerClicked = false;
   public selectedMarker = null;
-
+  public addMarker: any;
 
   constructor(
     public bathroomService: BathroomService,
@@ -39,10 +50,6 @@ export class MainPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.checkPermissions()
-      .then(() => {
-        this.getBathroomList();
-      });
   }
   
   ngAfterViewInit() {
@@ -50,17 +57,34 @@ export class MainPage implements OnInit {
   }
   
   ionViewDidEnter() {    
+    setTimeout(() => {
+      this.checkPermissions()
+        .then(() => {
+            this.getBathroomList();
+          });
+    }, 300);
     // this.trackLocation();
   }
 
   async getBathroomList() {
-    const response = await this.bathroomService.get1kmBathroomList(this.initLongitude, this.initLatitude);
+    const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
     if(response.status === 200) {
       this.bathroomList = response.data;
-      console.log('bathroom', this.bathroomList);
+
+      //TODO: 카메라 이동
+      this.moveToCurrentLocation(this.currentLat, this.currentLng);
+
+      //add markers
+      this.addMarkers();  
     } else {
-      console.log('fail to get list');      
+      console.log('fail to get list');
     }
+  }
+
+  moveToCurrentLocation(lat, lng) {
+    const currentLocation = new kakao.maps.LatLng(lat, lng);
+    
+    this.map.panTo(currentLocation);
   }
 
   createMap() {
@@ -69,29 +93,63 @@ export class MainPage implements OnInit {
         //맵 생성 -> 카메라의 중앙, 확대 정도 지정
         const options = {
             center: new kakao.maps.LatLng(this.initLatitude, this.initLongitude),
-            level: 4
+            level: 4,
+            disableDoubleClickZoom: true,
         };
 
         const mapRef = document.getElementById('map');
-
-        this.map = new kakao.maps.Map(mapRef, options);
+        this.map = new kakao.maps.Map(mapRef, options);        
 
         this.setMarkerImages();
-        this.addMarkers();
 
-        // 맵 클릭 이벤트 리스너
+        //맵 클릭 이벤트 리스너 (좌클릭)
         kakao.maps.event.addListener(this.map, 'click', () => {
+          //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
           this.markerClicked = false;
-          if(this.selectedMarker) {
-            this.selectedMarker.setImage(this.defaultMarker);
+          if(this.addMarker) {
+            this.addMarker.setMap(null);
           }
 
-          if(!this.selectedMarker && this.modalController.getTop()) {
-            this.modalController.dismiss();
+          if(this.selectedMarker) {
+            this.selectedMarker.setImage(this.defaultMarkerIcon);
           }
+
+          this.modalController.getTop()
+            .then((v) => {
+              v? this.modalController.dismiss(): {}
+            });
+        });
+
+        //맵 클릭 이벤트 리스너 (우클릭)
+        kakao.maps.event.addListener(this.map, 'dblclick', (mouseEvent) => {
+          //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
+          this.markerClicked = false;
+          if(this.addMarker) {
+            this.addMarker.setMap(null);
+          }
+          
+          //TODO: show adding marker on map, and show component when click marker
+          const currentLocation = mouseEvent.latLng;
+
+          // console.log('rightclick center', this.map.getCenter());
+          
+          console.log('dblclick', currentLocation.getLat(), currentLocation.getLng());
+          
+          this.addMarker = new kakao.maps.Marker({
+            map: this.map,
+            position: new kakao.maps.LatLng(currentLocation.getLat(), currentLocation.getLng()),
+            image: this.addMarkerIcon,
+          });
+
+          this.addMarker.setMap(this.map);
+
+          kakao.maps.event.addListener(this.addMarker, 'click', () => {
+            //show add bathroom component
+            this.showAddBathroomModal(currentLocation.getLat(), currentLocation.getLng());
+          });
         });
       });
-    }, 200);    
+    }, 300);    
   }
 
   async checkPermissions() {
@@ -105,20 +163,28 @@ export class MainPage implements OnInit {
   }
 
   setMarkerImages() {
-    this.defaultMarker = new kakao.maps.MarkerImage(
+    this.defaultMarkerIcon = new kakao.maps.MarkerImage(
       iconUrl,
       new kakao.maps.Size(25, 25),
       {
-        // offset: new kakao.maps.Point(13, 34),
         alt: 'marker img',
       }
     );
 
-    this.clickedMarker = new kakao.maps.MarkerImage(
+    this.clickedMarkerIcon = new kakao.maps.MarkerImage(
       clickedIconUrl,
       new kakao.maps.Size(70, 70),
       {
         offset: new kakao.maps.Point(35, 52),
+        alt: 'marker img',
+      }
+    );
+
+    this.addMarkerIcon = new kakao.maps.MarkerImage(
+      addIconUrl,
+      new kakao.maps.Size(60, 60),
+      {
+        offset: new kakao.maps.Point(29, 43),
         alt: 'marker img',
       }
     );
@@ -129,36 +195,49 @@ export class MainPage implements OnInit {
       const marker = new kakao.maps.Marker({
           map: this.map,
           position: new kakao.maps.LatLng(place.longitude, place.latitude),
-          image: this.defaultMarker
+          image: this.defaultMarkerIcon
       });
-      marker.defaultMarker = this.defaultMarker;
+
+      //detail component를 위한 값 세팅
+      marker.bathroomInfo = this.genBathroomInfo(place);
+      
+      marker.setMap(this.map);
 
       //마커 클릭 리스너
       kakao.maps.event.addListener(marker, 'click', () => {
+        this.bathroomInfo = marker.bathroomInfo;        
+
         //마커 클릭 시 카메라 이동 정의
         const cameraMov = this.getCameraMovement(this.map.getLevel());
-        const movedLocation = new kakao.maps.LatLng(place.longitude-cameraMov, place.latitude);
+        const movedLocation = new kakao.maps.LatLng(place.longitude-cameraMov, place.latitude);        
+        this.map.panTo(movedLocation);
+
 
         //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
         if(!this.markerClicked) {
           this.markerClicked = true;
           this.selectedMarker = marker;
-          marker.setImage(this.clickedMarker);
+          marker.setImage(this.clickedMarkerIcon);
         }
   
         //클릭된 마커가 현재 마커가 아닌 경우
-        if(this.selectedMarker !== marker) {          
+        if(this.selectedMarker !== marker) {
+          this.markerClicked = false;
+          this.changeDetectorRef.detectChanges();
+
           //새로 클릭된 마커는 이미지를 변경한다.
-          marker.setImage(this.clickedMarker);
+          marker.setImage(this.clickedMarkerIcon);
   
           //기존에 선택되어 있는 마커는 기본으로 바꾼다.
-          this.selectedMarker.setImage(this.defaultMarker);
+          this.selectedMarker.setImage(this.defaultMarkerIcon);
+
+          this.markerClicked = true;
+          this.changeDetectorRef.detectChanges();
         }
-  
+        
         //현재 클릭된 마커를 선택된 마커로 업데이트한다.
         this.selectedMarker = marker;
 
-        this.map.panTo(movedLocation);
       });
     });
   }
@@ -186,10 +265,8 @@ export class MainPage implements OnInit {
   }
 
   async setLatLng(coord: any) {
-    this.initLatitude = coord.latitude;
-    this.initLongitude = coord.longitude;
-
-    console.log(this.initLatitude, this.initLongitude);    
+    this.currentLat = coord.latitude;
+    this.currentLng = coord.longitude;
   }
   
   // async trackLocation() {
@@ -231,6 +308,40 @@ export class MainPage implements OnInit {
       ],
     });
     await alert.present();
+  }
+
+  async showAddBathroomModal(lat, lng) {
+    console.log('add bathroom modal', lat, lng);
+    
+    const modal = await this.modalController.create({
+      component: AddBathroomComponent,
+      componentProps: {
+        lat: lat,
+        lng: lng
+      },
+      showBackdrop: false,
+      canDismiss: true,
+
+      breakpoints: [0, 0.5, 0.75],
+      initialBreakpoint: 0.75,
+      backdropDismiss: false,
+      backdropBreakpoint: 0.75,
+    });
+    await modal.present();
+  }
+
+  genBathroomInfo(data) {
+    const info = {
+      title: data.title,
+      // rating: data.rating, //서버 구현중
+      isLocked: data.isLocked,
+      imageUrl: data.imageUrl,
+      // isOpen: data.isOpen, //서버 구현중
+      // operationTime: data.operationTime //서버 구현중
+      address: data.address + ' ' + data.addressDetail,
+    }
+    
+    return info;
   }
 
 }

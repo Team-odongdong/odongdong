@@ -1,9 +1,10 @@
 <div id="container" class="container">
     <div id="map" class="map"></div>
-    <div 
+    <div
+        #detailContainer
         class="container__detail"
         *ngIf="markerClicked"
     >
-        <app-bathroom-detail></app-bathroom-detail>
+        <app-bathroom-detail [bathroomInfo]="bathroomInfo"></app-bathroom-detail>
     </div>
 </div>

@@ -11,5 +11,4 @@ public class OdondongApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(OdondongApplication.class, args);
 	}
-
 }

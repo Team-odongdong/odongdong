@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { ModalController, ToastController } from '@ionic/angular';
 
@@ -12,6 +12,12 @@ import { BathroomService } from 'src/app/services/bathroom/bathroom.service';
   styleUrls: ['./add-bathroom.component.scss'],
 })
 export class AddBathroomComponent implements OnInit {
+  @Input() lat;
+  @Input() lng;
+
+  public currentLat;
+  public currentLng;
+
   public latitude;
   public longitude;
   public bathroomName;
@@ -20,8 +26,7 @@ export class AddBathroomComponent implements OnInit {
   public bathroomImageUrl;
   public rate;
 
-  public currentLat;
-  public currentLng;
+  public isValid = true;
 
   constructor(
     public bathroomService: BathroomService,
@@ -31,34 +36,56 @@ export class AddBathroomComponent implements OnInit {
 
   ngOnInit() {}
 
-  async ionViewDidEnter() {
-    await this.getCurrentLocation();
+  ionViewDidEnter() {
+    this.getCurrentLocation();
   }
 
-  async getCurrentLocation () {
-    const loc = await Geolocation.getCurrentPosition({
-      enableHighAccuracy: true,
-      timeout: 1000,
-    });
+  async getCurrentLocation() {
+    //add bathroom with clicked marker location
+    if(this.lat) {
+      await this.getAddressWithLatLng(this.lat, this.lng);
+    } else { //add bathroom with current location
+      const currentLocation = await Geolocation.getCurrentPosition()
+      await this.getAddressWithLatLng(currentLocation.coords.latitude, currentLocation.coords.longitude);
+    }
+  }
 
-    if(loc.timestamp > 0) {
-      this.setLatLng(loc);
+  async getAddressWithLatLng(lat, lng) {
+    const response = await this.bathroomService.getAddressName(
+      lat,
+      lng,
+    );
+
+    if(response.status === 200) {
+      this.fetchBathroomAddress(response.data);
     } else {
-      console.log('fail to get current location');
-    }        
+      this.failToGetBathroomAddress();
+    }
   }
 
-  setLatLng(loc: any){
-    this.currentLat = loc.coords.latitude;
-    this.currentLng = loc.coords.longitude;
+  fetchBathroomAddress(data) {
+    this.bathroomAddress = data.address_name;
+    this.bathroomAddressDetail = data.address_detail;
+  }
+
+  async failToGetBathroomAddress() {
+    const toast = await this.toastController.create({
+      header: '서버에서 주소를 가져오지 못했습니다.',
+      message: '직접 주소를 입력해주세요!',
+      duration: 4000,
+    });
+    await toast.present();
   }
 
   bathroomInformation() {
-    console.log('enrolling location', this.currentLat, this.currentLng);
+    if(!this.lat) {
+      this.lat = this.currentLat;
+      this.lng = this.currentLng;
+    }
     
     const info = {
-      latitude: this.currentLat,
-      longitude: this.currentLng,
+      latitude: this.lat,
+      longitude: this.lng,
       title: this.bathroomName,
       isLocked: 'N',
       address: this.bathroomAddress,
@@ -75,13 +102,19 @@ export class AddBathroomComponent implements OnInit {
   }
 
   async onClickSaveButton() {
-    const info = this.bathroomInformation();
+    if(!this.checkAddValidation()) {
+      this.failValidationToast();
+      return;
+    }
 
+    const info = this.bathroomInformation();
+    console.log('sending info', info);    
     const response = await this.bathroomService.addBathroom(
       info
     );
 
     if(response.status === 200) {
+      console.log('success');      
       this.successAddBathroom();
     } else {
       this.failAddBathroom();
@@ -100,6 +133,24 @@ export class AddBathroomComponent implements OnInit {
   async failAddBathroom() {
     const toast = await this.toastController.create({
       message: '화장실 등록 실패',
+      duration: 1500,
+    });
+    await toast.present();
+  }
+
+  checkAddValidation() {
+    if(!this.bathroomName || !this.bathroomAddress) {
+      this.isValid = false;
+      return false;
+    }
+
+    this.isValid = true;
+    return true;
+  }
+
+  async failValidationToast() {
+    const toast = await this.toastController.create({
+      message: '필수 항목들을 입력해주세요',
       duration: 1500,
     });
     await toast.present();

@@ -39,4 +39,17 @@ export class BathroomService {
         }
     }
 
+    async getAddressName(lat, lng) {
+        try {
+            const response = await axios({
+                method: 'get',
+                url: `${environment.apiUrl}/api/getBathroomInfo?latitude=${lat}&longitude=${lng}`,
+                responseType: 'json',
+            });
+            return response;
+        } catch(error) {
+            return error.response;
+        }
+    }
+
 }

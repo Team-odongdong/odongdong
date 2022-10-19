@@ -15,11 +15,11 @@
 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0"/>
 <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_8_4839"/>
 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feMorphology radius="4" operator="dilate" in="SourceAlpha" result="effect2_dropShadow_8_4839"/>
-<feOffset dy="6"/>
-<feGaussianBlur stdDeviation="5"/>
+<!-- <feMorphology radius="4" operator="dilate" in="SourceAlpha" result="effect2_dropShadow_8_4839"/> -->
+<!-- <feOffset dy="6"/> -->
+<!-- <feGaussianBlur stdDeviation="5"/> -->
 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
-<feBlend mode="normal" in2="effect1_dropShadow_8_4839" result="effect2_dropShadow_8_4839"/>
+<!-- <feBlend mode="normal" in2="effect1_dropShadow_8_4839" result="effect2_dropShadow_8_4839"/> -->
 <feBlend mode="normal" in="SourceGraphic" in2="effect2_dropShadow_8_4839" result="shape"/>
 </filter>
 <clipPath id="clip0_8_4839">

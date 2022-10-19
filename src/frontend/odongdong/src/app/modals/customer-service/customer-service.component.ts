@@ -30,6 +30,7 @@ export class CustomerServiceComponent implements OnInit {
 
     if(response.status === 200) {
       this.successSendMail();
+      this.modalController.dismiss();
     } else {
       this.failSendMail();
     }
