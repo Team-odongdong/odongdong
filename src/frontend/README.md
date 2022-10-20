@@ -21,6 +21,7 @@ ionic serve
 ```
 ionic build (capacitor)
 ionic build --prod (production version)
+ionic build --prod --release (release version)
 ```
 
 - 프로젝트 생성
