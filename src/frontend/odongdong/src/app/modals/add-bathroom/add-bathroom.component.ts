@@ -23,6 +23,7 @@ export class AddBathroomComponent implements OnInit {
   public bathroomAddressDetail: string;
   public bathroomImageUrl: string;
   public rate;
+  public isUnisex = false;
 
   public isValid = true;
 
@@ -149,5 +150,9 @@ export class AddBathroomComponent implements OnInit {
       duration: 1500,
     });
     await toast.present();
+  }
+
+  checkIsUnisex() {
+    this.isUnisex = this.isUnisex? false: true;    
   }
 }

@@ -46,6 +46,9 @@
             height: 25px;
         }
     }
+    &--current:active {
+        background: var(--primary_container_blue);
+    }
 
     &--zoom {
         width: 45px;
@@ -68,6 +71,16 @@
                 width: 18px;
                 height: 18px;
             }
+        }
+        button:first-child:active {
+            background: var(--primary_container_blue);
+
+            border-radius: 12px 12px 0 0;
+        }
+        button:last-child:active {
+            background: var(--primary_container_blue);
+
+            border-radius: 0 0 12px 12px;
         }
     }
 

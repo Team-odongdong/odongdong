@@ -28,8 +28,7 @@ export class MainPage implements OnInit {
   public initLongitude = 127.069276;
   public currentLat: number;
   public currentLng: number;
-
-  // public locationSubscription: any;
+  public locationSubscription: any;
 
   public bathroomList = [];
   public bathroomInfo: any;
@@ -67,7 +66,7 @@ export class MainPage implements OnInit {
             this.getBathroomList();
           });
     }, 300);
-    // this.trackLocation();
+    this.trackLocation();
   }
 
   async getBathroomList() {
@@ -284,7 +283,7 @@ export class MainPage implements OnInit {
 
   async getCurrentLocation() {
     const coordinates = await Geolocation.getCurrentPosition();
-    console.log('coordinates', coordinates);    
+    // console.log('coordinates', coordinates);    
 
     if(coordinates.timestamp > 0) {
       await this.setLatLng(coordinates.coords);
@@ -298,20 +297,20 @@ export class MainPage implements OnInit {
     this.currentLng = coord.longitude;
   }
   
-  // async trackLocation() {
-  //   this.locationSubscription = await Geolocation.watchPosition(
-  //     {
-  //       enableHighAccuracy: true,
-  //       timeout: 2000,
-  //     },
-  //     (position) => {
-  //       console.log(this.locationSubscription);
+  async trackLocation() {
+    this.locationSubscription = await Geolocation.watchPosition(
+      {
+        enableHighAccuracy: true,
+        timeout: 2000,
+      },
+      (position) => {
+        // console.log(position);
         
-  //       // this.initLatitude = position.coords.latitude;
-  //       // this.initLongitude = position.coords.longitude;
-  //     }
-  //   );
-  // }
+        this.currentLat = position.coords.latitude;
+        this.currentLng = position.coords.longitude;
+      }
+    );
+  }
 
   async permissionAlert() {
     const alert = await this.alertController.create({
@@ -381,6 +380,7 @@ export class MainPage implements OnInit {
       // isOpen: data.isOpen, //서버 구현중
       // operationTime: data.operationTime //서버 구현중
       address: data.address + ' ' + data.addressDetail,
+      isUnisex: data.isUnisex,
     }
     
     return info;

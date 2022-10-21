@@ -12,6 +12,16 @@ ion-input {
     margin: 4px 0;
 }
 
+ion-checkbox {
+    --size: 24px;
+    --background-checked: var(--primary_blue);
+    --checkmark-width: 3px;
+    --size: 24px;
+}
+ion-checkbox::part(container) {
+    border-radius: 4px;
+}
+
 .input {
     &__container {
         margin-top: 10px;
@@ -49,6 +59,18 @@ ion-input {
             padding-left: 22px;
             margin-top: 4px;
         }
+    }
+}
+
+.unisex {
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-right: 10px;
+
+        color: var(--surface-gray);
     }
 }
 
