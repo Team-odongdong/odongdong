@@ -5,3 +5,12 @@ ion-app {
         max-width: 500px;
     }
 }
+
+// only for safari browser
+@media not all and (min-resolution:.001dpcm) {
+    @supports (-webkit-appearance:none) {
+        ion-app {
+            margin-bottom: 7%;
+        }
+    }
+}
