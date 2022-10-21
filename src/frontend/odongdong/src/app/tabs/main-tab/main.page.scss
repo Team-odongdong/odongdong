@@ -23,23 +23,52 @@
     position: absolute;
     right: 5%;
     bottom: 17%;
-
-    width: 50px;
-    height: 50px;
-
-    background: var(--bg_white);
-
-    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-    border-radius: 16px;
-
+    
     z-index: 5;
+    
+    &--current {
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+        width: 45px;
+        height: 45px;
+    
+        background: var(--bg_white);
+    
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+        border-radius: 12px;
 
-    img {
-        width: 25px;
-        height: 25px;
+        margin-bottom: 10px;
+    
+        img {
+            width: 25px;
+            height: 25px;
+        }
     }
+
+    &--zoom {
+        width: 45px;
+        height: 90px;
+
+        background: var(--bg_white);
+
+        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+        border-radius: 12px;
+
+        button {
+            width: 45px;
+            height: 45px;
+
+            background: var(--bg_white);
+
+            border-radius: 12px;
+
+            img {
+                width: 18px;
+                height: 18px;
+            }
+        }
+    }
+
 }

@@ -44,6 +44,8 @@ export class MainPage implements OnInit {
   public addMarker: any;
   public myLocationMarker: any;
 
+  public mapLevel = 4;
+
   constructor(
     public bathroomService: BathroomService,
     public alertController: AlertController,
@@ -106,7 +108,7 @@ export class MainPage implements OnInit {
         //맵 생성 -> 카메라의 중앙, 확대 정도 지정
         const options = {
             center: new kakao.maps.LatLng(this.initLatitude, this.initLongitude),
-            level: 4,
+            level: this.mapLevel,
             disableDoubleClickZoom: true,
         };
 
@@ -374,6 +376,16 @@ export class MainPage implements OnInit {
   moveToCurrent() {
     const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);
     this.map.panTo(currentLocation);
+  }
+
+  zoomIn() {
+    this.mapLevel -= 1;
+    this.map.setLevel(this.mapLevel, {animate: true});
+  }
+
+  zoomOut() {
+    this.mapLevel += 1;
+    this.map.setLevel(this.mapLevel, {animate: true});
   }
 
 }

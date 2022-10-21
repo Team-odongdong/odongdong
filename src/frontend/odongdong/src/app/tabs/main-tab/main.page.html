@@ -8,10 +8,29 @@
         <app-bathroom-detail [bathroomInfo]="bathroomInfo"></app-bathroom-detail>
     </div>
 
-    <button 
-        class="handler__container"
-        (click)="moveToCurrent()"
-    >
-        <img src="../../../assets/svg/map/move-current.svg" alt="move"/>
-    </button>
+    <div class="handler__container">
+        <button
+            class="handler__container--current"
+            (click)="moveToCurrent()"
+        >
+            <img src="../../../assets/svg/map/move-current.svg" alt="move"/>
+        </button>
+        <div
+            class="handler__container--zoom"
+        >
+            <button
+                class="handler__container--zoom-in"
+                (click)="zoomIn()"
+            >
+                <img src="../../../assets/svg/map/plus.svg" alt="plus"/>
+            </button>
+            <button
+                class="handler__container--zoom-out"
+                (click)="zoomOut()"
+            >
+                <img src="../../../assets/svg/map/minus.svg" alt="minus"/>
+            </button>
+
+        </div>
+    </div>
 </div>
