@@ -10,8 +10,8 @@ declare let kakao;
 
 const myIconUrl = '../assets//svg/map/current-location.svg';
 const iconUrl = '../assets/svg/map/map-marker.svg';
-const clickedIconUrl = '../assets/svg/map/marker-clicked.svg';
-const addIconUrl = '../assets/svg/map/add-new.svg'
+const clickedIconUrl = '../assets/images/map/marker-clicked.png';
+const addIconUrl = '../assets/images/map/add-new.png';
 
 @Component({
   selector: 'app-main',
@@ -133,7 +133,7 @@ export class MainPage implements OnInit {
 
     this.clickedMarkerIcon = new kakao.maps.MarkerImage(
       clickedIconUrl,
-      new kakao.maps.Size(70, 70),
+      new kakao.maps.Size(60, 70),
       {
         offset: new kakao.maps.Point(35, 52),
         alt: 'marker img',
@@ -142,9 +142,9 @@ export class MainPage implements OnInit {
 
     this.addMarkerIcon = new kakao.maps.MarkerImage(
       addIconUrl,
-      new kakao.maps.Size(60, 60),
+      new kakao.maps.Size(50, 60),
       {
-        offset: new kakao.maps.Point(29, 43),
+        offset: new kakao.maps.Point(23, 43),
         alt: 'marker img',
       }
     );
