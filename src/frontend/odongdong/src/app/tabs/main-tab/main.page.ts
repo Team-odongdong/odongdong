@@ -8,7 +8,7 @@ import { AddBathroomComponent } from 'src/app/modals/add-bathroom/add-bathroom.c
 
 declare let kakao;
 
-const myIconUrl = '../assets//svg/map/current-location.svg';
+const myLocationIconUrl = '../assets/svg/map/current-location.svg';
 const iconUrl = '../assets/svg/map/map-marker.svg';
 const clickedIconUrl = '../assets/images/map/marker-clicked.png';
 const addIconUrl = '../assets/images/map/add-new.png';
@@ -37,10 +37,12 @@ export class MainPage implements OnInit {
   public defaultMarkerIcon: any;
   public clickedMarkerIcon: any;
   public addMarkerIcon: any;
+  public myLocationMarkerIcon: any;
 
   public markerClicked = false;
   public selectedMarker = null;
   public addMarker: any;
+  public myLocationMarker: any;
 
   constructor(
     public bathroomService: BathroomService,
@@ -84,7 +86,18 @@ export class MainPage implements OnInit {
 
   moveToCurrentLocation(lat: number, lng: number) {
     const currentLocation = new kakao.maps.LatLng(lat, lng);
+    this.addMyLocationMarker(currentLocation);
     this.map.panTo(currentLocation);
+  }
+
+  addMyLocationMarker(current) {
+    this.myLocationMarker = new kakao.maps.Marker({
+      map: this.map,
+      position: new kakao.maps.LatLng(current.getLat(), current.getLng()),
+      image: this.myLocationMarkerIcon,
+    });
+
+    this.myLocationMarker.setMap(this.map);
   }
 
   createMap() {
@@ -98,7 +111,7 @@ export class MainPage implements OnInit {
         };
 
         const mapRef = document.getElementById('map');
-        this.map = new kakao.maps.Map(mapRef, options);        
+        this.map = new kakao.maps.Map(mapRef, options);
 
         this.setMarkerImages();
 
@@ -127,7 +140,7 @@ export class MainPage implements OnInit {
       iconUrl,
       new kakao.maps.Size(25, 25),
       {
-        alt: 'marker img',
+        alt: 'marker',
       }
     );
 
@@ -136,7 +149,7 @@ export class MainPage implements OnInit {
       new kakao.maps.Size(60, 70),
       {
         offset: new kakao.maps.Point(35, 52),
-        alt: 'marker img',
+        alt: 'marker',
       }
     );
 
@@ -145,7 +158,15 @@ export class MainPage implements OnInit {
       new kakao.maps.Size(50, 60),
       {
         offset: new kakao.maps.Point(23, 43),
-        alt: 'marker img',
+        alt: 'marker',
+      }
+    );
+
+    this.myLocationMarkerIcon = new kakao.maps.MarkerImage(
+      myLocationIconUrl,
+      new kakao.maps.Size(40, 40),
+      {
+        alt: 'my-loc',
       }
     );
   }
@@ -348,6 +369,11 @@ export class MainPage implements OnInit {
     }
     
     return info;
+  }
+
+  moveToCurrent() {
+    const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);
+    this.map.panTo(currentLocation);
   }
 
 }
