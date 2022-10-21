@@ -81,8 +81,7 @@ export class MainPage implements OnInit {
       //add markers
       this.addMarkers();  
     } else {
-      //todo: show user something
-      console.log('fail to get list');
+      await this.failToGetBathroomList();
     }
   }
 
@@ -291,7 +290,6 @@ export class MainPage implements OnInit {
       await this.setLatLng(coordinates.coords);
     } else {
       await this.failGetLocationAlert();
-      console.log('fail to get current location'); //TODO: show something to user
     }
   }
 
@@ -330,7 +328,22 @@ export class MainPage implements OnInit {
 
   async failGetLocationAlert() {
     const alert = await this.alertController.create({
-      message: '위치 정보 가져오기 실패!',
+      subHeader: '위치 정보를 가져오지 못했습니다.',
+      message: '네트워크 상태를 확인해주세요!',
+      buttons: [
+        {
+          text: '닫기',
+          handler: () => {}
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  async failToGetBathroomList() {
+    const alert = await this.alertController.create({
+      subHeader: '화장실 목록을 가져오지 못했습니다.',
+      message: '네트워크 상태를 확인해주세요!',
       buttons: [
         {
           text: '닫기',
