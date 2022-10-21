@@ -70,7 +70,7 @@ public class BathroomService {
         double lati_plus = x + 0.0091;
         double long_minus = y - 0.0113;
         double long_plus = y + 0.0113;
-        return bathroomRepository.findByLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(lati_minus, lati_plus, long_minus, long_plus);
+        return bathroomRepository.findByRegisterIsTrueAndLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(lati_minus, lati_plus, long_minus, long_plus);
     }
 
     public CoordinateInfoDto getAddressByCoordinate(Double x, Double y) {
