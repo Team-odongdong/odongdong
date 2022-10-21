@@ -4,9 +4,7 @@ import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.service.BathroomService.BathroomService;
-import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -65,7 +63,7 @@ public class BathroomController {
     @ResponseBody
     @GetMapping("/api/bathroom/list")
     public List<Bathroom> get1kmBathroom(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
-        return bathroomService.get1kmByLongitudeLatitude(x, y);
+        return bathroomService.get1kmByLongitudeLatitude(y, x);
     }
 
 }
