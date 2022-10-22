@@ -26,11 +26,11 @@ class GraduatePrjApplicationTests {
 	@Autowired
 	ChangeByGeocoderNaver changeByGeocoderNaver;
 
-	@Test
-	void 테스트() {
-		List<Bathroom> kmByLongitudeLatitude = bathroomService.get1kmByLongitudeLatitude(126.966182351829, 37.5911968710618);
-		return;
-	}
+//	@Test
+//	void 테스트() {
+//		List<Bathroom> kmByLongitudeLatitude = bathroomService.get1kmByLongitudeLatitude(126.966182351829, 37.5911968710618);
+//		return;
+//	}
 
 	@Test
 	void naver지오코딩테스트() {

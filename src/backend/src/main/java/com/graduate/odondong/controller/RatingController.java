@@ -27,15 +27,15 @@ public class RatingController {
         }
     }
 
-    @GetMapping("/api/bathroom/rating")
-    public BaseResponse<RatingResponseDto> getBathroomRate(@RequestParam("bathroom_id") Long bathroomId) {
-        try {
-            RatingResponseDto ratingResponseDto = new RatingResponseDto(ratingService.retrieveRatingById(bathroomId),bathroomId);
-            return new BaseResponse<>(ratingResponseDto);
-        }
-        catch (BaseException e) {
-            return new BaseResponse<>(e.getStatus());
-        }
-    }
+//    @GetMapping("/api/bathroom/rating")
+//    public BaseResponse<RatingResponseDto> getBathroomRate(@RequestParam("bathroom_id") Long bathroomId) {
+//        try {
+//            RatingResponseDto ratingResponseDto = new RatingResponseDto(ratingService.retrieveRatingById(bathroomId),bathroomId);
+//            return new BaseResponse<>(ratingResponseDto);
+//        }
+//        catch (BaseException e) {
+//            return new BaseResponse<>(e.getStatus());
+//        }
+//    }
 
 }
