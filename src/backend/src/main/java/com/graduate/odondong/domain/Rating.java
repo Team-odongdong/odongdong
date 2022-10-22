@@ -24,7 +24,6 @@ public class Rating {
     private Double score;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="bathroom_id")
-    @Cascade(org.hibernate.annotations.CascadeType.REMOVE)
     private Bathroom bathroom;
     private Long userId;
 
