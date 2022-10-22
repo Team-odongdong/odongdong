@@ -88,8 +88,8 @@ public class ChangeByGeocoderKakao implements ReverseGeocoding {
 	}
 
 	private AddressInfoDto getAddressInfoDto(JSONObject document) throws JSONException {
-		Double latitude = Double.valueOf(((String)document.get("x")));
-		Double longitude = Double.valueOf(((String)document.get("y")));
+		Double longitude = Double.valueOf(((String)document.get("x")));
+		Double latitude = Double.valueOf(((String)document.get("y")));
 		String address_name = (String)document.get("address_name");
 		String address_detail = null;
 		if (!document.isNull("road_address")) {

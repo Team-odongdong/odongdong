@@ -41,4 +41,5 @@ class GraduatePrjApplicationTests {
 		System.out.println(LocalTime.now());
 		return;
 	}
+	
 }
