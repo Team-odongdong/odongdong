@@ -8,7 +8,10 @@
         <app-bathroom-detail [bathroomInfo]="bathroomInfo"></app-bathroom-detail>
     </div>
 
-    <div class="handler__container">
+    <div 
+        *ngIf="!markerClicked" 
+        class="handler__container"
+    >
         <button
             class="handler__container--current"
             (click)="moveToCurrent()"

@@ -72,7 +72,7 @@ export class MainPage implements OnInit {
   async getBathroomList() {
     const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
     if(response.status === 200) {
-      this.bathroomList = response.data;
+      this.bathroomList = response.data;      
 
       //move camera to current location
       this.moveToCurrentLocation(this.currentLat, this.currentLng);
@@ -223,7 +223,7 @@ export class MainPage implements OnInit {
     this.bathroomList.forEach((place) => {
       const marker = new kakao.maps.Marker({
           map: this.map,
-          position: new kakao.maps.LatLng(place.longitude, place.latitude),
+          position: new kakao.maps.LatLng(place.latitude, place.longitude),
           image: this.defaultMarkerIcon
       });
 
@@ -238,7 +238,7 @@ export class MainPage implements OnInit {
 
         //마커 클릭 시 카메라 이동 정의
         const cameraMov = this.getCameraMovement(this.map.getLevel());
-        const movedLocation = new kakao.maps.LatLng(place.longitude-cameraMov, place.latitude);        
+        const movedLocation = new kakao.maps.LatLng(place.latitude-cameraMov, place.longitude);
         this.map.panTo(movedLocation);
 
 
@@ -378,7 +378,7 @@ export class MainPage implements OnInit {
       isLocked: data.isLocked,
       imageUrl: data.imageUrl,
       // isOpen: data.isOpen, //서버 구현중
-      // operationTime: data.operationTime //서버 구현중
+      operationTime: data.operationTime, //서버 구현중
       address: data.address + ' ' + data.addressDetail,
       isUnisex: data.isUnisex,
     }

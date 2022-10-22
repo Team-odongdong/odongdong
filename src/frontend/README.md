@@ -55,10 +55,10 @@ ionic cap sync
 - 한번에 하기
     - ios
     ```
-    ionic build --prod;ionic cap copy;ionic cap sync;ionic cap copy ios;ionic cap open ios
+    ionic build --prod;ionic cap copy;ionic cap sync;ionic cap open ios
     ```
 
     - android
     ```
-    ionic build --prod;ionic cap copy;ionic cap sync;ionic cap copy android;ionic cap open android
+    ionic build --prod;ionic cap copy;ionic cap sync;ionic cap open android
     ```

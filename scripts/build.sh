@@ -19,6 +19,7 @@ echo -e "\
  +------- build... "
 cd $PROJECT_ROOT
 chmod +x gradlew
+$PROJECT_ROOT/gradle --stop
 $PROJECT_ROOT/gradlew init
 $PROJECT_ROOT/gradlew clean build -x test
 
