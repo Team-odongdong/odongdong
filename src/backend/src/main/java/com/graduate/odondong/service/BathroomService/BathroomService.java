@@ -6,6 +6,7 @@ import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.RatingRequestDto;
 import com.graduate.odondong.repository.BathroomRepository;
 
+import com.graduate.odondong.repository.RatingRepository;
 import com.graduate.odondong.util.BaseException;
 import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
@@ -23,6 +24,7 @@ import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
 @Transactional(rollbackFor = Exception.class)
 public class BathroomService {
     private final BathroomRepository bathroomRepository;
+    private final RatingRepository ratingRepository;
     private final ChangeByGeocoderKakao changeByGeocoderKakao;
     private final ChangeByGeocoderNaver changeByGeocoderNaver;
     private final DeletedBathroomService deletedBathroomService;
@@ -51,7 +53,7 @@ public class BathroomService {
         bathroomRepository.deleteById(id);
     }
 
-    public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto) {
+    public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto) throws BaseException{
         try {
             Bathroom bathroom = Bathroom.builder()
                     .title(bathroomRequestDto.getTitle())
@@ -64,9 +66,14 @@ public class BathroomService {
                     .imageUrl(bathroomRequestDto.getImageUrl())
                     .build();
             bathroomRepository.save(bathroom);
+            Rating rating = Rating.builder()
+                    .score(bathroomRequestDto.getRate())
+                    .bathroom(bathroomRepository.findById(bathroom.getId()).get())
+                    .build();
+            ratingRepository.save(rating);
             return "SUCCESS";
         } catch (Exception e) {
-            return "FAIL";
+            throw new BaseException(DATABASE_ERROR);
         }
     }
 
