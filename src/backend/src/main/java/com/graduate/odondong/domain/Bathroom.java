@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Data
@@ -37,6 +38,9 @@ public class Bathroom {
 	private String operationTime;
 	private Boolean isUnisex;
 
+	@OneToMany(mappedBy = "bathroom", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+	private List<Rating> ratings;
+
 	@CreatedDate
 	@Column(updatable = false)
 	private LocalDateTime created_at;
@@ -45,7 +49,7 @@ public class Bathroom {
 
 	@Builder
 	public Bathroom(Long id, String title, Double latitude, Double longitude, String isLocked, String address,
-		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex, String operationTime) {
+		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex, Double rate, String operationTime) {
 		this.id = id;
 		this.title = title;
 		this.latitude = latitude;
