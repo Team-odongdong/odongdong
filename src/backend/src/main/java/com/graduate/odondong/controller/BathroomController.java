@@ -76,8 +76,14 @@ public class BathroomController {
 
     @ResponseBody
     @GetMapping("/api/bathroom/list")
-    public List<BathroomResponseInterface> get1kmBathroom(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
-        return bathroomService.get1kmByLongitudeLatitude(y, x);
+    public BaseResponse<List<BathroomResponseInterface>> get1kmBathroom(HttpServletRequest request, @RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
+        try {
+
+            return bathroomService.get1kmByLongitudeLatitude(y, x);
+        } catch (BaseException e) {
+            writeExceptionWithRequest(e, request);
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
 }

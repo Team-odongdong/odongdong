@@ -7,6 +7,7 @@ import com.graduate.odondong.repository.BathroomRepository;
 
 import com.graduate.odondong.repository.RatingRepository;
 import com.graduate.odondong.util.BaseException;
+import com.graduate.odondong.util.BaseResponse;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderNaver;
 import lombok.RequiredArgsConstructor;
@@ -76,12 +77,16 @@ public class BathroomService {
     }
 
 
-    public List<BathroomResponseInterface> get1kmByLongitudeLatitude(Double x, Double y) {
-        double lati_minus = x - 0.0091;
-        double lati_plus = x + 0.0091;
-        double long_minus = y - 0.0113;
-        double long_plus = y + 0.0113;
-        return bathroomRepository.findBathroomResponseDto(lati_minus, lati_plus, long_minus, long_plus);
+    public BaseResponse<List<BathroomResponseInterface>> get1kmByLongitudeLatitude(Double x, Double y) throws BaseException {
+        try {
+            double lati_minus = x - 0.0091;
+            double lati_plus = x + 0.0091;
+            double long_minus = y - 0.0113;
+            double long_plus = y + 0.0113;
+            return new BaseResponse<>(bathroomRepository.findBathroomResponseDto(lati_minus, lati_plus, long_minus, long_plus));
+        }catch (Exception e) {
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 
     public CoordinateInfoDto getAddressByCoordinate(Double x, Double y) {
