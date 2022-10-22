@@ -1,10 +1,10 @@
-# bathroom_project frontend
+# odongdong frontend
 
 ### 초기 실행
 > 최초 clone 이후, `npm i` 를 통해 npm을 설치해야 합니다.
 
 
-**src/frontend/bathroom 디렉토리로 이동해, 웹 상에서 ionic을 실행할 수 있습니다.**
+**src/frontend/odongdong 디렉토리로 이동해, 웹 상에서 실행할 수 있습니다.**
 ```
 ionic serve
 ```
@@ -21,6 +21,7 @@ ionic serve
 ```
 ionic build (capacitor)
 ionic build --prod (production version)
+ionic build --prod --release (release version)
 ```
 
 - 프로젝트 생성
@@ -47,7 +48,6 @@ ionic cap sync
 
     - android (Android Studio)
     ```
-    ionic cap copy android
     ionic cap open android
     ```
 

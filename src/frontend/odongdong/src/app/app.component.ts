@@ -21,8 +21,7 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(async () => {
       await this.setPlatform();
-      console.log('from app compo', this.userPlatform);
-      
+      console.log('setting for', this.userPlatform+'...');
     })
   }
 

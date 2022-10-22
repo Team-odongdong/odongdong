@@ -1,4 +1,4 @@
 export class Constants {
-    static APP_VERSION = "1.0.0";
+    static APP_VERSION = "1.0.1";
     
 }

@@ -8,10 +8,10 @@ import { AddBathroomComponent } from 'src/app/modals/add-bathroom/add-bathroom.c
 
 declare let kakao;
 
-const myIconUrl = '../assets//svg/map/current-location.svg';
+const myLocationIconUrl = '../assets/svg/map/current-location.svg';
 const iconUrl = '../assets/svg/map/map-marker.svg';
-const clickedIconUrl = '../assets/svg/map/marker-clicked.svg';
-const addIconUrl = '../assets/svg/map/add-new.svg'
+const clickedIconUrl = '../assets/images/map/marker-clicked.png';
+const addIconUrl = '../assets/images/map/add-new.png';
 
 @Component({
   selector: 'app-main',
@@ -28,8 +28,7 @@ export class MainPage implements OnInit {
   public initLongitude = 127.069276;
   public currentLat: number;
   public currentLng: number;
-
-  // public locationSubscription: any;
+  public locationSubscription: any;
 
   public bathroomList = [];
   public bathroomInfo: any;
@@ -37,10 +36,14 @@ export class MainPage implements OnInit {
   public defaultMarkerIcon: any;
   public clickedMarkerIcon: any;
   public addMarkerIcon: any;
+  public myLocationMarkerIcon: any;
 
   public markerClicked = false;
   public selectedMarker = null;
   public addMarker: any;
+  public myLocationMarker: any;
+
+  public mapLevel = 4;
 
   constructor(
     public bathroomService: BathroomService,
@@ -63,7 +66,7 @@ export class MainPage implements OnInit {
             this.getBathroomList();
           });
     }, 300);
-    // this.trackLocation();
+    this.trackLocation();
   }
 
   async getBathroomList() {
@@ -77,14 +80,24 @@ export class MainPage implements OnInit {
       //add markers
       this.addMarkers();  
     } else {
-      //todo: show user something
-      console.log('fail to get list');
+      await this.failToGetBathroomList();
     }
   }
 
   moveToCurrentLocation(lat: number, lng: number) {
     const currentLocation = new kakao.maps.LatLng(lat, lng);
+    this.addMyLocationMarker(currentLocation);
     this.map.panTo(currentLocation);
+  }
+
+  addMyLocationMarker(current) {
+    this.myLocationMarker = new kakao.maps.Marker({
+      map: this.map,
+      position: new kakao.maps.LatLng(current.getLat(), current.getLng()),
+      image: this.myLocationMarkerIcon,
+    });
+
+    this.myLocationMarker.setMap(this.map);
   }
 
   createMap() {
@@ -93,12 +106,12 @@ export class MainPage implements OnInit {
         //맵 생성 -> 카메라의 중앙, 확대 정도 지정
         const options = {
             center: new kakao.maps.LatLng(this.initLatitude, this.initLongitude),
-            level: 4,
+            level: this.mapLevel,
             disableDoubleClickZoom: true,
         };
 
         const mapRef = document.getElementById('map');
-        this.map = new kakao.maps.Map(mapRef, options);        
+        this.map = new kakao.maps.Map(mapRef, options);
 
         this.setMarkerImages();
 
@@ -127,25 +140,33 @@ export class MainPage implements OnInit {
       iconUrl,
       new kakao.maps.Size(25, 25),
       {
-        alt: 'marker img',
+        alt: 'marker',
       }
     );
 
     this.clickedMarkerIcon = new kakao.maps.MarkerImage(
       clickedIconUrl,
-      new kakao.maps.Size(70, 70),
+      new kakao.maps.Size(60, 70),
       {
         offset: new kakao.maps.Point(35, 52),
-        alt: 'marker img',
+        alt: 'marker',
       }
     );
 
     this.addMarkerIcon = new kakao.maps.MarkerImage(
       addIconUrl,
-      new kakao.maps.Size(60, 60),
+      new kakao.maps.Size(50, 60),
       {
-        offset: new kakao.maps.Point(29, 43),
-        alt: 'marker img',
+        offset: new kakao.maps.Point(23, 43),
+        alt: 'marker',
+      }
+    );
+
+    this.myLocationMarkerIcon = new kakao.maps.MarkerImage(
+      myLocationIconUrl,
+      new kakao.maps.Size(40, 40),
+      {
+        alt: 'my-loc',
       }
     );
   }
@@ -262,13 +283,12 @@ export class MainPage implements OnInit {
 
   async getCurrentLocation() {
     const coordinates = await Geolocation.getCurrentPosition();
-    console.log('coordinates', coordinates);    
+    // console.log('coordinates', coordinates);    
 
     if(coordinates.timestamp > 0) {
       await this.setLatLng(coordinates.coords);
     } else {
       await this.failGetLocationAlert();
-      console.log('fail to get current location'); //TODO: show something to user
     }
   }
 
@@ -277,20 +297,20 @@ export class MainPage implements OnInit {
     this.currentLng = coord.longitude;
   }
   
-  // async trackLocation() {
-  //   this.locationSubscription = await Geolocation.watchPosition(
-  //     {
-  //       enableHighAccuracy: true,
-  //       timeout: 2000,
-  //     },
-  //     (position) => {
-  //       console.log(this.locationSubscription);
+  async trackLocation() {
+    this.locationSubscription = await Geolocation.watchPosition(
+      {
+        enableHighAccuracy: true,
+        timeout: 2000,
+      },
+      (position) => {
+        // console.log(position);
         
-  //       // this.initLatitude = position.coords.latitude;
-  //       // this.initLongitude = position.coords.longitude;
-  //     }
-  //   );
-  // }
+        this.currentLat = position.coords.latitude;
+        this.currentLng = position.coords.longitude;
+      }
+    );
+  }
 
   async permissionAlert() {
     const alert = await this.alertController.create({
@@ -307,7 +327,22 @@ export class MainPage implements OnInit {
 
   async failGetLocationAlert() {
     const alert = await this.alertController.create({
-      message: '위치 정보 가져오기 실패!',
+      subHeader: '위치 정보를 가져오지 못했습니다.',
+      message: '네트워크 상태를 확인해주세요!',
+      buttons: [
+        {
+          text: '닫기',
+          handler: () => {}
+        },
+      ],
+    });
+    await alert.present();
+  }
+
+  async failToGetBathroomList() {
+    const alert = await this.alertController.create({
+      subHeader: '화장실 목록을 가져오지 못했습니다.',
+      message: '네트워크 상태를 확인해주세요!',
       buttons: [
         {
           text: '닫기',
@@ -345,9 +380,25 @@ export class MainPage implements OnInit {
       // isOpen: data.isOpen, //서버 구현중
       // operationTime: data.operationTime //서버 구현중
       address: data.address + ' ' + data.addressDetail,
+      isUnisex: data.isUnisex,
     }
     
     return info;
+  }
+
+  moveToCurrent() {
+    const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);
+    this.map.panTo(currentLocation);
+  }
+
+  zoomIn() {
+    this.mapLevel -= 1;
+    this.map.setLevel(this.mapLevel, {animate: true});
+  }
+
+  zoomOut() {
+    this.mapLevel += 1;
+    this.map.setLevel(this.mapLevel, {animate: true});
   }
 
 }

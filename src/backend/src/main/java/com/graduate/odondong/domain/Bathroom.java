@@ -34,6 +34,7 @@ public class Bathroom {
 	private String addressDetail;
 	private String imageUrl;
 	private Boolean register;
+	private String operationTime;
 	private Boolean isUnisex;
 
 	@CreatedDate
@@ -44,7 +45,7 @@ public class Bathroom {
 
 	@Builder
 	public Bathroom(Long id, String title, Double latitude, Double longitude, String isLocked, String address,
-		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex) {
+		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex, String operationTime) {
 		this.id = id;
 		this.title = title;
 		this.latitude = latitude;
@@ -52,6 +53,7 @@ public class Bathroom {
 		this.isLocked = isLocked;
 		this.address = address;
 		this.addressDetail = addressDetail;
+		this.operationTime = operationTime;
 		this.imageUrl = imageUrl;
 		this.register = register;
 		this.isUnisex = isUnisex;

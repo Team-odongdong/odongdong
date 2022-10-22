@@ -53,6 +53,16 @@
 
   <div class="empty-space__20"></div>
 
+  <div class="unisex__container">
+    <p>남녀 공용 화장실이라면 체크해주세요!</p>
+    <ion-checkbox 
+      slot="end"
+      (ionChange)="checkIsUnisex()"
+    ></ion-checkbox>
+  </div>
+
+  <div class="empty-space__20"></div>
+
   <ion-label>별점</ion-label>
   <div class="rating__container">
     <ionic-rating-component #rating

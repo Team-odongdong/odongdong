@@ -11,5 +11,5 @@ public interface BathroomRepository extends JpaRepository<Bathroom, Long> {
     List<Bathroom> findBathroomsByRegisterIsTrue();
     void deleteById(Long id);
 
-    List<Bathroom> findByLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(Double x1, Double x2, Double y1, Double y2);
+    List<Bathroom> findByRegisterIsTrueAndLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(Double x1, Double x2, Double y1, Double y2);
 }
