@@ -4,14 +4,21 @@ import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.service.BathroomService.BathroomService;
+import com.graduate.odondong.util.BaseException;
+import com.graduate.odondong.util.BaseResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static com.graduate.odondong.util.ErrorLogWriter.writeExceptionWithRequest;
+
+
 @Controller
+@RestController
 @RequiredArgsConstructor
 public class BathroomController {
 
@@ -31,8 +38,14 @@ public class BathroomController {
 
     @ResponseBody
     @PostMapping("/api/bathroom/add")
-    public String RegisterBathroomRequest (@RequestBody BathroomRequestDto bathroomRequestDto) {
-        return bathroomService.RegisterBathroomRequest(bathroomRequestDto);
+    public BaseResponse<String> RegisterBathroomRequest (HttpServletRequest request, @RequestBody BathroomRequestDto bathroomRequestDto) {
+        try {
+            return new BaseResponse<String>(bathroomService.RegisterBathroomRequest(bathroomRequestDto));
+        }
+        catch (BaseException e) {
+            writeExceptionWithRequest(e, request);
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
     @GetMapping("/admin/bathroom/not-registered")

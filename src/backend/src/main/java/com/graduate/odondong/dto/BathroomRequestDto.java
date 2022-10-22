@@ -12,5 +12,5 @@ public class BathroomRequestDto {
     private String address;
     private String addressDetail;
     private String imageUrl;
-    private Float rate;
+    private Double rate;
 }
