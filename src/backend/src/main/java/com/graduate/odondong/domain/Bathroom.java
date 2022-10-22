@@ -13,6 +13,7 @@ import javax.persistence.*;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -45,7 +46,7 @@ public class Bathroom {
 
 	@Builder
 	public Bathroom(Long id, String title, Double latitude, Double longitude, String isLocked, String address,
-		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex, String operationTime) {
+		String addressDetail, String imageUrl, Boolean register, Boolean isUnisex, Double rate, String operationTime) {
 		this.id = id;
 		this.title = title;
 		this.latitude = latitude;

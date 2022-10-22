@@ -2,6 +2,7 @@ package com.graduate.odondong.controller;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
+import com.graduate.odondong.dto.BathroomResponseInterface;
 import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.service.BathroomService.BathroomService;
 import com.graduate.odondong.util.BaseException;
@@ -26,7 +27,7 @@ public class BathroomController {
 
     @ResponseBody
     @GetMapping("/admin/bathroom/all")
-    public List<Bathroom> AllBathroomList () {
+    public List<BathroomResponseInterface> AllBathroomList () {
         return bathroomService.bathroomList();
     }
 
@@ -75,7 +76,7 @@ public class BathroomController {
 
     @ResponseBody
     @GetMapping("/api/bathroom/list")
-    public List<Bathroom> get1kmBathroom(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
+    public List<BathroomResponseInterface> get1kmBathroom(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
         return bathroomService.get1kmByLongitudeLatitude(y, x);
     }
 

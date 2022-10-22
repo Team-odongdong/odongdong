@@ -2,13 +2,11 @@ package com.graduate.odondong.service.BathroomService;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.Rating;
-import com.graduate.odondong.dto.BathroomRequestDto;
-import com.graduate.odondong.dto.RatingRequestDto;
+import com.graduate.odondong.dto.*;
 import com.graduate.odondong.repository.BathroomRepository;
 
 import com.graduate.odondong.repository.RatingRepository;
 import com.graduate.odondong.util.BaseException;
-import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderNaver;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +27,8 @@ public class BathroomService {
     private final ChangeByGeocoderNaver changeByGeocoderNaver;
     private final DeletedBathroomService deletedBathroomService;
 
-    public List<Bathroom> bathroomList() {
-        return bathroomRepository.findAll();
+    public List<BathroomResponseInterface> bathroomList() {
+        return bathroomRepository.findAllBathroomResponseDto();
     }
 
     public List<Bathroom> RegisterBathroomList() {
@@ -78,12 +76,12 @@ public class BathroomService {
     }
 
 
-    public List<Bathroom> get1kmByLongitudeLatitude(Double x, Double y) {
+    public List<BathroomResponseInterface> get1kmByLongitudeLatitude(Double x, Double y) {
         double lati_minus = x - 0.0091;
         double lati_plus = x + 0.0091;
         double long_minus = y - 0.0113;
         double long_plus = y + 0.0113;
-        return bathroomRepository.findByRegisterIsTrueAndLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(lati_minus, lati_plus, long_minus, long_plus);
+        return bathroomRepository.findBathroomResponseDto(lati_minus, lati_plus, long_minus, long_plus);
     }
 
     public CoordinateInfoDto getAddressByCoordinate(Double x, Double y) {

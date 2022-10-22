@@ -1,5 +1,6 @@
 package com.graduate.odondong.dto;
 
+import com.graduate.odondong.domain.Rating;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,5 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class RatingResponseDto {
     private Double score;
-    private Long bathroomId;
+
+    public RatingResponseDto(Rating rating){
+        this.score = rating.getScore();
+    }
 }
