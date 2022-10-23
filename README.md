@@ -1,5 +1,8 @@
 # odongdong
 
+**🚻 웹 버전이 배포되었습니다!🚻** <br/>
+바로가기 : https://odongdong.site/
+
 ### Backend
 - Spring (Java)
 
