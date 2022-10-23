@@ -66,14 +66,17 @@ export class MainPage implements OnInit {
             this.getBathroomList();
           });
     }, 300);
-    this.trackLocation();
+    // this.trackLocation();
   }
 
   async getBathroomList() {
     const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
-    if(response.status === 200) {
-      this.bathroomList = response.data;      
+    if(response.data.code === 1000) {
+      this.bathroomList = response.data.result;      
 
+      console.log('bathroom', this.bathroomList);
+      
+      
       //move camera to current location
       this.moveToCurrentLocation(this.currentLat, this.currentLng);
 
@@ -374,7 +377,7 @@ export class MainPage implements OnInit {
   genBathroomInfo(data) {
     const info = {
       title: data.title,
-      // rating: data.rating, //서버 구현중
+      rating: data.rating, //서버 구현중
       isLocked: data.isLocked,
       imageUrl: data.imageUrl,
       // isOpen: data.isOpen, //서버 구현중

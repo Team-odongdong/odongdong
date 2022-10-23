@@ -90,6 +90,7 @@ export class AddBathroomComponent implements OnInit {
       address: this.bathroomAddress,
       addressDetail: this.bathroomAddressDetail,
       rate: this.rate,
+      isUnisex: this.isUnisex,
     }
 
     return info;
@@ -110,7 +111,7 @@ export class AddBathroomComponent implements OnInit {
       info
     );
 
-    if(response.status === 200) {
+    if(response.data.code === 1000) {
       this.successAddBathroom();
     } else {
       this.failAddBathroom();
