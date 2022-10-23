@@ -38,10 +38,20 @@
             font-size: 16px;
             margin-bottom: -10px;
         }
+        .available-not {
+            color: var(--error_red);
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: -10px;
+        }
 
         .operation-time {
             font-size: 14px;
             color: var(--outline_gray);
+        }
+        .operation-time-not {
+            font-size: 14px;
+            color: var(--error_red);
         }
 
         .address {

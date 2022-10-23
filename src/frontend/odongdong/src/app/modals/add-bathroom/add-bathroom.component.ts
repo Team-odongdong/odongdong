@@ -55,7 +55,7 @@ export class AddBathroomComponent implements OnInit {
       lng,
     );
 
-    if(response.status === 200) {      
+    if(response.data.code === 1000) {      
       this.fetchBathroomAddress(response.data);
     } else {
       this.failToGetBathroomAddress();

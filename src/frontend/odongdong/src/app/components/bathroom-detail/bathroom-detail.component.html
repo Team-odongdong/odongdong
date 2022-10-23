@@ -11,6 +11,7 @@
           defaultColor = var(--middle_gray)
           readonly="true"
           fontSize = "12px"
+          rating = "{{rating}}"
           (ratingChanged)="onRatingChange($event)"
         ></ionic-rating-component>
       </div>
@@ -30,8 +31,18 @@
     ></ion-img>
   </div>
   <div class="container__body">
-    <p class="available">이용 가능 - 비밀번호 있음</p>
-    <p class="operation-time">{{operationTime}}</p>
+    <p 
+      *ngIf="isOpened==='Y'" 
+      class="available"
+    >이용 가능 <span *ngIf="isLocked==='Y'">- 비밀번호 있음</span>
+    </p>
+    <p
+      *ngIf="isOpened==='N'"
+      class="available-not"
+    >이용 불가</p>
+
+    <p *ngIf="isOpened==='Y'" class="operation-time">{{operationTime}}</p>
+    <p *ngIf="isOpened==='N'" class="operation-time-not">{{operationTime}}</p>
     <p class="address">{{address}}</p>
   </div>
   <div class="empty-space__30"></div>

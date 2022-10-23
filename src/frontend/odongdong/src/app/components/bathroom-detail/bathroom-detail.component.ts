@@ -9,11 +9,12 @@ export class BathroomDetailComponent implements OnInit {
   @Input() bathroomInfo: any;
   
   public bathroomName: string;
-  public rate;
+  public rating: any;
   public isLocked: string;
   public imageUrl: string;
   public operationTime: string;
   public address: string;
+  public isOpened: string;
 
   constructor() { }
 
@@ -23,14 +24,15 @@ export class BathroomDetailComponent implements OnInit {
   
   setBathroomDetailInfo() {
     this.bathroomName = this.bathroomInfo.title;
-    this.rate = 4; //서버 구현중
+    this.rating = this.bathroomInfo.rate;
     this.isLocked = this.bathroomInfo.isLocked;
-    this.operationTime = '07:00 ~ 22:00'; //서버 구현중
+    this.operationTime = this.bathroomInfo.operationTime;
     this.address = this.bathroomInfo.address;
-    this.imageUrl = this.bathroomInfo.imageUrl;    
+    this.imageUrl = this.bathroomInfo.imageUrl;
+    this.isOpened = 'Y'; //서버 구현중
   }
 
   onRatingChange(rating) {
-    this.rate = rating;
+    this.rating = rating;
   }  
 }

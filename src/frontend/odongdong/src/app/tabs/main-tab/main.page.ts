@@ -72,10 +72,7 @@ export class MainPage implements OnInit {
   async getBathroomList() {
     const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
     if(response.data.code === 1000) {
-      this.bathroomList = response.data.result;      
-
-      console.log('bathroom', this.bathroomList);
-      
+      this.bathroomList = response.data.result;            
       
       //move camera to current location
       this.moveToCurrentLocation(this.currentLat, this.currentLng);
@@ -285,8 +282,15 @@ export class MainPage implements OnInit {
   }
 
   async getCurrentLocation() {
-    const coordinates = await Geolocation.getCurrentPosition();
-    // console.log('coordinates', coordinates);    
+    /** todo
+     * getcurrentposition이 안됐을 경우의 alert를 구현하는 조건문을 다시 구현해야 함
+     * Uncaught (in promise): GeolocationPositionError: {}
+     */
+    const coordinates = await Geolocation.getCurrentPosition(
+      {
+        enableHighAccuracy: true
+      }
+    ); 
 
     if(coordinates.timestamp > 0) {
       await this.setLatLng(coordinates.coords);
