@@ -12,5 +12,6 @@ public class BathroomRequestDto {
     private String address;
     private String addressDetail;
     private String imageUrl;
+    private Boolean isUnisex;
     private Double rate;
 }

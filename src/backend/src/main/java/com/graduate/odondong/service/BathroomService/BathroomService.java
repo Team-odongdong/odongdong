@@ -63,6 +63,7 @@ public class BathroomService {
                     .addressDetail(bathroomRequestDto.getAddressDetail())
                     .register(false)
                     .imageUrl(bathroomRequestDto.getImageUrl())
+                    .isUnisex(bathroomRequestDto.getIsUnisex())
                     .build();
             bathroomRepository.save(bathroom);
             Rating rating = Rating.builder()
