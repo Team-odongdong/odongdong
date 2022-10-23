@@ -33,11 +33,6 @@
 
         width: 45px;
         height: 45px;
-    
-        background: var(--bg_white);
-    
-        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-        border-radius: 12px;
 
         margin-bottom: 10px;
     
@@ -53,11 +48,6 @@
     &--zoom {
         width: 45px;
         height: 90px;
-
-        background: var(--bg_white);
-
-        box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
-        border-radius: 12px;
 
         button {
             width: 45px;
@@ -84,4 +74,9 @@
         }
     }
 
+}
+
+.elevation__1 {
+    background: var(--bg_white);
+    border-radius: 12px;
 }
