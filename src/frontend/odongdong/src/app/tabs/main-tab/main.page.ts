@@ -59,15 +59,18 @@ export class MainPage implements OnInit {
     this.createMap();
   }
   
-  ionViewDidEnter() {    
+  ionViewWillEnter() {    
     setTimeout(() => {
       this.checkPermissions()
         .then(() => {
             this.getBathroomList();
-          });
-    }, 300);
-    // this.trackLocation();
+          })
+        .then(() => {
+          this.trackLocation();
+        });
+    }, 300)
   }
+
 
   async getBathroomList() {
     const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
@@ -215,6 +218,7 @@ export class MainPage implements OnInit {
     this.markerClicked = false;
     if(this.addMarker) {
       this.addMarker.setMap(null);
+      this.addMarker = null;
     }
   }
 
@@ -271,7 +275,7 @@ export class MainPage implements OnInit {
     });
   }
 
-  getCameraMovement(level) {
+  getCameraMovement(level: number) {
     const levels = [0.00035, 0.0007, 0.0013, 0.003, 0.005, 0.01];
     
     if(level > 7) {
@@ -286,11 +290,7 @@ export class MainPage implements OnInit {
      * getcurrentposition이 안됐을 경우의 alert를 구현하는 조건문을 다시 구현해야 함
      * Uncaught (in promise): GeolocationPositionError: {}
      */
-    const coordinates = await Geolocation.getCurrentPosition(
-      {
-        enableHighAccuracy: true
-      }
-    ); 
+    const coordinates = await Geolocation.getCurrentPosition(); 
 
     if(coordinates.timestamp > 0) {
       await this.setLatLng(coordinates.coords);
@@ -308,13 +308,15 @@ export class MainPage implements OnInit {
     this.locationSubscription = await Geolocation.watchPosition(
       {
         enableHighAccuracy: true,
-        timeout: 2000,
+        timeout: 3000,
       },
       (position) => {
-        // console.log(position);
+        console.log(position);
         
         this.currentLat = position.coords.latitude;
         this.currentLng = position.coords.longitude;
+
+        this.moveToCurrent();
       }
     );
   }
@@ -361,6 +363,12 @@ export class MainPage implements OnInit {
   }
 
   async showAddBathroomModal(lat: number, lng: number) {
+    console.log('modal', this.addMarker);
+    
+    if(!this.addMarker) {
+      await this.addBathroomAtCurrentAlert();
+    }
+
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
       componentProps: {
@@ -376,6 +384,20 @@ export class MainPage implements OnInit {
       backdropBreakpoint: 0.75,
     });
     await modal.present();
+  }
+
+  /** todo: 추가 마커가 선택되어 있지 않은 경우에는 alert 창 띄워주기 */
+  async addBathroomAtCurrentAlert() {
+    const alert = await this.alertController.create({
+      message: '마커를 등록하지 않으면, 현재 위치로 화장실이 등록됩니다!',
+      buttons: [
+        {
+          text: '확인했어요',
+          handler: () => {}
+        }
+      ]
+    });
+    await alert.present();
   }
 
   genBathroomInfo(data) {

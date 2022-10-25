@@ -36,7 +36,9 @@ export class AddBathroomComponent implements OnInit {
   ngOnInit() {}
 
   ionViewDidEnter() {
-    this.getCurrentLocation();
+    // this.getCurrentLocation();
+    console.log('from modal', this.lat, this.lng);
+    
   }
 
   async getCurrentLocation() {

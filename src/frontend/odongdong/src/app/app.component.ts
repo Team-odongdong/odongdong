@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { CommonService } from './services/common/common-service';
 
 @Component({
   selector: 'app-root',
@@ -14,11 +15,16 @@ export class AppComponent {
 
   constructor(
     public platform: Platform,
+    public commonService: CommonService,
   ) {
     this.initializeApp();
   }
 
   initializeApp() {
+    if(!this.commonService.checkNetworkStatus()) {
+      return;
+    }
+
     this.platform.ready().then(async () => {
       await this.setPlatform();
       console.log('setting for', this.userPlatform+'...');
