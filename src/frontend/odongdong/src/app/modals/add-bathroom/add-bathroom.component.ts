@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -31,14 +31,34 @@ export class AddBathroomComponent implements OnInit {
     public bathroomService: BathroomService,
     public toastController: ToastController,
     public modalController: ModalController,
+    public alertController: AlertController,
   ) { }
 
   ngOnInit() {}
 
   ionViewDidEnter() {
     // this.getCurrentLocation();
+    if(!this.lat) {
+      this.addBathroomAtCurrentAlert();
+    }
     console.log('from modal', this.lat, this.lng);
     
+  }
+
+  /** todo: 추가 마커가 선택되어 있지 않은 경우에는 alert 창 띄워주기 */
+  async addBathroomAtCurrentAlert() {
+    const alert = await this.alertController.create({
+      message: '마커를 등록하지 않으면, 현재 위치로 화장실이 등록됩니다!',
+      buttons: [
+        {
+          text: '확인했어요',
+          handler: () => {
+            this.getCurrentLocation();
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   async getCurrentLocation() {

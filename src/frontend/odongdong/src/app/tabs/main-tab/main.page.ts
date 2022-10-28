@@ -42,6 +42,7 @@ export class MainPage implements OnInit {
   public selectedMarker = null;
   public addMarker: any;
   public myLocationMarker: any;
+  public markerList = [];
 
   public mapLevel = 4;
 
@@ -68,7 +69,7 @@ export class MainPage implements OnInit {
         .then(() => {
           this.trackLocation();
         });
-    }, 300)
+    }, 300);    
   }
 
 
@@ -81,10 +82,28 @@ export class MainPage implements OnInit {
       this.moveToCurrentLocation(this.currentLat, this.currentLng);
 
       //add markers
-      this.addMarkers();  
+      this.addMarkers();
+
+      console.log('markers', this.markerList);
     } else {
       await this.failToGetBathroomList();
     }
+  }
+
+  async getBathroomListPlain() {
+    setTimeout(async () => {
+      const currentCenter = this.map.getCenter();
+      console.log('getbathroom', currentCenter.Ma, currentCenter.La);
+
+      const response = await this.bathroomService.get1kmBathroomList(currentCenter.Ma, currentCenter.La);
+      if(response.data.code === 1000) {
+        this.bathroomList = response.data.result;
+
+        this.addMarkers();
+      } else {
+        await this.failToGetBathroomList();
+      }
+    }, 500);
   }
 
   moveToCurrentLocation(lat: number, lng: number) {
@@ -123,6 +142,9 @@ export class MainPage implements OnInit {
 
         //맵 클릭 이벤트 리스너 (우클릭)
         this.mapRightClickListener();
+
+        //맵 이동 감지
+        this.mapMoveListener();
         
       });
     }, 300);    
@@ -213,6 +235,13 @@ export class MainPage implements OnInit {
     });
   }
 
+   mapMoveListener() {
+    kakao.maps.event.addListener(this.map, 'center_changed', async () => {
+      this.deleteMarkers();
+      this.getBathroomListPlain();
+    })
+  }
+
   resetMarkersOnMap() {
     //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
     this.markerClicked = false;
@@ -234,6 +263,7 @@ export class MainPage implements OnInit {
       //detail component를 위한 값 세팅
       marker.bathroomInfo = this.genBathroomInfo(place);
       
+      this.markerList.push(marker);
       marker.setMap(this.map);
 
       //마커 클릭 리스너
@@ -272,6 +302,12 @@ export class MainPage implements OnInit {
         this.selectedMarker = marker;
 
       });
+    });
+  }
+
+  async deleteMarkers() {
+    this.markerList.forEach((marker) => {
+      marker.setMap(null);
     });
   }
 
@@ -364,13 +400,10 @@ export class MainPage implements OnInit {
 
   async showAddBathroomModal(lat: number, lng: number) {
     console.log('modal', this.addMarker);
-    
-    if(!this.addMarker) {
-      await this.addBathroomAtCurrentAlert();
-    }
 
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
+      cssClass: 'add-bathroom-compo',
       componentProps: {
         lat: lat,
         lng: lng
@@ -384,20 +417,6 @@ export class MainPage implements OnInit {
       backdropBreakpoint: 0.75,
     });
     await modal.present();
-  }
-
-  /** todo: 추가 마커가 선택되어 있지 않은 경우에는 alert 창 띄워주기 */
-  async addBathroomAtCurrentAlert() {
-    const alert = await this.alertController.create({
-      message: '마커를 등록하지 않으면, 현재 위치로 화장실이 등록됩니다!',
-      buttons: [
-        {
-          text: '확인했어요',
-          handler: () => {}
-        }
-      ]
-    });
-    await alert.present();
   }
 
   genBathroomInfo(data) {
@@ -418,6 +437,7 @@ export class MainPage implements OnInit {
   moveToCurrent() {
     const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);
     this.map.panTo(currentLocation);
+    // this.myLocationMarker.setPosition(currentLocation);
   }
 
   zoomIn() {
