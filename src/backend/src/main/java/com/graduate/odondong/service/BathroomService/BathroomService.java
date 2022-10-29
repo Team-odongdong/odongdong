@@ -78,13 +78,33 @@ public class BathroomService {
     }
 
 
-    public BaseResponse<List<BathroomResponseInterface>> get1kmByLongitudeLatitude(Double x, Double y) throws BaseException {
+    public BaseResponse<List<BathroomResponseDto>> get1kmByLongitudeLatitude(Double x, Double y) throws BaseException {
         try {
             double lati_minus = x - 0.0091;
             double lati_plus = x + 0.0091;
             double long_minus = y - 0.0113;
             double long_plus = y + 0.0113;
-            return new BaseResponse<>(bathroomRepository.findBathroomResponseDto(lati_minus, lati_plus, long_minus, long_plus));
+            List<BathroomResponseInterface> bathroomResponseDto = bathroomRepository.findBathroomResponseDto(lati_minus,
+                lati_plus, long_minus, long_plus);
+            // bathroomResponseDto.stream().map()
+            List<BathroomResponseDto> bathroomResponseDtos = bathroomResponseDto.stream().map(
+                (data) -> BathroomResponseDto.builder()
+                    .bathroomId(data.getBathroomId())
+                    .latitude(data.getLatitude())
+                    .longitude(data.getLongitude())
+                    .operationTime(data.getOperationTime())
+                    .rate(data.getRate())
+                    .address(data.getAddress())
+                    .addressDetail(data.getAddressDetail())
+                    .title(data.getTitle())
+                    .imageUrl(data.getImageUrl())
+                    .isLocked(data.getIsLocked())
+                    .register(data.getRegister())
+                    .isUnisex(data.getIsUnisex())
+                    .isOpened("Y")
+                    .build()
+            ).toList();
+            return new BaseResponse<>(bathroomResponseDtos);
         }catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
