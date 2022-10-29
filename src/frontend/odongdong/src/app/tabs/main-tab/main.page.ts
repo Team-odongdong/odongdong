@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { AlertController, ModalController } from '@ionic/angular';
 
 import { Geolocation } from '@capacitor/geolocation';
+
 import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 import { AddBathroomComponent } from 'src/app/modals/add-bathroom/add-bathroom.component';
 
@@ -24,8 +25,10 @@ export class MainPage implements OnInit {
 
   map: any;
 
+  /** 초기 위치 : 건대입구역 */
   public initLatitude = 37.540372;
   public initLongitude = 127.069276;
+
   public currentLat: number;
   public currentLng: number;
   public locationSubscription: any;
@@ -67,9 +70,9 @@ export class MainPage implements OnInit {
             this.getBathroomList();
           })
         .then(() => {
-          this.trackLocation();
-        });
-    }, 300);    
+            this.trackLocation();
+          });
+    }, 300);
   }
 
 
@@ -83,8 +86,6 @@ export class MainPage implements OnInit {
 
       //add markers
       this.addMarkers();
-
-      console.log('markers', this.markerList);
     } else {
       await this.failToGetBathroomList();
     }
@@ -93,7 +94,6 @@ export class MainPage implements OnInit {
   async getBathroomListPlain() {
     setTimeout(async () => {
       const currentCenter = this.map.getCenter();
-      console.log('getbathroom', currentCenter.Ma, currentCenter.La);
 
       const response = await this.bathroomService.get1kmBathroomList(currentCenter.Ma, currentCenter.La);
       if(response.data.code === 1000) {
@@ -103,7 +103,7 @@ export class MainPage implements OnInit {
       } else {
         await this.failToGetBathroomList();
       }
-    }, 500);
+    }, 100);
   }
 
   moveToCurrentLocation(lat: number, lng: number) {
@@ -144,7 +144,7 @@ export class MainPage implements OnInit {
         this.mapRightClickListener();
 
         //맵 이동 감지
-        this.mapMoveListener();
+        this.mapDragEndListener();
         
       });
     }, 300);    
@@ -235,15 +235,15 @@ export class MainPage implements OnInit {
     });
   }
 
-   mapMoveListener() {
-    kakao.maps.event.addListener(this.map, 'center_changed', async () => {
+  mapDragEndListener() {
+    kakao.maps.event.addListener(this.map, 'dragend', () => {
       this.deleteMarkers();
       this.getBathroomListPlain();
-    })
+    });
   }
 
+  /** 클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다. */
   resetMarkersOnMap() {
-    //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
     this.markerClicked = false;
     if(this.addMarker) {
       this.addMarker.setMap(null);
@@ -326,7 +326,7 @@ export class MainPage implements OnInit {
      * getcurrentposition이 안됐을 경우의 alert를 구현하는 조건문을 다시 구현해야 함
      * Uncaught (in promise): GeolocationPositionError: {}
      */
-    const coordinates = await Geolocation.getCurrentPosition(); 
+    const coordinates = await Geolocation.getCurrentPosition();
 
     if(coordinates.timestamp > 0) {
       await this.setLatLng(coordinates.coords);
@@ -347,12 +347,10 @@ export class MainPage implements OnInit {
         timeout: 3000,
       },
       (position) => {
-        console.log(position);
+        // console.log(position);
         
         this.currentLat = position.coords.latitude;
         this.currentLng = position.coords.longitude;
-
-        this.moveToCurrent();
       }
     );
   }
@@ -399,8 +397,6 @@ export class MainPage implements OnInit {
   }
 
   async showAddBathroomModal(lat: number, lng: number) {
-    console.log('modal', this.addMarker);
-
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
       cssClass: 'add-bathroom-compo',
@@ -419,6 +415,10 @@ export class MainPage implements OnInit {
     await modal.present();
   }
 
+  relocateMyLocationMarker() {
+
+  }
+
   genBathroomInfo(data) {
     const info = {
       title: data.title,
@@ -432,12 +432,6 @@ export class MainPage implements OnInit {
     }
     
     return info;
-  }
-
-  moveToCurrent() {
-    const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);
-    this.map.panTo(currentLocation);
-    // this.myLocationMarker.setPosition(currentLocation);
   }
 
   zoomIn() {

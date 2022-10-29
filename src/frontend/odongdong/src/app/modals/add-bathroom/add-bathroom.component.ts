@@ -14,9 +14,8 @@ import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 export class AddBathroomComponent implements OnInit {
   @Input() lat: number;
   @Input() lng: number;
-
-  public currentLat: number;
-  public currentLng: number;
+  @Input() currentLat: number;
+  @Input() currentLng: number;
 
   public bathroomName: string;
   public bathroomAddress: string;
@@ -36,13 +35,14 @@ export class AddBathroomComponent implements OnInit {
 
   ngOnInit() {}
 
-  ionViewDidEnter() {
-    // this.getCurrentLocation();
+  async ionViewDidEnter() {
     if(!this.lat) {
-      this.addBathroomAtCurrentAlert();
+      await this.addBathroomAtCurrentAlert();
+      await this.getAddressWithLatLng(this.currentLat, this.currentLng);
+    } else {
+      await this.getAddressWithLatLng(this.lat, this.lng);
     }
-    console.log('from modal', this.lat, this.lng);
-    
+
   }
 
   /** todo: 추가 마커가 선택되어 있지 않은 경우에는 alert 창 띄워주기 */
@@ -52,32 +52,22 @@ export class AddBathroomComponent implements OnInit {
       buttons: [
         {
           text: '확인했어요',
-          handler: () => {
-            this.getCurrentLocation();
-          }
+          handler: () => {}
         }
       ]
     });
     await alert.present();
   }
-
-  async getCurrentLocation() {
-    //add bathroom with clicked marker location
-    if(this.lat) {
-      await this.getAddressWithLatLng(this.lat, this.lng);
-    } else { //add bathroom with current location
-      const currentLocation = await Geolocation.getCurrentPosition();
-      await this.getAddressWithLatLng(currentLocation.coords.latitude, currentLocation.coords.longitude);
-    }
-  }
   
   async getAddressWithLatLng(lat: number, lng: number) {
+    console.log('add compo', lat, lng);
+    
     const response = await this.bathroomService.getAddressName(
       lat,
       lng,
     );
 
-    if(response.data.code === 1000) {      
+    if(response.status === 200) {      
       this.fetchBathroomAddress(response.data);
     } else {
       this.failToGetBathroomAddress();
