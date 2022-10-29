@@ -29,7 +29,7 @@ export class BathroomDetailComponent implements OnInit {
     this.operationTime = this.bathroomInfo.operationTime;
     this.address = this.bathroomInfo.address;
     this.imageUrl = this.bathroomInfo.imageUrl;
-    this.isOpened = 'Y'; //서버 구현중
+    this.isOpened = this.bathroomInfo.isOpened; //서버 구현중
   }
 
   onRatingChange(rating) {

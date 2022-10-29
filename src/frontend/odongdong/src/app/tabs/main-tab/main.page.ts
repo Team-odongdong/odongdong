@@ -425,7 +425,7 @@ export class MainPage implements OnInit {
       rating: data.rating, //서버 구현중
       isLocked: data.isLocked,
       imageUrl: data.imageUrl,
-      // isOpen: data.isOpen, //서버 구현중
+      isOpened: data.isOpened, //서버 구현중
       operationTime: data.operationTime, //서버 구현중
       address: data.address + ' ' + data.addressDetail,
       isUnisex: data.isUnisex,
