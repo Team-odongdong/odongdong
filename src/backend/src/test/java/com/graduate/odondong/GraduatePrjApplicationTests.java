@@ -32,14 +32,14 @@ class GraduatePrjApplicationTests {
 //		return;
 //	}
 
-	@Test
-	void naver지오코딩테스트() {
-		System.out.println(LocalTime.now());
-		CoordinateInfoDto addressByCoordinate1 = changeByGeocoder.getAddressByCoordinate(126.91298945203502,37.574952579149084 );
-		System.out.println(LocalTime.now());
-		CoordinateInfoDto addressByCoordinate = changeByGeocoderNaver.getAddressByCoordinate(126.91298945203502,37.574952579149084 );
-		System.out.println(LocalTime.now());
-		return;
-	}
+// 	@Test
+// 	void naver지오코딩테스트() {
+// 		System.out.println(LocalTime.now());
+// 		CoordinateInfoDto addressByCoordinate1 = changeByGeocoder.getAddressByCoordinate(126.91298945203502,37.574952579149084 );
+// 		System.out.println(LocalTime.now());
+// 		CoordinateInfoDto addressByCoordinate = changeByGeocoderNaver.getAddressByCoordinate(126.91298945203502,37.574952579149084 );
+// 		System.out.println(LocalTime.now());
+// 		return;
+// 	}
 	
 }
