@@ -111,11 +111,16 @@ public class BathroomService {
         }
     }
 
-    public CoordinateInfoDto getAddressByCoordinate(Double x, Double y) {
-        CoordinateInfoDto address = changeByGeocoderKakao.getAddressByCoordinate(x, y);
-        if(address.getAddress_name() == null) {
-            address = changeByGeocoderNaver.getAddressByCoordinate(x, y);
+    public BaseResponse<CoordinateInfoDto> getAddressByCoordinate(Double x, Double y) throws BaseException{
+        try {
+            CoordinateInfoDto address = changeByGeocoderKakao.getAddressByCoordinate(x, y);
+            if(address.getAddress_name() == null) {
+                address = changeByGeocoderNaver.getAddressByCoordinate(x, y);
+            }
+            return new BaseResponse<>(address);
+        }catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
         }
-        return address;
+
     }
 }

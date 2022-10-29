@@ -71,8 +71,13 @@ public class BathroomController {
     }
     @ResponseBody
     @GetMapping("/api/bathroom/address")
-    public CoordinateInfoDto AllAddressInfo(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y){
-        return bathroomService.getAddressByCoordinate(x, y);
+    public BaseResponse<CoordinateInfoDto> AllAddressInfo(HttpServletRequest request, @RequestParam("longitude") Double x, @RequestParam("latitude") Double y){
+        try {
+            return bathroomService.getAddressByCoordinate(x, y);
+        } catch (BaseException e) {
+            writeExceptionWithRequest(e, request);
+            return new BaseResponse<>(e.getStatus());
+        }
     }
 
     @ResponseBody
