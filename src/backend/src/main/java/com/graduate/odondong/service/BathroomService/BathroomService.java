@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
 
@@ -103,7 +104,7 @@ public class BathroomService {
                     .isUnisex(data.getIsUnisex())
                     .isOpened("Y")
                     .build()
-            ).toList();
+            ).collect(Collectors.toList());
             return new BaseResponse<>(bathroomResponseDtos);
         }catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
