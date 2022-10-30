@@ -397,6 +397,10 @@ export class MainPage implements OnInit {
   }
 
   async showAddBathroomModal(lat: number, lng: number) {
+    const cameraMov = this.getCameraMovement(this.map.getLevel());
+    const movedLocation = new kakao.maps.LatLng(lat-cameraMov-0.001, lng);
+    this.map.panTo(movedLocation);
+
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
       cssClass: 'add-bathroom-compo',
@@ -436,11 +440,13 @@ export class MainPage implements OnInit {
   }
 
   zoomIn() {
+    this.mapLevel = this.map.getLevel();
     this.mapLevel -= 1;
     this.map.setLevel(this.mapLevel, {animate: true});
   }
 
   zoomOut() {
+    this.mapLevel = this.map.getLevel();
     this.mapLevel += 1;
     this.map.setLevel(this.mapLevel, {animate: true});
   }
