@@ -415,10 +415,6 @@ export class MainPage implements OnInit {
     await modal.present();
   }
 
-  relocateMyLocationMarker() {
-
-  }
-
   genBathroomInfo(data) {
     const info = {
       title: data.title,
@@ -432,6 +428,11 @@ export class MainPage implements OnInit {
     }
     
     return info;
+  }
+
+  moveToCurrentButton() {
+    const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);    
+    this.map.panTo(currentLocation);
   }
 
   zoomIn() {
