@@ -59,15 +59,13 @@ export class AddBathroomComponent implements OnInit {
     await alert.present();
   }
   
-  async getAddressWithLatLng(lat: number, lng: number) {
-    console.log('add compo', lat, lng);
-    
+  async getAddressWithLatLng(lat: number, lng: number) {    
     const response = await this.bathroomService.getAddressName(
       lat,
       lng,
     );
 
-    if(response.data.code === 1000) {
+    if(response.status === 200) {
       this.fetchBathroomAddress(response.data);
     } else {
       this.failToGetBathroomAddress();

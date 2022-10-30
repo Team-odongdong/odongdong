@@ -422,11 +422,11 @@ export class MainPage implements OnInit {
   genBathroomInfo(data) {
     const info = {
       title: data.title,
-      rating: data.rating, //서버 구현중
+      rating: data.rating,
       isLocked: data.isLocked,
       imageUrl: data.imageUrl,
-      isOpened: data.isOpened, //서버 구현중
-      operationTime: data.operationTime, //서버 구현중
+      isOpened: data.isOpened,
+      operationTime: data.operationTime,
       address: data.address + ' ' + data.addressDetail,
       isUnisex: data.isUnisex,
     }
