@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+
 import { Platform } from '@ionic/angular';
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+
 import { CommonService } from './services/common/common-service';
 
 @Component({
@@ -18,6 +21,8 @@ export class AppComponent {
     public commonService: CommonService,
   ) {
     this.initializeApp();
+
+    defineCustomElements(window);
   }
 
   initializeApp() {

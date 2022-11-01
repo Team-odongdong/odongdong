@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { Device } from '@capacitor/device';
 
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
-
-import { Geolocation } from '@capacitor/geolocation';
 
 import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 
@@ -12,6 +12,8 @@ import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
   styleUrls: ['./add-bathroom.component.scss'],
 })
 export class AddBathroomComponent implements OnInit {
+  @ViewChild('imageInput') imageInput: any;
+
   @Input() lat: number;
   @Input() lng: number;
   @Input() currentLat: number;
@@ -26,6 +28,10 @@ export class AddBathroomComponent implements OnInit {
 
   public isValid = true;
 
+  public imageList = [];
+
+  public userPlatform;
+
   constructor(
     public bathroomService: BathroomService,
     public toastController: ToastController,
@@ -36,6 +42,8 @@ export class AddBathroomComponent implements OnInit {
   ngOnInit() {}
 
   async ionViewDidEnter() {
+    await this.setPlatForm();
+    
     if(!this.lat) {
       await this.addBathroomAtCurrentAlert();
       await this.getAddressWithLatLng(this.currentLat, this.currentLng);
@@ -45,7 +53,13 @@ export class AddBathroomComponent implements OnInit {
 
   }
 
-  /** todo: 추가 마커가 선택되어 있지 않은 경우에는 alert 창 띄워주기 */
+  async setPlatForm() {
+    const info = await Device.getInfo();
+    this.userPlatform = info.platform;
+    console.log('user', this.userPlatform);
+  }
+
+  /** 추가 마커가 선택되어 있지 않은 경우에는 alert 창 띄워주기 */
   async addBathroomAtCurrentAlert() {
     const alert = await this.alertController.create({
       message: '마커를 등록하지 않으면, 현재 위치로 화장실이 등록됩니다!',
@@ -165,5 +179,31 @@ export class AddBathroomComponent implements OnInit {
 
   checkIsUnisex() {
     this.isUnisex = this.isUnisex? false: true;    
+  }
+
+  async takePictureOrOpenLibrary() {
+    if(this.userPlatform === 'web') {
+      this.imageInput.nativeElement.click();
+      const fileList = this.imageInput.nativeElement.files;
+      
+    }
+
+
+
+    const image = await Camera.getPhoto({
+      quality: 70,
+      allowEditing: true,
+      resultType: CameraResultType.Uri,
+      promptLabelPhoto: '앨범에서 선택',
+      promptLabelPicture: '사진 찍기',
+      promptLabelCancel: '취소'
+    });
+
+    // const imageUrl = image.webPath;
+
+    this.imageList.push(image.webPath);
+
+    console.log('imageList', this.imageList);
+    
   }
 }
