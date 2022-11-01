@@ -411,7 +411,7 @@ export class MainPage implements OnInit {
       showBackdrop: false,
       canDismiss: true,
 
-      breakpoints: [0, 0.5, 0.75],
+      breakpoints: [0, 0.5, 0.75, 1],
       initialBreakpoint: 0.75,
       backdropDismiss: false,
       backdropBreakpoint: 0.75,

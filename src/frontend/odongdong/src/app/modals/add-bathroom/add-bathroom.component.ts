@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { Device } from '@capacitor/device';
 
@@ -29,6 +29,7 @@ export class AddBathroomComponent implements OnInit {
   public isValid = true;
 
   public imageList = [];
+  public imageListForDisplay = [];
 
   public userPlatform;
 
@@ -37,6 +38,7 @@ export class AddBathroomComponent implements OnInit {
     public toastController: ToastController,
     public modalController: ModalController,
     public alertController: AlertController,
+    public changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {}
@@ -132,7 +134,8 @@ export class AddBathroomComponent implements OnInit {
 
     const info = this.bathroomInformation();
     const response = await this.bathroomService.addBathroom(
-      info
+      info,
+      this.imageList
     );
 
     if(response.data.code === 1000) {
@@ -184,26 +187,100 @@ export class AddBathroomComponent implements OnInit {
   async takePictureOrOpenLibrary() {
     if(this.userPlatform === 'web') {
       this.imageInput.nativeElement.click();
-      const fileList = this.imageInput.nativeElement.files;
-      
+      const imageList = this.imageInput.nativeElement.files;
+      await this.getImage(imageList);
     }
 
+    // const image = await Camera.getPhoto({
+    //   quality: 70,
+    //   allowEditing: true,
+    //   resultType: CameraResultType.Uri,
+    //   promptLabelPhoto: '앨범에서 선택',
+    //   promptLabelPicture: '사진 찍기',
+    //   promptLabelCancel: '취소'
+    // });
 
+    this.changeDetectorRef.detectChanges();
+  }
 
-    const image = await Camera.getPhoto({
-      quality: 70,
-      allowEditing: true,
-      resultType: CameraResultType.Uri,
-      promptLabelPhoto: '앨범에서 선택',
-      promptLabelPicture: '사진 찍기',
-      promptLabelCancel: '취소'
+  async getImage(files) {
+    const imageData = {
+      fileName: undefined,
+      fileFormat: undefined,
+      fileBlob: undefined,
+    };
+    const displayImageData = {
+      imageName: undefined,
+      image: undefined,
+    };
+    const fileExtension = /(.*?)\.(webp)$/;
+
+    for (let i = 0; i < files.length; i++) {
+      const fileInfo = files.item(i);
+      const imageName = fileInfo.name;
+      const imageType = fileInfo.type;
+      const extension = imageType.split('/')[1];
+      if (files.item(i).name.match(fileExtension)) {
+        const alert = await this.alertController.create({
+          message: '.webp 형식의 이미지 파일은 업로드 할 수 없습니다.',
+          buttons: [
+            {
+              text: '확인',
+              handler: () => {}
+            }
+          ],
+        });
+        await alert.present();
+
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.readAsDataURL(files.item(i));
+
+      reader.onload = () => {
+        displayImageData.imageName = imageName;
+        displayImageData.image = reader.result;
+        imageData.fileBlob = fileInfo;
+        imageData.fileFormat = extension;
+        imageData.fileName = imageName;
+        this.imageListForDisplay.push(displayImageData);
+        this.imageList.push(imageData);
+        this.changeDetectorRef.detectChanges();
+      };
+    }
+
+    this.imageInput.nativeElement.value = '';
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  async deleteImage(imageIndex) {
+    const alert = await this.alertController.create({
+      subHeader: '삭제하시겠습니까?',
+      buttons: [
+        {
+          text: '취소',
+          handler: () => {}
+        },
+        {
+          text: '확인',
+          handler: () => {
+            const updateImageList = [...this.imageList];
+            const updateImageListForDisplay = [...this.imageListForDisplay];
+
+            updateImageList.splice(imageIndex, 1);
+            updateImageListForDisplay.splice(imageIndex, 1);
+
+            this.imageList = updateImageList;
+            this.imageListForDisplay = updateImageListForDisplay;
+
+            this.changeDetectorRef.detectChanges();
+          },
+        },
+      ],
     });
-
-    // const imageUrl = image.webPath;
-
-    this.imageList.push(image.webPath);
-
-    console.log('imageList', this.imageList);
-    
+    await alert.present();
   }
 }
