@@ -21,10 +21,17 @@
 
 .handler__container {
     position: absolute;
-    right: 5%;
     bottom: 17%;
+
+    padding: 0 15px;
     
     z-index: 5;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     
     &--current {
         display: flex;
@@ -72,6 +79,23 @@
 
             border-radius: 0 0 12px 12px;
         }
+    }
+
+    &--refresh {
+        width: 45px;
+        height: 45px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+    &--refresh:active {
+        background: var(--primary_container_blue);
     }
 
 }

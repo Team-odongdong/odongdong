@@ -13,19 +13,26 @@
         class="handler__container"
     >
         <button
-            class="handler__container--current elevation__1"       
-            (click)="moveToCurrentButton()"
+            class="handler__container--refresh elevation__1"
+            (click)="refresh()"
         >
-            <img src="../../../assets/svg/map/move-current.svg" alt="move"/>
+            <img src="../../../assets/svg/map/refresh.svg" alt="refresh"/>
         </button>
-        <div class="handler__container--zoom elevation__1">
-            <button (click)="zoomIn()">
-                <img src="../../../assets/svg/map/plus.svg" alt="plus"/>
+        <div>
+            <button
+                class="handler__container--current elevation__1"       
+                (click)="moveToCurrentButton()"
+            >
+                <img src="../../../assets/svg/map/move-current.svg" alt="move"/>
             </button>
-            <button (click)="zoomOut()">
-                <img src="../../../assets/svg/map/minus.svg" alt="minus"/>
-            </button>
-
+            <div class="handler__container--zoom elevation__1">
+                <button (click)="zoomIn()">
+                    <img src="../../../assets/svg/map/plus.svg" alt="plus"/>
+                </button>
+                <button (click)="zoomOut()">
+                    <img src="../../../assets/svg/map/minus.svg" alt="minus"/>
+                </button>
+            </div>
         </div>
     </div>
 </div>

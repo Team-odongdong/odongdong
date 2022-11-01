@@ -451,4 +451,8 @@ export class MainPage implements OnInit {
     this.map.setLevel(this.mapLevel, {animate: true});
   }
 
+  refresh() {
+    location.reload();
+  }
+
 }
