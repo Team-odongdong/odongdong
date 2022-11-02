@@ -53,7 +53,7 @@ public class BathroomService {
         bathroomRepository.deleteById(id);
     }
 
-    public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto) throws BaseException{
+    public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
         try {
             Bathroom bathroom = Bathroom.builder()
                     .title(bathroomRequestDto.getTitle())
@@ -63,7 +63,7 @@ public class BathroomService {
                     .address(bathroomRequestDto.getAddress())
                     .addressDetail(bathroomRequestDto.getAddressDetail())
                     .register(false)
-                    .imageUrl(bathroomRequestDto.getImageUrl())
+                    .imageUrl(bathroomImgUrl)
                     .isUnisex(bathroomRequestDto.getIsUnisex())
                     .build();
             bathroomRepository.save(bathroom);

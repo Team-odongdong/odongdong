@@ -15,3 +15,16 @@ logging:
   slack:
     webhook-uri:
   config:
+
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    # AWS S3 bucket Info
+    s3:
+      bucket:
+    region:
+      static:
+    stack:
+      auto:
