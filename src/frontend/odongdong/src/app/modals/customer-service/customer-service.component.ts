@@ -28,7 +28,7 @@ export class CustomerServiceComponent implements OnInit {
       this.customerServiceContent
     );
 
-    if(response.data.code === 1000) {
+    if(response.status === 200) {
       this.successSendMail();
       this.modalController.dismiss();
     } else {

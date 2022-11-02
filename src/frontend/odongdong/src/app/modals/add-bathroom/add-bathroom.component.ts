@@ -58,7 +58,6 @@ export class AddBathroomComponent implements OnInit {
   async setPlatForm() {
     const info = await Device.getInfo();
     this.userPlatform = info.platform;
-    console.log('user', this.userPlatform);
   }
 
   /** 추가 마커가 선택되어 있지 않은 경우에는 alert 창 띄워주기 */
