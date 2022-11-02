@@ -29,8 +29,8 @@ public class BathroomController {
     @ResponseBody
     @GetMapping("/admin/bathroom/all")
     public List<BathroomResponseInterface> AllBathroomList () {
-
         return bathroomService.bathroomList();
+
     }
 
     @ResponseBody
