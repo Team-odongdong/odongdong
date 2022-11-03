@@ -24,13 +24,29 @@ export class BathroomService {
         }
     }
 
-    async addBathroom(data) {
+    async addBathroom(data, images?) {
         if(!(await this.commonService.checkNetworkStatus())) return;
+
         try {
+            const formData = new FormData();
+            formData.append('latitude', data.latitude);
+            formData.append('longitude', data.longitude);
+            formData.append('title', data.title);
+            formData.append('isLocked', data.isLocked);
+            formData.append('address', data.address);
+            formData.append('addressDetail', data.addressDetail);
+            formData.append('rate', data.rate);
+            formData.append('isUnisex', data.isUnisex);
+            if(images) {
+                images.forEach((image) => {
+                    formData.append('images', image.fileBlob, image.fileName);
+                });
+            }
+
             const response = await axios({
                 method: 'post',
                 url: `${environment.apiUrl}/api/bathroom/add`,
-                data,
+                data: formData,
                 responseType: 'json',
             });
             return response;

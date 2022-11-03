@@ -9,7 +9,7 @@ export class BathroomDetailComponent implements OnInit {
   @Input() bathroomInfo: any;
   
   public bathroomName: string;
-  public rating: any;
+  public rate: number;
   public isLocked: string;
   public imageUrl: string;
   public operationTime: string;
@@ -24,15 +24,15 @@ export class BathroomDetailComponent implements OnInit {
   
   setBathroomDetailInfo() {
     this.bathroomName = this.bathroomInfo.title;
-    this.rating = this.bathroomInfo.rate;
+    this.rate = this.bathroomInfo.rate;
     this.isLocked = this.bathroomInfo.isLocked;
     this.operationTime = this.bathroomInfo.operationTime;
     this.address = this.bathroomInfo.address;
     this.imageUrl = this.bathroomInfo.imageUrl;
-    this.isOpened = 'Y'; //서버 구현중
+    this.isOpened = this.bathroomInfo.isOpened;
   }
 
-  onRatingChange(rating) {
-    this.rating = rating;
+  onRatingChange(inputRate: number) {
+    this.rate = inputRate;
   }  
 }

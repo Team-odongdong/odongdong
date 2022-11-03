@@ -21,10 +21,17 @@
 
 .handler__container {
     position: absolute;
-    right: 5%;
     bottom: 17%;
+
+    padding: 0 15px;
     
     z-index: 5;
+
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
     
     &--current {
         display: flex;
@@ -74,9 +81,30 @@
         }
     }
 
+    &--refresh {
+        width: 45px;
+        height: 45px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+    &--refresh:active {
+        background: var(--primary_container_blue);
+    }
+
 }
 
 .elevation__1 {
     background: var(--bg_white);
     border-radius: 12px;
+}
+
+.add-bathroom-compo {
+    width: 100%;
 }

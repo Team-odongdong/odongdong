@@ -18,25 +18,33 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.dto.BathroomRequestDto;
+import com.graduate.odondong.dto.BathroomResponseDto;
 import com.graduate.odondong.dto.BathroomResponseInterface;
 import com.graduate.odondong.dto.CoordinateInfoDto;
+import com.graduate.odondong.service.AwsS3Service;
 import com.graduate.odondong.service.BathroomService.BathroomService;
 import com.graduate.odondong.util.BaseException;
 import com.graduate.odondong.util.BaseResponse;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import static com.graduate.odondong.util.ErrorLogWriter.writeExceptionWithRequest;
+
 @Controller
 @RestController
 @RequiredArgsConstructor
 public class BathroomController {
-
 	private final BathroomService bathroomService;
+	private final AwsS3Service awsS3Service;
 
 	@ResponseBody
 	@GetMapping("/admin/bathroom/all")
 	public List<BathroomResponseInterface> AllBathroomList() {
 		return bathroomService.bathroomList();
+
 	}
 
 	@ResponseBody
@@ -48,10 +56,19 @@ public class BathroomController {
 	@ResponseBody
 	@PostMapping("/api/bathroom/add")
 	public BaseResponse<String> RegisterBathroomRequest(HttpServletRequest request,
-		@RequestBody BathroomRequestDto bathroomRequestDto) {
+		@RequestPart BathroomRequestDto bathroomRequestDto,
+		@RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile) {
 		try {
-			return new BaseResponse<String>(bathroomService.RegisterBathroomRequest(bathroomRequestDto));
+			String bathroomImgUrl = bathroomRequestDto.getImageUrl();
+
+			if (multipartFile != null) {
+				String dirName = "info/";
+				bathroomImgUrl = awsS3Service.upload(multipartFile, dirName);
+			}
+			return new BaseResponse<String>(
+				bathroomService.RegisterBathroomRequest(bathroomRequestDto, bathroomImgUrl));
 		} catch (BaseException e) {
+			e.printStackTrace();
 			writeExceptionWithRequest(e, request);
 			return new BaseResponse<>(e.getStatus());
 		}
@@ -79,13 +96,19 @@ public class BathroomController {
 
 	@ResponseBody
 	@GetMapping("/api/bathroom/address")
-	public CoordinateInfoDto AllAddressInfo(@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
-		return bathroomService.getAddressByCoordinate(x, y);
+	public BaseResponse<CoordinateInfoDto> AllAddressInfo(HttpServletRequest request,
+		@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
+		try {
+			return bathroomService.getAddressByCoordinate(x, y);
+		} catch (BaseException e) {
+			writeExceptionWithRequest(e, request);
+			return new BaseResponse<>(e.getStatus());
+		}
 	}
 
 	@ResponseBody
 	@GetMapping("/api/bathroom/list")
-	public BaseResponse<List<BathroomResponseInterface>> get1kmBathroom(HttpServletRequest request,
+	public BaseResponse<List<BathroomResponseDto>> get1kmBathroom(HttpServletRequest request,
 		@RequestParam("longitude") Double x, @RequestParam("latitude") Double y,
 		@RequestParam("distance") Double distance) {
 		try {

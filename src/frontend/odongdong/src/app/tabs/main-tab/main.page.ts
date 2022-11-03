@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { AlertController, ModalController } from '@ionic/angular';
 
 import { Geolocation } from '@capacitor/geolocation';
+
 import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 import { AddBathroomComponent } from 'src/app/modals/add-bathroom/add-bathroom.component';
 
@@ -24,8 +25,10 @@ export class MainPage implements OnInit {
 
   map: any;
 
+  /** 초기 위치 : 건대입구역 */
   public initLatitude = 37.540372;
   public initLongitude = 127.069276;
+
   public currentLat: number;
   public currentLng: number;
   public locationSubscription: any;
@@ -42,6 +45,7 @@ export class MainPage implements OnInit {
   public selectedMarker = null;
   public addMarker: any;
   public myLocationMarker: any;
+  public markerList = [];
 
   public mapLevel = 4;
 
@@ -59,15 +63,18 @@ export class MainPage implements OnInit {
     this.createMap();
   }
   
-  ionViewDidEnter() {    
+  ionViewWillEnter() {    
     setTimeout(() => {
       this.checkPermissions()
         .then(() => {
             this.getBathroomList();
+          })
+        .then(() => {
+            this.trackLocation();
           });
     }, 300);
-    // this.trackLocation();
   }
+
 
   async getBathroomList() {
     const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
@@ -78,10 +85,25 @@ export class MainPage implements OnInit {
       this.moveToCurrentLocation(this.currentLat, this.currentLng);
 
       //add markers
-      this.addMarkers();  
+      this.addMarkers();
     } else {
       await this.failToGetBathroomList();
     }
+  }
+
+  async getBathroomListPlain() {
+    setTimeout(async () => {
+      const currentCenter = this.map.getCenter();
+
+      const response = await this.bathroomService.get1kmBathroomList(currentCenter.Ma, currentCenter.La);
+      if(response.data.code === 1000) {
+        this.bathroomList = response.data.result;
+
+        this.addMarkers();
+      } else {
+        await this.failToGetBathroomList();
+      }
+    }, 100);
   }
 
   moveToCurrentLocation(lat: number, lng: number) {
@@ -120,6 +142,9 @@ export class MainPage implements OnInit {
 
         //맵 클릭 이벤트 리스너 (우클릭)
         this.mapRightClickListener();
+
+        //맵 이동 감지
+        this.mapDragEndListener();
         
       });
     }, 300);    
@@ -210,11 +235,19 @@ export class MainPage implements OnInit {
     });
   }
 
+  mapDragEndListener() {
+    kakao.maps.event.addListener(this.map, 'dragend', () => {
+      this.deleteMarkers();
+      this.getBathroomListPlain();
+    });
+  }
+
+  /** 클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다. */
   resetMarkersOnMap() {
-    //클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다.
     this.markerClicked = false;
     if(this.addMarker) {
       this.addMarker.setMap(null);
+      this.addMarker = null;
     }
   }
 
@@ -230,6 +263,7 @@ export class MainPage implements OnInit {
       //detail component를 위한 값 세팅
       marker.bathroomInfo = this.genBathroomInfo(place);
       
+      this.markerList.push(marker);
       marker.setMap(this.map);
 
       //마커 클릭 리스너
@@ -271,7 +305,13 @@ export class MainPage implements OnInit {
     });
   }
 
-  getCameraMovement(level) {
+  async deleteMarkers() {
+    this.markerList.forEach((marker) => {
+      marker.setMap(null);
+    });
+  }
+
+  getCameraMovement(level: number) {
     const levels = [0.00035, 0.0007, 0.0013, 0.003, 0.005, 0.01];
     
     if(level > 7) {
@@ -286,11 +326,7 @@ export class MainPage implements OnInit {
      * getcurrentposition이 안됐을 경우의 alert를 구현하는 조건문을 다시 구현해야 함
      * Uncaught (in promise): GeolocationPositionError: {}
      */
-    const coordinates = await Geolocation.getCurrentPosition(
-      {
-        enableHighAccuracy: true
-      }
-    ); 
+    const coordinates = await Geolocation.getCurrentPosition();
 
     if(coordinates.timestamp > 0) {
       await this.setLatLng(coordinates.coords);
@@ -308,7 +344,7 @@ export class MainPage implements OnInit {
     this.locationSubscription = await Geolocation.watchPosition(
       {
         enableHighAccuracy: true,
-        timeout: 2000,
+        timeout: 3000,
       },
       (position) => {
         // console.log(position);
@@ -361,8 +397,13 @@ export class MainPage implements OnInit {
   }
 
   async showAddBathroomModal(lat: number, lng: number) {
+    const cameraMov = this.getCameraMovement(this.map.getLevel());
+    const movedLocation = new kakao.maps.LatLng(lat-cameraMov-0.001, lng);
+    this.map.panTo(movedLocation);
+
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
+      cssClass: 'add-bathroom-compo',
       componentProps: {
         lat: lat,
         lng: lng
@@ -370,7 +411,7 @@ export class MainPage implements OnInit {
       showBackdrop: false,
       canDismiss: true,
 
-      breakpoints: [0, 0.5, 0.75],
+      breakpoints: [0, 0.5, 0.75, 1],
       initialBreakpoint: 0.75,
       backdropDismiss: false,
       backdropBreakpoint: 0.75,
@@ -381,11 +422,11 @@ export class MainPage implements OnInit {
   genBathroomInfo(data) {
     const info = {
       title: data.title,
-      rating: data.rating, //서버 구현중
+      rating: data.rating,
       isLocked: data.isLocked,
       imageUrl: data.imageUrl,
-      // isOpen: data.isOpen, //서버 구현중
-      operationTime: data.operationTime, //서버 구현중
+      isOpened: data.isOpened,
+      operationTime: data.operationTime,
       address: data.address + ' ' + data.addressDetail,
       isUnisex: data.isUnisex,
     }
@@ -393,19 +434,25 @@ export class MainPage implements OnInit {
     return info;
   }
 
-  moveToCurrent() {
-    const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);
+  moveToCurrentButton() {
+    const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);    
     this.map.panTo(currentLocation);
   }
 
   zoomIn() {
+    this.mapLevel = this.map.getLevel();
     this.mapLevel -= 1;
     this.map.setLevel(this.mapLevel, {animate: true});
   }
 
   zoomOut() {
+    this.mapLevel = this.map.getLevel();
     this.mapLevel += 1;
     this.map.setLevel(this.mapLevel, {animate: true});
+  }
+
+  refresh() {
+    location.reload();
   }
 
 }

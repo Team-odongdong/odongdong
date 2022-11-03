@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Camera, CameraResultType } from '@capacitor/camera';
+import { Device } from '@capacitor/device';
 
-import { ModalController, ToastController } from '@ionic/angular';
-
-import { Geolocation } from '@capacitor/geolocation';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 
 import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 
@@ -12,11 +12,12 @@ import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
   styleUrls: ['./add-bathroom.component.scss'],
 })
 export class AddBathroomComponent implements OnInit {
+  @ViewChild('imageInput') imageInput: any;
+
   @Input() lat: number;
   @Input() lng: number;
-
-  public currentLat: number;
-  public currentLng: number;
+  @Input() currentLat: number;
+  @Input() currentLng: number;
 
   public bathroomName: string;
   public bathroomAddress: string;
@@ -27,26 +28,51 @@ export class AddBathroomComponent implements OnInit {
 
   public isValid = true;
 
+  public imageList = [];
+  public imageListForDisplay = [];
+
+  public userPlatform;
+
   constructor(
     public bathroomService: BathroomService,
     public toastController: ToastController,
     public modalController: ModalController,
+    public alertController: AlertController,
+    public changeDetectorRef: ChangeDetectorRef,
   ) { }
 
   ngOnInit() {}
 
-  ionViewDidEnter() {
-    this.getCurrentLocation();
+  async ionViewDidEnter() {
+    await this.setPlatForm();
+    
+    if(!this.lat) {
+      await this.addBathroomAtCurrentAlert();
+      await this.getAddressWithLatLng(this.currentLat, this.currentLng);
+    } else {
+      await this.getAddressWithLatLng(this.lat, this.lng);
+    }
+
   }
 
-  async getCurrentLocation() {
-    //add bathroom with clicked marker location
-    if(this.lat) {
-      await this.getAddressWithLatLng(this.lat, this.lng);
-    } else { //add bathroom with current location
-      const currentLocation = await Geolocation.getCurrentPosition();
-      await this.getAddressWithLatLng(currentLocation.coords.latitude, currentLocation.coords.longitude);
-    }
+  async setPlatForm() {
+    const info = await Device.getInfo();
+    this.userPlatform = info.platform;
+    console.log('user', this.userPlatform);
+  }
+
+  /** 추가 마커가 선택되어 있지 않은 경우에는 alert 창 띄워주기 */
+  async addBathroomAtCurrentAlert() {
+    const alert = await this.alertController.create({
+      message: '마커를 등록하지 않으면, 현재 위치로 화장실이 등록됩니다!',
+      buttons: [
+        {
+          text: '확인했어요',
+          handler: () => {}
+        }
+      ]
+    });
+    await alert.present();
   }
   
   async getAddressWithLatLng(lat: number, lng: number) {
@@ -55,8 +81,8 @@ export class AddBathroomComponent implements OnInit {
       lng,
     );
 
-    if(response.data.code === 1000) {      
-      this.fetchBathroomAddress(response.data);
+    if(response.data.code === 1000) {
+      this.fetchBathroomAddress(response.data.result);
     } else {
       this.failToGetBathroomAddress();
     }
@@ -108,7 +134,8 @@ export class AddBathroomComponent implements OnInit {
 
     const info = this.bathroomInformation();
     const response = await this.bathroomService.addBathroom(
-      info
+      info,
+      this.imageList
     );
 
     if(response.data.code === 1000) {
@@ -155,5 +182,105 @@ export class AddBathroomComponent implements OnInit {
 
   checkIsUnisex() {
     this.isUnisex = this.isUnisex? false: true;    
+  }
+
+  async takePictureOrOpenLibrary() {
+    if(this.userPlatform === 'web') {
+      this.imageInput.nativeElement.click();
+      const imageList = this.imageInput.nativeElement.files;
+      await this.getImage(imageList);
+    }
+
+    // const image = await Camera.getPhoto({
+    //   quality: 70,
+    //   allowEditing: true,
+    //   resultType: CameraResultType.Uri,
+    //   promptLabelPhoto: '앨범에서 선택',
+    //   promptLabelPicture: '사진 찍기',
+    //   promptLabelCancel: '취소'
+    // });
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  async getImage(files) {
+    const imageData = {
+      fileName: undefined,
+      fileFormat: undefined,
+      fileBlob: undefined,
+    };
+    const displayImageData = {
+      imageName: undefined,
+      image: undefined,
+    };
+    const fileExtension = /(.*?)\.(webp)$/;
+
+    for (let i = 0; i < files.length; i++) {
+      const fileInfo = files.item(i);
+      const imageName = fileInfo.name;
+      const imageType = fileInfo.type;
+      const extension = imageType.split('/')[1];
+      if (files.item(i).name.match(fileExtension)) {
+        const alert = await this.alertController.create({
+          message: '.webp 형식의 이미지 파일은 업로드 할 수 없습니다.',
+          buttons: [
+            {
+              text: '확인',
+              handler: () => {}
+            }
+          ],
+        });
+        await alert.present();
+
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.readAsDataURL(files.item(i));
+
+      reader.onload = () => {
+        displayImageData.imageName = imageName;
+        displayImageData.image = reader.result;
+        imageData.fileBlob = fileInfo;
+        imageData.fileFormat = extension;
+        imageData.fileName = imageName;
+        this.imageListForDisplay.push(displayImageData);
+        this.imageList.push(imageData);
+        this.changeDetectorRef.detectChanges();
+      };
+    }
+
+    this.imageInput.nativeElement.value = '';
+
+    this.changeDetectorRef.detectChanges();
+  }
+
+  async deleteImage(imageIndex) {
+    const alert = await this.alertController.create({
+      subHeader: '삭제하시겠습니까?',
+      buttons: [
+        {
+          text: '취소',
+          handler: () => {}
+        },
+        {
+          text: '확인',
+          handler: () => {
+            const updateImageList = [...this.imageList];
+            const updateImageListForDisplay = [...this.imageListForDisplay];
+
+            updateImageList.splice(imageIndex, 1);
+            updateImageListForDisplay.splice(imageIndex, 1);
+
+            this.imageList = updateImageList;
+            this.imageListForDisplay = updateImageListForDisplay;
+
+            this.changeDetectorRef.detectChanges();
+          },
+        },
+      ],
+    });
+    await alert.present();
   }
 }

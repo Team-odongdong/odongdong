@@ -20,6 +20,8 @@ export class TabsPage {
   public userProfileIcon = '../assets/svg/tab/user-profile.svg';
   public settingsIcon = '../assets/svg/tab/settings.svg';
 
+  public currentLocation;
+
   constructor(
     public router: Router,
     public location: Location,
@@ -27,15 +29,27 @@ export class TabsPage {
     public modalController: ModalController,
   ) {}
 
+  ionViewDidEnter() {
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.currentLocation = position;
+    });
+
+    
+  }
+
   async showEnrollComponent() {
     this.router.navigateByUrl('/tabs/main');
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
+      componentProps: {
+        currentLat: this.currentLocation.coords.latitude,
+        currentLng: this.currentLocation.coords.longitude
+      },
       showBackdrop: false,
       cssClass: 'add-bathroom-modal',
       canDismiss: true,
       
-      breakpoints: [0, 0.5, 0.75],
+      breakpoints: [0, 0.5, 0.75, 1],
       initialBreakpoint: 0.75,
       backdropDismiss: false,
       backdropBreakpoint: 0.75,

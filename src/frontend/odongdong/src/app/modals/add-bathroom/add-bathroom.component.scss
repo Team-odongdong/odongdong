@@ -60,6 +60,40 @@ ion-checkbox::part(container) {
             margin-top: 4px;
         }
     }
+
+    &__images {
+        display: flex;
+        
+        gap: 10px;
+        
+        &--image {
+            position: relative;
+
+            border: 1px solid red;
+        }
+        &--image img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+        }
+
+        &--close {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            background-color: rgba(0, 0, 0, 0.5);
+
+            img {
+                width: 25px;
+                height: 25px;
+                object-fit: cover;
+
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
 }
 
 .unisex {

@@ -38,13 +38,39 @@
 
   <div class="camera__container">
     <ion-label>사진 첨부</ion-label>
+    <div 
+      *ngIf="imageListForDisplay.length > 0"
+      class="camera__images"
+    >
+      <div 
+        *ngFor="let image of imageListForDisplay; index as i"
+        class="camera__images--image"
+      >
+        <img src="{{ image.image }}" alt="image" />
+          
+        <div 
+          class="camera__images--close"
+          (click)="deleteImage(i)"
+        >
+          <img src="../../../assets/svg/map/close-white.svg" />
+        </div>
+      </div>
+    </div>
     <ion-button
       expand="block"
       fill="outline"
-      disabled="true"
+      (click)="takePictureOrOpenLibrary()"
     >
       <img src="../../../assets/svg/map/camera.svg" alt="camera">
       <p>사진 첨부</p>
+      <input 
+        #imageInput
+        style="display: none;"
+        type="file"
+        accept="image/*"
+        (change)="getImage(imageInput.files)"
+        multiple 
+      />
     </ion-button>
     <p class="camera__container-warning">
       공공화장실 실내 촬영은 불법입니다.<br>화장실 외부를 촬영해주세요.

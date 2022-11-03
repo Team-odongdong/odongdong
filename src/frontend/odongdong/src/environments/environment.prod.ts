@@ -1,10 +1,10 @@
 export const environment = {
   production: true,
   appVersion: {
-    name: '1.1.0',
+    name: '1.1.2',
     major: 1,
     minor: 1,
-    build: 0,
+    build: 2,
   },
 
   // apiUrl: 'http://localhost:9003',
