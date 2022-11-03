@@ -1,22 +1,26 @@
 package com.graduate.odondong.service.BathroomService;
 
+import static com.graduate.odondong.util.BaseResponseStatus.*;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.Rating;
-import com.graduate.odondong.dto.*;
+import com.graduate.odondong.dto.BathroomRequestDto;
+import com.graduate.odondong.dto.BathroomResponseInterface;
+import com.graduate.odondong.dto.CoordinateInfoDto;
+import com.graduate.odondong.dto.LocationDto;
 import com.graduate.odondong.repository.BathroomRepository;
-
 import com.graduate.odondong.repository.RatingRepository;
 import com.graduate.odondong.util.BaseException;
 import com.graduate.odondong.util.BaseResponse;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderNaver;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -78,13 +82,15 @@ public class BathroomService {
     }
 
 
-    public BaseResponse<List<BathroomResponseInterface>> get1kmByLongitudeLatitude(Double x, Double y) throws BaseException {
+    public BaseResponse<List<BathroomResponseInterface>> get1kmByLongitudeLatitude(Double x, Double y, Double distance) throws BaseException {
         try {
-            double lati_minus = x - 0.0091;
-            double lati_plus = x + 0.0091;
-            double long_minus = y - 0.0113;
-            double long_plus = y + 0.0113;
-            return new BaseResponse<>(bathroomRepository.findBathroomResponseDto(lati_minus, lati_plus, long_minus, long_plus));
+            LocationDto locationDto = LocationDto.builder()
+                .x(x)
+                .y(y)
+                .distance(distance)
+                .build();
+            return new BaseResponse<>(bathroomRepository.findBathroomResponseDto(locationDto.getLati_minus(),
+                locationDto.getLati_plus(), locationDto.getLong_minus(), locationDto.getLong_plus()));
         }catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
