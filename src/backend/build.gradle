@@ -25,6 +25,9 @@ dependencies {
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
 	runtimeOnly 'mysql:mysql-connector-java'
 
+	// aws
+	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.1'
+
 	// Swagger
 	implementation ('io.springfox:springfox-boot-starter:3.0.0')
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'

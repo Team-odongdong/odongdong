@@ -5,6 +5,7 @@ import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.BathroomResponseDto;
 import com.graduate.odondong.dto.BathroomResponseInterface;
 import com.graduate.odondong.dto.CoordinateInfoDto;
+import com.graduate.odondong.service.AwsS3Service;
 import com.graduate.odondong.service.BathroomService.BathroomService;
 import com.graduate.odondong.util.BaseException;
 import com.graduate.odondong.util.BaseResponse;
@@ -12,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,53 +27,62 @@ import static com.graduate.odondong.util.ErrorLogWriter.writeExceptionWithReques
 public class BathroomController {
 
     private final BathroomService bathroomService;
+    private final AwsS3Service awsS3Service;
 
     @ResponseBody
     @GetMapping("/admin/bathroom/all")
-    public List<BathroomResponseInterface> AllBathroomList () {
+    public List<BathroomResponseInterface> AllBathroomList() {
         return bathroomService.bathroomList();
+
     }
 
     @ResponseBody
     @GetMapping("/admin/bathroom/registered")
-    public List<Bathroom> RegisterBathroomList () {
+    public List<Bathroom> RegisterBathroomList() {
         return bathroomService.RegisterBathroomList();
     }
 
     @ResponseBody
     @PostMapping("/api/bathroom/add")
-    public BaseResponse<String> RegisterBathroomRequest (HttpServletRequest request, @RequestBody BathroomRequestDto bathroomRequestDto) {
+    public BaseResponse<String> RegisterBathroomRequest(HttpServletRequest request, @RequestPart BathroomRequestDto bathroomRequestDto, @RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile) {
         try {
-            return new BaseResponse<String>(bathroomService.RegisterBathroomRequest(bathroomRequestDto));
-        }
-        catch (BaseException e) {
+            String bathroomImgUrl = bathroomRequestDto.getImageUrl();
+
+            if (multipartFile != null) {
+                String dirName = "info/";
+                bathroomImgUrl = awsS3Service.upload(multipartFile, dirName);
+            }
+            return new BaseResponse<String>(bathroomService.RegisterBathroomRequest(bathroomRequestDto,bathroomImgUrl));
+        } catch (BaseException e) {
+            e.printStackTrace();
             writeExceptionWithRequest(e, request);
             return new BaseResponse<>(e.getStatus());
         }
     }
 
     @GetMapping("/admin/bathroom/not-registered")
-    public String NotRegisterBathroomList (Model model) {
+    public String NotRegisterBathroomList(Model model) {
         List<Bathroom> bathrooms = bathroomService.NotRegisterBathroomList();
         model.addAttribute("bathrooms", bathrooms);
         return "register";
     }
 
     @PostMapping("/admin/bathroom/register")
-    public String RegisterBathroom(@RequestParam("id") Long id){
+    public String RegisterBathroom(@RequestParam("id") Long id) {
         bathroomService.UpdateBathroom(id);
         return "redirect:/not-register-bathroom";
     }
 
     @DeleteMapping("/admin/bathroom/delete")
     @ResponseBody
-    public String DeleteBathroom(@RequestParam("id") Long id){
+    public String DeleteBathroom(@RequestParam("id") Long id) {
         bathroomService.DeleteBathroom(id);
         return "Delete";
     }
+
     @ResponseBody
     @GetMapping("/api/bathroom/address")
-    public BaseResponse<CoordinateInfoDto> AllAddressInfo(HttpServletRequest request, @RequestParam("longitude") Double x, @RequestParam("latitude") Double y){
+    public BaseResponse<CoordinateInfoDto> AllAddressInfo(HttpServletRequest request, @RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
         try {
             return bathroomService.getAddressByCoordinate(x, y);
         } catch (BaseException e) {
