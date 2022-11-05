@@ -27,7 +27,7 @@ public class SecurityConfig {
                 .antMatchers("/swagger/**").permitAll()
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/health").permitAll()
+                .antMatchers("/health", "/login/oauth2/code/**").permitAll()
                 .anyRequest().authenticated().and()
                 .formLogin()
 //                .and() // form 태그 만들어서 로그인을 안함
