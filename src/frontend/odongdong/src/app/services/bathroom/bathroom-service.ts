@@ -15,7 +15,7 @@ export class BathroomService {
         try {
             const response = await axios({
                 method: 'get',
-                url: `${environment.apiUrl}/api/bathroom/list?latitude=${lat}&longitude=${lng}`,
+                url: `${environment.apiUrl}/api/bathroom/list?latitude=${lat}&longitude=${lng}&distance=1`,
                 responseType: 'json',
             });
             return response;
@@ -29,23 +29,31 @@ export class BathroomService {
 
         try {
             const formData = new FormData();
-            formData.append('latitude', data.latitude);
-            formData.append('longitude', data.longitude);
-            formData.append('title', data.title);
-            formData.append('isLocked', data.isLocked);
-            formData.append('address', data.address);
-            formData.append('addressDetail', data.addressDetail);
-            formData.append('rate', data.rate);
-            formData.append('isUnisex', data.isUnisex);
-            if(images) {
-                images.forEach((image) => {
-                    formData.append('images', image.fileBlob, image.fileName);
-                });
-            }
+
+            // bathroomRequestDto.append('latitude', data.latitude);
+            // bathroomRequestDto.append('longitude', data.longitude);
+            // bathroomRequestDto.append('title', data.title);
+            // bathroomRequestDto.append('isLocked', data.isLocked);
+            // bathroomRequestDto.append('address', data.address);
+            // bathroomRequestDto.append('addressDetail', data.addressDetail);
+            // bathroomRequestDto.append('rate', data.rate);
+            // bathroomRequestDto.append('isUnisex', data.isUnisex);
+            // if(images.length) {
+            //     images.forEach((image) => {
+            //         bathroomRequestDto.append('bathroomImg', image.fileBlob, image.fileName);
+            //     });
+            //     // const json = JSON.stringify(images.fileBlob);
+            //     // const blob = new Blob([json], { type: "application/json" });
+            // }
+            
+            const json = JSON.stringify(data);
+            const blob = new Blob([json], { type: "application/json" });
+            formData.append("dto", blob);
 
             const response = await axios({
                 method: 'post',
                 url: `${environment.apiUrl}/api/bathroom/add`,
+                // headers: { 'Content-Type': 'multipart/form-data' },
                 data: formData,
                 responseType: 'json',
             });

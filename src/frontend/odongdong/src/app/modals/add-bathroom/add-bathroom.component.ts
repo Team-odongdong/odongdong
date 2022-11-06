@@ -116,6 +116,7 @@ export class AddBathroomComponent implements OnInit {
       addressDetail: this.bathroomAddressDetail,
       rate: this.rate,
       isUnisex: this.isUnisex,
+      imageUrl: '',
     }
 
     return info;
@@ -184,10 +185,16 @@ export class AddBathroomComponent implements OnInit {
   }
 
   async takePictureOrOpenLibrary() {
+    if(this.imageList.length && this.imageListForDisplay.length) {
+      this.imageList = [];
+      this.imageListForDisplay = [];
+      this.changeDetectorRef.detectChanges();
+    }
+
     if(this.userPlatform === 'web') {
       this.imageInput.nativeElement.click();
       const imageList = this.imageInput.nativeElement.files;
-      await this.getImage(imageList);
+      await this.onFileChange(imageList);
     }
 
     // const image = await Camera.getPhoto({
@@ -202,7 +209,7 @@ export class AddBathroomComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  async getImage(files) {
+  async onFileChange(files) {
     const imageData = {
       fileName: undefined,
       fileFormat: undefined,
@@ -251,6 +258,21 @@ export class AddBathroomComponent implements OnInit {
     }
 
     this.imageInput.nativeElement.value = '';
+
+
+    // const file = files[0];
+    // const reader = new FileReader();
+
+    // let imageSrc;
+
+    // reader.readAsDataURL(file);
+    // reader.onload = () => {
+    //   imageSrc = reader.result;
+    //   // this.imageListForDisplay.push(displayImageData);
+    //   // this.imageList.push(imageData);
+    //   this.changeDetectorRef.detectChanges();
+    // }
+
 
     this.changeDetectorRef.detectChanges();
   }

@@ -68,8 +68,7 @@
         style="display: none;"
         type="file"
         accept="image/*"
-        (change)="getImage(imageInput.files)"
-        multiple 
+        (change)="onFileChange(imageInput.files)"
       />
     </ion-button>
     <p class="camera__container-warning">
@@ -110,6 +109,7 @@
     class="save-button"
     expand="block"
     (click)="onClickSaveButton()"
+    disabled
   >저장하기</ion-button>
 
 </ion-content>
