@@ -75,13 +75,6 @@ ion-input {
     }
 }
 
-// ion-modal.add-bathroom-modal::part(content) {    
-//     display: block;
-//     position: absolute; 
-//     bottom: 0;
-
-//     --height: 70%;   
-//     --width: 100%;
-
-//     border-radius: 15px 15px 0 0;
-//  }
+ion-modal.add-bathroom-modal::part(content) {
+    --width: 100%;
+}
