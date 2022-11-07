@@ -28,32 +28,32 @@ export class BathroomService {
         if(!(await this.commonService.checkNetworkStatus())) return;
 
         try {
+            const bathroomRequestDto = {
+                "latitude": data.latitude,
+                "longitude": data.longitude,
+                "title": data.title,
+                "isLocked": data.isLocked,
+                "address": data.address,
+                "addressDetail": data.addressDetail,
+                "imageUrl": "",
+                "rate": data.rate,
+                "isUnisex": data.isUnisex,
+            };
+
             const formData = new FormData();
 
-            // bathroomRequestDto.append('latitude', data.latitude);
-            // bathroomRequestDto.append('longitude', data.longitude);
-            // bathroomRequestDto.append('title', data.title);
-            // bathroomRequestDto.append('isLocked', data.isLocked);
-            // bathroomRequestDto.append('address', data.address);
-            // bathroomRequestDto.append('addressDetail', data.addressDetail);
-            // bathroomRequestDto.append('rate', data.rate);
-            // bathroomRequestDto.append('isUnisex', data.isUnisex);
-            // if(images.length) {
-            //     images.forEach((image) => {
-            //         bathroomRequestDto.append('bathroomImg', image.fileBlob, image.fileName);
-            //     });
-            //     // const json = JSON.stringify(images.fileBlob);
-            //     // const blob = new Blob([json], { type: "application/json" });
-            // }
-            
-            const json = JSON.stringify(data);
+            const json = JSON.stringify(bathroomRequestDto);
             const blob = new Blob([json], { type: "application/json" });
-            formData.append("dto", blob);
+            formData.append("bathroomRequestDto", blob);
+            
+            if(images.length) {
+                formData.append("bathroomImg", images[0].fileBlob, images[0].fileName);
+            }
+
 
             const response = await axios({
                 method: 'post',
                 url: `${environment.apiUrl}/api/bathroom/add`,
-                // headers: { 'Content-Type': 'multipart/form-data' },
                 data: formData,
                 responseType: 'json',
             });
