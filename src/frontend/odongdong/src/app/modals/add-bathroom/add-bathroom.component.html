@@ -68,8 +68,7 @@
         style="display: none;"
         type="file"
         accept="image/*"
-        (change)="getImage(imageInput.files)"
-        multiple 
+        (change)="onFileChange(imageInput.files)"
       />
     </ion-button>
     <p class="camera__container-warning">

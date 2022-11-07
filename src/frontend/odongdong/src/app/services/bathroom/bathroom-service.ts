@@ -15,7 +15,7 @@ export class BathroomService {
         try {
             const response = await axios({
                 method: 'get',
-                url: `${environment.apiUrl}/api/bathroom/list?latitude=${lat}&longitude=${lng}`,
+                url: `${environment.apiUrl}/api/bathroom/list?latitude=${lat}&longitude=${lng}&distance=1`,
                 responseType: 'json',
             });
             return response;
@@ -28,20 +28,28 @@ export class BathroomService {
         if(!(await this.commonService.checkNetworkStatus())) return;
 
         try {
+            const bathroomRequestDto = {
+                "latitude": data.latitude,
+                "longitude": data.longitude,
+                "title": data.title,
+                "isLocked": data.isLocked,
+                "address": data.address,
+                "addressDetail": data.addressDetail,
+                "imageUrl": "",
+                "rate": data.rate,
+                "isUnisex": data.isUnisex,
+            };
+
             const formData = new FormData();
-            formData.append('latitude', data.latitude);
-            formData.append('longitude', data.longitude);
-            formData.append('title', data.title);
-            formData.append('isLocked', data.isLocked);
-            formData.append('address', data.address);
-            formData.append('addressDetail', data.addressDetail);
-            formData.append('rate', data.rate);
-            formData.append('isUnisex', data.isUnisex);
-            if(images) {
-                images.forEach((image) => {
-                    formData.append('images', image.fileBlob, image.fileName);
-                });
+
+            const json = JSON.stringify(bathroomRequestDto);
+            const blob = new Blob([json], { type: "application/json" });
+            formData.append("bathroomRequestDto", blob);
+            
+            if(images.length) {
+                formData.append("bathroomImg", images[0].fileBlob, images[0].fileName);
             }
+
 
             const response = await axios({
                 method: 'post',
