@@ -91,7 +91,9 @@ export class MainPage implements OnInit {
     }
   }
 
-  async getBathroomListPlain() {
+  async getBathroomListPlain(isFromCurrentButton?) {
+    const timeout = isFromCurrentButton? 300: 100;
+
     setTimeout(async () => {
       const currentCenter = this.map.getCenter();
 
@@ -103,7 +105,7 @@ export class MainPage implements OnInit {
       } else {
         await this.failToGetBathroomList();
       }
-    }, 100);
+    }, timeout);
   }
 
   moveToCurrentLocation(lat: number, lng: number) {
@@ -435,8 +437,10 @@ export class MainPage implements OnInit {
   }
 
   moveToCurrentButton() {
-    const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);    
+    const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);
     this.map.panTo(currentLocation);
+    this.deleteMarkers();
+    this.getBathroomListPlain(true);
   }
 
   zoomIn() {
