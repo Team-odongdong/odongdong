@@ -34,7 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 import static com.graduate.odondong.util.ErrorLogWriter.writeExceptionWithRequest;
 
 @Controller
-@RestController
 @RequiredArgsConstructor
 public class BathroomController {
 	private final BathroomService bathroomService;
