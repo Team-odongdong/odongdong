@@ -57,24 +57,24 @@ export class TabsPage {
     await modal.present();
   }
 
-  currentTab() {
-    if (this.tabs.getSelected() === 'profile') {
-      this.onClickProfile();
-    }
-  }
+  // currentTab() {
+  //   if (this.tabs.getSelected() === 'profile') {
+  //     this.onClickProfile();
+  //   }
+  // }
 
-  async onClickProfile() {
-    const alert = await this.alertController.create({
-      message: '다음 버전을 기대해주세요!',
-      buttons: [
-        {
-          text: '닫기',
-          handler: () => {
-            this.location.back();
-          }
-        },
-      ],
-    });
-    await alert.present();
-  }
+  // async onClickProfile() {
+  //   const alert = await this.alertController.create({
+  //     message: '다음 버전을 기대해주세요!',
+  //     buttons: [
+  //       {
+  //         text: '닫기',
+  //         handler: () => {
+  //           this.location.back();
+  //         }
+  //       },
+  //     ],
+  //   });
+  //   await alert.present();
+  // }
 }
