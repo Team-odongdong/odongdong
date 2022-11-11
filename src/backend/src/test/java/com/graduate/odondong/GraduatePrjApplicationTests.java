@@ -1,5 +1,7 @@
 package com.graduate.odondong;
 
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -7,6 +9,8 @@ import com.graduate.odondong.service.BathroomService.BathroomService;
 import com.graduate.odondong.service.BathroomService.BulkInsertPublicBathroom;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderNaver;
+
+import java.text.ParseException;
 
 @SpringBootTest
 class GraduatePrjApplicationTests {

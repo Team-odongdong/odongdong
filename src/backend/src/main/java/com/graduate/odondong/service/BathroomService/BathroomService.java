@@ -2,6 +2,12 @@ package com.graduate.odondong.service.BathroomService;
 
 import static com.graduate.odondong.util.BaseResponseStatus.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -107,7 +113,7 @@ public class BathroomService {
                     .isLocked(data.getIsLocked())
                     .register(data.getRegister())
                     .isUnisex(data.getIsUnisex())
-                    .isOpened("Y")
+                    .isOpened(checkBathroomOpen(data.getOperationTime()))
                     .build()
             ).collect(Collectors.toList());
             return new BaseResponse<>(bathroomResponseDtos);
@@ -127,5 +133,47 @@ public class BathroomService {
             throw new BaseException(DATABASE_ERROR);
         }
 
+    }
+
+    public String checkBathroomOpen(String operation){
+        SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
+        LocalDateTime now = LocalDateTime.now();
+        int dayOfWeekValue = now.getDayOfWeek().getValue();
+        String nowTime = now.getHour() + ":" + now.getMinute();
+        Date nowDateTime = null;
+
+        try {
+            nowDateTime = inputFormat.parse(nowTime);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (operation.equals("24시간")) {
+            return "Y";
+        }
+        if (operation.contains("평일")) {
+            if (dayOfWeekValue == 6 || dayOfWeekValue == 7) {
+                return "N";
+            }
+            return "Y";
+        }
+
+        if (operation.length() == 11) {
+            String[] operationTime = operation.split("~");
+            Date startDateTime = null;
+            Date endDateTime = null;
+            try {
+                startDateTime = inputFormat.parse(operationTime[0]);
+                endDateTime = inputFormat.parse(operationTime[1]);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (nowDateTime.before(startDateTime) || nowDateTime.after(endDateTime)) {
+                return "N";
+            }
+            return "Y";
+        }
+
+        return "Y";
     }
 }

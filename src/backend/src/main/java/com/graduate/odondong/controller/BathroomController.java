@@ -108,6 +108,7 @@ public class BathroomController {
 		try {
 			return bathroomService.get1kmByLongitudeLatitude(y, x, distance);
 		} catch (BaseException e) {
+			e.printStackTrace();
 			writeExceptionWithRequest(e, request);
 			return new BaseResponse<>(e.getStatus());
 		}
