@@ -22,7 +22,10 @@
   </section>
 
   <section class="login__footer">
-    <ion-button class="login__footer--kakao">
+    <ion-button 
+      class="login__footer--kakao"
+      (click)="kakaoLogin()"
+    >
       <ion-img
         src="../../../assets/images/kakao_login_medium_wide.png"
         alt="kakao-login-wide"

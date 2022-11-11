@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
+import { LoginService } from 'src/app/services/auth/login-service';
 
 @Component({
   selector: 'app-social-login',
@@ -9,12 +10,22 @@ import { ModalController } from '@ionic/angular';
 export class SocialLoginComponent implements OnInit {
 
   constructor(
+    public loginService: LoginService,
     public modalController: ModalController,
+    public navController: NavController,
   ) { }
 
   ngOnInit() {}
 
   onClickBackButton() {
+    this.navController.navigateBack('/tabs/main');
     this.modalController.dismiss();
+  }
+
+  async kakaoLogin() {
+    const response = await this.loginService.kakaoLogin();
+
+    console.log(response);
+    
   }
 }

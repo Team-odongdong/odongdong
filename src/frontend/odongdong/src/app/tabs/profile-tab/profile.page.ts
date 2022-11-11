@@ -8,6 +8,7 @@ import { SocialLoginComponent } from 'src/app/modals/social-login/social-login.c
   styleUrls: ['profile.page.scss']
 })
 export class ProfilePage implements OnInit {
+  public accessToken: string;
 
   constructor(
     public navController: NavController,
@@ -16,15 +17,20 @@ export class ProfilePage implements OnInit {
 
   ngOnInit(): void {}
 
+  ionViewDidEnter() {
+    if(!this.accessToken) {
+      // this.openSocialLogin();
+    }
+  }
+
   onClickBackButton() {
     this.navController.navigateBack('/tabs/main');
   }
 
-  async openLogin() {
+  async openSocialLogin() {
     const modal = await this.modalController.create({
       component: SocialLoginComponent,
     });
     await modal.present();
   }
-  
 }
