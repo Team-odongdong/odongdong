@@ -6,10 +6,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.graduate.odondong.service.OAuth.CustomOAuth2UserService;
+
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final CustomOAuth2UserService customOAuth2UserService;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
 
@@ -17,8 +23,7 @@ public class SecurityConfig {
 
         http
                 .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 세션 사용 안함
-//                .and()
+            .headers().frameOptions().disable().and()
                 .authorizeRequests()
                 .antMatchers("/api/bathroom/add", "/api/getBathroomInfo", "/api/bathroom/list", "/api/**").permitAll()
                 // swagger
@@ -29,10 +34,12 @@ public class SecurityConfig {
                 .antMatchers("/v2/api-docs").permitAll()
                 .antMatchers("/health", "/login/oauth2/code/**").permitAll()
                 .anyRequest().authenticated().and()
-                .formLogin()
-//                .and() // form 태그 만들어서 로그인을 안함
-//                .httpBasic()// 기본 방식 안쓰고 Bearer(jwt) 방법 사용할 것 -> 현재는 기본 방식 사용
-                ;
+                .logout()
+                .logoutSuccessUrl("/")
+                .and()
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService);
 
         return http.build();
     }
