@@ -214,14 +214,12 @@ export class MainPage implements OnInit {
   }
 
   mapRightClickListener() {
-    kakao.maps.event.addListener(this.map, 'dblclick', (mouseEvent) => {
+    kakao.maps.event.addListener(this.map, 'rightclick', (mouseEvent) => {
       this.resetMarkersOnMap();
       
       const currentLocation = mouseEvent.latLng;
-      // console.log('dblclick', currentLocation.getLat(), currentLocation.getLng());
       
       //TODO: refactor (addmarker & addmarkers)
-      //show add marker on map
       this.addMarker = new kakao.maps.Marker({
         map: this.map,
         position: new kakao.maps.LatLng(currentLocation.getLat(), currentLocation.getLng()),

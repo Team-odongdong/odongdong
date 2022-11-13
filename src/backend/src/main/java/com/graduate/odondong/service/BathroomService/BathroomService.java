@@ -2,9 +2,16 @@ package com.graduate.odondong.service.BathroomService;
 
 import static com.graduate.odondong.util.BaseResponseStatus.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.graduate.odondong.util.operationTime.OperationTimeValidation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +40,7 @@ public class BathroomService {
     private final ChangeByGeocoderKakao changeByGeocoderKakao;
     private final ChangeByGeocoderNaver changeByGeocoderNaver;
     private final DeletedBathroomService deletedBathroomService;
+    private final OperationTimeValidation operationTimeValidation;
 
     public List<BathroomResponseInterface> bathroomList() {
         return bathroomRepository.findAllBathroomResponseDto();
@@ -107,7 +115,7 @@ public class BathroomService {
                     .isLocked(data.getIsLocked())
                     .register(data.getRegister())
                     .isUnisex(data.getIsUnisex())
-                    .isOpened("Y")
+                    .isOpened(operationTimeValidation.checkBathroomOpen(data.getOperationTime()))
                     .build()
             ).collect(Collectors.toList());
             return new BaseResponse<>(bathroomResponseDtos);
