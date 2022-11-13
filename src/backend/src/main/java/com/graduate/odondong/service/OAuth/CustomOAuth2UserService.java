@@ -2,7 +2,6 @@ package com.graduate.odondong.service.OAuth;
 
 import java.util.Collections;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,9 +13,6 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
 
 import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.OAuth.OAuthAttributes;
@@ -31,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService{
 
 	private final UserRepository userRepository;
+	private final HttpSession httpSession;
 
 
 	@Override
@@ -46,21 +43,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
 
 		User user = saveOrUpdate(attributes);
 
-		HttpSession httpSession = getRemoteAddress();
 		httpSession.setAttribute("user", new SessionUser(user));
 
 		return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRole().getKey())),
 			attributes.getAttributes(),
 			attributes.getNameAttributeKey());
-	}
-
-	private HttpSession getRemoteAddress() {
-		RequestAttributes attribs = RequestContextHolder.getRequestAttributes();
-		if (attribs instanceof NativeWebRequest) {
-			HttpServletRequest request = (HttpServletRequest) ((NativeWebRequest) attribs).getNativeRequest();
-			return request.getSession();
-		}
-		return null;
 	}
 
 	private User saveOrUpdate(OAuthAttributes attributes) {

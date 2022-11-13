@@ -16,9 +16,11 @@ public class SecurityConfig{
     private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
-    public SecurityFilterChain  filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests()
+        http.cors();
+        http
+            .authorizeRequests()
             .anyRequest().permitAll()
             //			  .antMatchers("/**").authenticated() // 인가된 사용자만 접근 가능하도록 설정
             //			  .antMatchers("게시물등").hasRole(Role.USER.name()) // 특정 ROLE을 가진 사용자만 접근 가능하도록 설정
