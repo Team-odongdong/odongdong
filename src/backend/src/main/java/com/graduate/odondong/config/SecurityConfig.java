@@ -21,14 +21,17 @@ public class SecurityConfig{
         http.cors();
         http
             .authorizeRequests()
-            .anyRequest().permitAll()
-            //			  .antMatchers("/**").authenticated() // 인가된 사용자만 접근 가능하도록 설정
-            //			  .antMatchers("게시물등").hasRole(Role.USER.name()) // 특정 ROLE을 가진 사용자만 접근 가능하도록 설정
+            .antMatchers("/api/**", "/oauth2/authorization/**").permitAll()
+            // swagger
+            .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/swagger/**", "/swagger-resources/**", "/v2/api-docs").permitAll()
+            .antMatchers("/health").permitAll()
             .and()
             .logout()
             .logoutSuccessUrl("/")
             .and()
             .oauth2Login()
+            .defaultSuccessUrl("/api/user/test")
+			.failureUrl("/api/user/login/failure")
             .userInfoEndpoint()
             .userService(customOAuth2UserService);
 
