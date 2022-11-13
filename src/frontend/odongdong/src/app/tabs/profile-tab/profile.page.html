@@ -1,15 +1,50 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons>
+      <ion-button
+        slot="start"
+        (click)="onClickBackButton()"
+      >
+        <ion-icon class="back-button" name="chevron-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>
-      Tab 3
+      내 프로필
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">프로필</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="profile__title">
+    <p>안녕하세요,</p>
+    <p><span class="profile__title--name">무지무지 단무지</span> 님!</p>
+  </div>
+
+  <ion-avatar class="profile-image__container">
+    <img 
+      class="profile-image__image"
+      src="../../../assets//images//profile/profile-default.png" 
+      alt="profile-image"
+    >
+  </ion-avatar>
+
+  <ion-list lines="none">
+    <ion-item>
+      <div id="achievement">
+        <ion-label>총 28개 화장실</ion-label>
+        <ion-label>등록한 화장실의 수</ion-label>
+      </div>
+    </ion-item>
+    <ion-item (click)="openLogin()">
+      <div class="profile-item">
+        <ion-label>개인정보 수정하기</ion-label>
+        <ion-label>이름, 비밀번호</ion-label>
+      </div>
+      <ion-img
+        class="chevron-right"
+        src="../../../assets/svg/chevron-right.svg"
+        alt="chevron-right"
+      ></ion-img>
+    </ion-item>
+  </ion-list>
 </ion-content>

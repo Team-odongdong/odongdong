@@ -11,7 +11,9 @@ declare let kakao;
 
 const myLocationIconUrl = '../assets/svg/map/current-location.svg';
 const iconUrl = '../assets/svg/map/map-marker.svg';
+const iconDisabledUrl = '../assets/svg/map/map-marker-disabled.svg';
 const clickedIconUrl = '../assets/images/map/marker-clicked.png';
+const clickedIconDisabledUrl = '../assets/images/map/marker-clicked-disabled.png';
 const addIconUrl = '../assets/images/map/add-new.png';
 
 @Component({
@@ -40,6 +42,8 @@ export class MainPage implements OnInit {
   public clickedMarkerIcon: any;
   public addMarkerIcon: any;
   public myLocationMarkerIcon: any;
+  public defaultDisabledMarkerIcon: any;
+  public clickedDisabledMarkerIcon: any;
 
   public markerClicked = false;
   public selectedMarker = null;
@@ -171,20 +175,34 @@ export class MainPage implements OnInit {
       }
     );
 
+    this.defaultDisabledMarkerIcon = new kakao.maps.MarkerImage(
+      iconDisabledUrl,
+      new kakao.maps.Size(25, 25),
+      {
+        alt: 'marker',
+      }
+    );
+
     this.clickedMarkerIcon = new kakao.maps.MarkerImage(
       clickedIconUrl,
-      new kakao.maps.Size(60, 70),
+      new kakao.maps.Size(31, 43),
       {
-        offset: new kakao.maps.Point(35, 52),
+        alt: 'marker',
+      }
+    );
+    
+    this.clickedDisabledMarkerIcon = new kakao.maps.MarkerImage(
+      clickedIconDisabledUrl,
+      new kakao.maps.Size(31, 43),
+      {
         alt: 'marker',
       }
     );
 
     this.addMarkerIcon = new kakao.maps.MarkerImage(
       addIconUrl,
-      new kakao.maps.Size(50, 60),
+      new kakao.maps.Size(25, 35),
       {
-        offset: new kakao.maps.Point(23, 43),
         alt: 'marker',
       }
     );
@@ -203,7 +221,7 @@ export class MainPage implements OnInit {
       this.resetMarkersOnMap();
 
       if(this.selectedMarker) {
-        this.selectedMarker.setImage(this.defaultMarkerIcon);
+        this.selectedMarker.getImage().Yj === clickedIconUrl? this.selectedMarker.setImage(this.defaultMarkerIcon): this.selectedMarker.setImage(this.defaultDisabledMarkerIcon);
       }
 
       this.modalController.getTop()
@@ -227,6 +245,7 @@ export class MainPage implements OnInit {
       });
 
       this.addMarker.setMap(this.map);
+      this.addMarker.setZIndex(20);
 
       //show add bathroom component
       kakao.maps.event.addListener(this.addMarker, 'click', () => {
@@ -254,11 +273,21 @@ export class MainPage implements OnInit {
   //TODO: refactor (addmarker & addmarkers)
   addMarkers() {
     this.bathroomList.forEach((place) => {
-      const marker = new kakao.maps.Marker({
+      let marker;
+      if(place.isOpened === "Y") {
+        marker = new kakao.maps.Marker({
           map: this.map,
           position: new kakao.maps.LatLng(place.latitude, place.longitude),
           image: this.defaultMarkerIcon
-      });
+        });
+      } else {
+        marker = new kakao.maps.Marker({
+          map: this.map,
+          position: new kakao.maps.LatLng(place.latitude, place.longitude),
+          image: this.defaultDisabledMarkerIcon
+        });
+      }
+      
 
       //detail component를 위한 값 세팅
       marker.bathroomInfo = this.genBathroomInfo(place);
@@ -280,7 +309,8 @@ export class MainPage implements OnInit {
         if(!this.markerClicked) {
           this.markerClicked = true;
           this.selectedMarker = marker;
-          marker.setImage(this.clickedMarkerIcon);
+
+          place.isOpened === 'Y'? marker.setImage(this.clickedMarkerIcon) : marker.setImage(this.clickedDisabledMarkerIcon);
         }
   
         //클릭된 마커가 현재 마커가 아닌 경우
@@ -289,10 +319,11 @@ export class MainPage implements OnInit {
           this.changeDetectorRef.detectChanges();
 
           //새로 클릭된 마커는 이미지를 변경한다.
-          marker.setImage(this.clickedMarkerIcon);
+          marker.getImage().Yj === iconUrl? marker.setImage(this.clickedMarkerIcon) : marker.setImage(this.clickedDisabledMarkerIcon);
   
           //기존에 선택되어 있는 마커는 기본으로 바꾼다.
-          this.selectedMarker.setImage(this.defaultMarkerIcon);
+          this.selectedMarker.getImage().Yj === clickedIconUrl? this.selectedMarker.setImage(this.defaultMarkerIcon) : this.selectedMarker.setImage(this.defaultDisabledMarkerIcon);
+          this.selectedMarker.setZIndex(5);
 
           this.markerClicked = true;
           this.changeDetectorRef.detectChanges();
@@ -300,7 +331,7 @@ export class MainPage implements OnInit {
         
         //현재 클릭된 마커를 선택된 마커로 업데이트한다.
         this.selectedMarker = marker;
-
+        this.selectedMarker.setZIndex(10);
       });
     });
   }
