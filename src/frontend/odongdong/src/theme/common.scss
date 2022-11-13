@@ -6,6 +6,16 @@ ion-input {
     letter-spacing: 0.5px;
 }
 
+ion-content, ion-header {
+    --ion-background-color: var(--bg_white);
+    --ion-toolbar-background: var(--bg_white);
+}
+
+ion-modal.add-bathroom-modal::part(content) {
+    --width: 100%;
+}
+
+
 .empty-space {
     &__5 {
         width: 100%;
@@ -73,8 +83,4 @@ ion-input {
         box-shadow: 0px 8px 12px 6px rgba(0, 0, 0, 0.15), 0px 4px 4px rgba(0, 0, 0, 0.3);
         border-radius: 16px;
     }
-}
-
-ion-modal.add-bathroom-modal::part(content) {
-    --width: 100%;
 }

@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AlertController, IonTabs, ModalController } from '@ionic/angular';
+import { AlertController, IonTabs, ModalController, ToastController } from '@ionic/angular';
 
 import { AddBathroomComponent } from '../modals/add-bathroom/add-bathroom.component';
 
@@ -27,6 +27,7 @@ export class TabsPage {
     public location: Location,
     public alertController: AlertController,
     public modalController: ModalController,
+    public toastController: ToastController,
   ) {}
 
   ionViewDidEnter() {
@@ -64,17 +65,23 @@ export class TabsPage {
   }
 
   async onClickProfile() {
-    const alert = await this.alertController.create({
+    // const alert = await this.alertController.create({
+    //   message: '다음 버전을 기대해주세요!',
+    //   buttons: [
+    //     {
+    //       text: '닫기',
+    //       handler: () => {
+    //         this.location.back();
+    //       }
+    //     },
+    //   ],
+    // });
+    // await alert.present();
+    const toast = await this.toastController.create({
       message: '다음 버전을 기대해주세요!',
-      buttons: [
-        {
-          text: '닫기',
-          handler: () => {
-            this.location.back();
-          }
-        },
-      ],
+      duration: 1500,
     });
-    await alert.present();
+    await toast.present();
+    this.location.back();
   }
 }
