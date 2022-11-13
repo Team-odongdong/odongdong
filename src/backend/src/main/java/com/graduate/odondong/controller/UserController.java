@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.graduate.odondong.dto.OAuth.SessionUser;
@@ -25,7 +24,7 @@ public class UserController {
 
 	@ResponseBody
 	@GetMapping(value = "/test")
-	public String kakaoOauthRedirect(@RequestParam String code) throws JSONException {
+	public String kakaoOauthRedirect() throws JSONException {
 		SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
 		return sessionUser.getEmail();
 	}
