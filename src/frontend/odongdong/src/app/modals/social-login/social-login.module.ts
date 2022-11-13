@@ -16,4 +16,4 @@ import { SocialLoginComponent } from "./social-login.component";
     declarations: [SocialLoginComponent],
     exports: [SocialLoginComponent],
 })
-export class PolicyComponentModule {}
+export class SocialLoginComponentModule {}

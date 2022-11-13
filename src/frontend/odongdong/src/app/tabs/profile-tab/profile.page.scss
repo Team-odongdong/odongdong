@@ -101,3 +101,25 @@ ion-item {
 
     margin-right: 20px;
 }
+
+.hider {
+    width: 100%;
+    height: 100%;
+
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    z-index: 100;
+
+    background: rgba(211, 211, 211, 0.788);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 32px;
+    color: var(--tertiary_darkblue);
+
+    padding-bottom: 100px;
+}

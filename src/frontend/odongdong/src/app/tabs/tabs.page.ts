@@ -77,11 +77,5 @@ export class TabsPage {
     //   ],
     // });
     // await alert.present();
-    const toast = await this.toastController.create({
-      message: '다음 버전을 기대해주세요!',
-      duration: 1500,
-    });
-    await toast.present();
-    this.location.back();
   }
 }

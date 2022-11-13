@@ -7,6 +7,8 @@ import { MainPage } from './main.page';
 import { MainPageRoutingModule } from './main-routing.module';
 import { BathroomDetailComponent } from 'src/app/components/bathroom-detail/bathroom-detail.component';
 import { BathroomDetailComponentModule } from 'src/app/components/bathroom-detail/bathroom-detail.module';
+import { AddBathroomComponent } from 'src/app/modals/add-bathroom/add-bathroom.component';
+import { AddBathroomComponentModule } from 'src/app/modals/add-bathroom/add-bathroom.module';
 
 @NgModule({
   imports: [
@@ -14,9 +16,10 @@ import { BathroomDetailComponentModule } from 'src/app/components/bathroom-detai
     CommonModule,
     FormsModule,
     MainPageRoutingModule,
+    AddBathroomComponentModule,
     BathroomDetailComponentModule,
   ],
   declarations: [MainPage],
-  entryComponents: [BathroomDetailComponent],
+  entryComponents: [BathroomDetailComponent, AddBathroomComponent],
 })
 export class MainPageModule {}

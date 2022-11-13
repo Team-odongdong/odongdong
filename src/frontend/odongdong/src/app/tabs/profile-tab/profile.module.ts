@@ -5,14 +5,18 @@ import { FormsModule } from '@angular/forms';
 import { ProfilePage } from './profile.page';
 
 import { ProfilePageRoutingModule } from './profile-routing.module';
+import { SocialLoginComponent } from 'src/app/modals/social-login/social-login.component';
+import { SocialLoginComponentModule } from 'src/app/modals/social-login/social-login.module';
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
     FormsModule,
-    ProfilePageRoutingModule
+    ProfilePageRoutingModule,
+    SocialLoginComponentModule
   ],
-  declarations: [ProfilePage]
+  declarations: [ProfilePage],
+  entryComponents: [SocialLoginComponent]
 })
 export class ProfilePageModule {}
