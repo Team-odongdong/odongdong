@@ -15,6 +15,9 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
+  <div class="hider">
+    다음 버전을 기대해주세요!
+  </div>
   <div class="profile__title">
     <p>안녕하세요,</p>
     <p><span class="profile__title--name">무지무지 단무지</span> 님!</p>
@@ -35,7 +38,7 @@
         <ion-label>등록한 화장실의 수</ion-label>
       </div>
     </ion-item>
-    <ion-item (click)="openLogin()">
+    <ion-item (click)="openSocialLogin()">
       <div class="profile-item">
         <ion-label>개인정보 수정하기</ion-label>
         <ion-label>이름, 비밀번호</ion-label>

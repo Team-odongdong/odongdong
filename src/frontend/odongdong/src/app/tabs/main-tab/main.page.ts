@@ -24,8 +24,9 @@ const addIconUrl = '../assets/images/map/add-new.png';
 
 export class MainPage implements OnInit {
   @ViewChild('detailContainer') detailContainer: ElementRef<HTMLElement>;
+  @ViewChild('map') map: any;
 
-  map: any;
+  // map: any;
 
   /** 초기 위치 : 건대입구역 */
   public initLatitude = 37.540372;

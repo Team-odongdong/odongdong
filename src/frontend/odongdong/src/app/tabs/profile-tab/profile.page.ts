@@ -28,9 +28,9 @@ export class ProfilePage implements OnInit {
   }
 
   async openSocialLogin() {
-    const modal = await this.modalController.create({
-      component: SocialLoginComponent,
-    });
-    await modal.present();
+    // const modal = await this.modalController.create({
+    //   component: SocialLoginComponent,
+    // });
+    // await modal.present();
   }
 }
