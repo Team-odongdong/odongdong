@@ -23,6 +23,9 @@ public class OperationTimeValidation {
             e.printStackTrace();
         }
 
+        if (operation == null) {
+            return "Y";
+        }
         if (operation.equals("24시간")) {
             return "Y";
         }
