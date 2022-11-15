@@ -11,7 +11,7 @@
           defaultColor = var(--middle_gray)
           readonly="true"
           fontSize="12px"
-          rating={{afterRateCheck}}
+          rating={{rate}}
           (ratingChanged)="onRatingChange($event)"
         ></ionic-rating-component>
       </div>
@@ -24,7 +24,7 @@
       ></ion-img>
     </div>
   </div>
-  <div *ngIf="isImageExist === true" class="images">
+  <div *ngIf="imageUrl" class="images">
     <ion-img
       src={{imageUrl}}
     ></ion-img>
