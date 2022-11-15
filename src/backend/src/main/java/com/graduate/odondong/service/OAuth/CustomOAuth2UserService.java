@@ -1,6 +1,7 @@
 package com.graduate.odondong.service.OAuth;
 
 import java.util.Collections;
+import java.util.Optional;
 
 import javax.servlet.http.HttpSession;
 
@@ -24,11 +25,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class CustomOAuth2UserService extends DefaultOAuth2UserService{
+public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 	private final UserRepository userRepository;
 	private final HttpSession httpSession;
-
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -37,9 +37,15 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService{
 		OAuth2User oAuth2User = service.loadUser(userRequest); // Oath2 정보를 가져옴
 
 		String registrationId = userRequest.getClientRegistration().getRegistrationId(); // 소셜 정보 가져옴
-		String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
+		String userNameAttributeName = userRequest.getClientRegistration()
+			.getProviderDetails()
+			.getUserInfoEndpoint()
+			.getUserNameAttributeName();
 
-		OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
+		Optional<OAuthAttributes> oAuthAttributes = OAuthAttributes.of(registrationId, userNameAttributeName,
+			oAuth2User.getAttributes());
+		OAuthAttributes attributes = oAuthAttributes.orElseThrow(
+			() -> new OAuth2AuthenticationException("권한 설정을 하지 않았습니다."));
 
 		User user = saveOrUpdate(attributes);
 

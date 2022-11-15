@@ -27,6 +27,7 @@ public class SecurityConfig{
             // swagger
             .antMatchers("/swagger-ui/**", "/swagger-ui.html", "/swagger/**", "/swagger-resources/**", "/v2/api-docs").permitAll()
             .antMatchers("/health").permitAll()
+			.antMatchers("/admin/**").hasRole("ADMIN")
             .and()
             .logout()
             .logoutSuccessUrl("/")
