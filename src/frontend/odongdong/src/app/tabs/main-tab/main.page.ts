@@ -85,6 +85,7 @@ export class MainPage implements OnInit {
 
   async getBathroomList() {
     const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
+    
     if(response.data.code === 1000) {
       this.bathroomList = response.data.result;            
       
@@ -313,10 +314,6 @@ export class MainPage implements OnInit {
   }
 
   async getCurrentLocation() {
-    /** todo
-     * getcurrentposition이 안됐을 경우의 alert를 구현하는 조건문을 다시 구현해야 함
-     * Uncaught (in promise): GeolocationPositionError: {}
-     */
     try {
       const coordinates = await Geolocation.getCurrentPosition();
   
@@ -417,7 +414,7 @@ export class MainPage implements OnInit {
   genBathroomInfo(data) {
     const info = {
       title: data.title,
-      rating: data.rating,
+      rate: data.rate,
       isLocked: data.isLocked,
       imageUrl: data.imageUrl,
       isOpened: data.isOpened,
