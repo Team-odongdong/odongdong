@@ -1,6 +1,7 @@
 package com.graduate.odondong.dto.OAuth;
 
 import java.util.Map;
+import java.util.Optional;
 
 import com.graduate.odondong.domain.User;
 import com.graduate.odondong.util.type.Role;
@@ -27,40 +28,44 @@ public class OAuthAttributes {
 		this.picture = picture;
 	}
 
-	public static OAuthAttributes of(String registrationId,
+	public static Optional<OAuthAttributes> of(String registrationId,
 		String userNameAttributeName,
 		Map<String, Object> attributes) {
 
-		if("kakao".equals(registrationId)) {
+		if ("kakao".equals(registrationId)) {
 			return ofKakao(userNameAttributeName, attributes);
 		}
 		return ofGoogle(userNameAttributeName, attributes);
 	}
 
-	private static OAuthAttributes ofGoogle(String userNameAttributeName,
+	private static Optional<OAuthAttributes> ofGoogle(String userNameAttributeName,
 		Map<String, Object> attributes) {
-		return OAuthAttributes.builder()
+		return Optional.of(OAuthAttributes.builder()
 			.name((String)attributes.get("name"))
 			.email((String)attributes.get("email"))
 			.picture((String)attributes.get("picture"))
 			.attributes(attributes)
 			.nameAttributeKey(userNameAttributeName)
-			.build();
+			.build());
 	}
 
-	private static OAuthAttributes ofKakao(String userNameAttributeName,
+	private static Optional<OAuthAttributes> ofKakao(String userNameAttributeName,
 		Map<String, Object> attributes) {
-		Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
-		Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+		Map<String, Object> properties = (Map<String, Object>)attributes.get("properties");
+		Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
+
+		if (!properties.containsKey("nickname") || !kakaoAccount.containsKey("email") || !properties.containsKey(
+			"profile_image"))
+			return Optional.empty();
 
 		OAuthAttributes build = OAuthAttributes.builder()
 			.name((String)properties.get("nickname"))
-			.email((String) kakaoAccount.get("email"))
+			.email((String)kakaoAccount.get("email"))
 			.picture((String)properties.get("profile_image"))
 			.attributes(attributes)
 			.nameAttributeKey(userNameAttributeName)
 			.build();
-		return build;
+		return Optional.of(build);
 	}
 
 	public User toEntity() {
