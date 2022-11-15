@@ -6,6 +6,7 @@ import { Filesystem } from '@capacitor/filesystem'
 import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 
 import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
+import { ImageService } from 'src/app/services/image/image-service';
 
 @Component({
   selector: 'app-add-bathroom',
@@ -35,6 +36,7 @@ export class AddBathroomComponent implements OnInit {
   public userPlatform;
 
   constructor(
+    public imageService: ImageService,
     public bathroomService: BathroomService,
     public toastController: ToastController,
     public modalController: ModalController,
@@ -192,50 +194,35 @@ export class AddBathroomComponent implements OnInit {
     this.isUnisex = this.isUnisex? false: true;    
   }
 
-  async b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-    const byteCharacters = atob(b64Data);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-    }
-
-    const blob = new Blob(byteArrays, { type: contentType });
-
-    return blob;
-  }
-
-  async takePictureOrOpenLibrary() {
+  makeImageOnlyOne() {
     if(this.imageList.length && this.imageListForDisplay.length) {
       this.imageList = [];
       this.imageListForDisplay = [];
       this.changeDetectorRef.detectChanges();
     }
+  }
+
+  async takePictureOrOpenLibrary() {
+    this.makeImageOnlyOne();
+
+    const imageData = {
+      fileName: undefined,
+      fileFormat: undefined,
+      fileBlob: undefined,
+    };
+    const displayImageData = {
+      imageName: undefined,
+      image: undefined,
+    };
 
     if(this.userPlatform === 'web') { //on web
       this.imageInput.nativeElement.click();
       const imageList = this.imageInput.nativeElement.files;
       
-      await this.onFileChange(imageList);
+      await this.onFileChange(imageList, imageData, displayImageData);
     } 
     else { //on mobile
-      const imageData = {
-        fileName: undefined,
-        fileFormat: undefined,
-        fileBlob: undefined,
-      };
-      const displayImageData = {
-        imageName: undefined,
-        image: undefined,
-      };
+      
       const image = await Camera.getPhoto({
         quality: 30,
         allowEditing: false,
@@ -251,7 +238,7 @@ export class AddBathroomComponent implements OnInit {
       const splitedImagePath = imagePath.split('/');
       const imageName = imagePath.split('/')[splitedImagePath.length - 1];
       const imageBase64 = await Filesystem.readFile({ path: imagePath });
-      const blob = await this.b64toBlob(
+      const blob = await this.imageService.b64toBlob(
         imageBase64.data,
         `image/${image.format}`,
       );
@@ -268,16 +255,7 @@ export class AddBathroomComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  async onFileChange(files) {
-    const imageData = {
-      fileName: undefined,
-      fileFormat: undefined,
-      fileBlob: undefined,
-    };
-    const displayImageData = {
-      imageName: undefined,
-      image: undefined,
-    };
+  async onFileChange(files, imageData, displayImageData) {
     const fileExtension = /(.*?)\.(webp)$/;
 
     for (let i = 0; i < files.length; i++) {
