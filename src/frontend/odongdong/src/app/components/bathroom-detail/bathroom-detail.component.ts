@@ -8,6 +8,8 @@ import { Component, Input, OnInit } from '@angular/core';
 export class BathroomDetailComponent implements OnInit {
   @Input() bathroomInfo: any;
   
+  public bathroomInfoForDisplay: any;
+
   public bathroomName: string;
   public rate: number;
   public isLocked: string;
@@ -19,17 +21,30 @@ export class BathroomDetailComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.setBathroomDetailInfo();
+    this.bathroomInfoForDisplay = this.refineBathroomInfo(this.bathroomInfo);
+    this.setBathroomDetailInfo(this.bathroomInfoForDisplay);
+  }
+
+  refineBathroomInfo(info: any) {
+    if(info.imageUrl === null || !info.imageUrl.length) {
+      info.imageUrl = null;
+    }
+
+    if(info.rate === undefined || info.rate === null) {
+      info.rate = 0;
+    }
+
+    return info;
   }
   
-  setBathroomDetailInfo() {
-    this.bathroomName = this.bathroomInfo.title;
-    this.rate = this.bathroomInfo.rate;
-    this.isLocked = this.bathroomInfo.isLocked;
-    this.operationTime = this.bathroomInfo.operationTime;
-    this.address = this.bathroomInfo.address;
-    this.imageUrl = this.bathroomInfo.imageUrl;
-    this.isOpened = this.bathroomInfo.isOpened;
+  setBathroomDetailInfo(bathroonInfo: any) {
+    this.bathroomName = bathroonInfo.title;
+    this.rate = bathroonInfo.rate;
+    this.isLocked = bathroonInfo.isLocked;
+    this.operationTime = bathroonInfo.operationTime;
+    this.address = bathroonInfo.address;
+    this.imageUrl = bathroonInfo.imageUrl;
+    this.isOpened = bathroonInfo.isOpened;
   }
 
   onRatingChange(inputRate: number) {

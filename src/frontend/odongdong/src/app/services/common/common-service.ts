@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Network } from "@capacitor/network";
-import { AlertController, ToastController } from "@ionic/angular";
+import { AlertController, ModalController, ToastController } from "@ionic/angular";
 
 @Injectable({
     providedIn: 'root',
@@ -10,6 +10,7 @@ export class CommonService {
     constructor(
         public toastController: ToastController,
         public alertController: AlertController,
+        public modalController: ModalController,
     ) {}
 
     async checkNetworkStatus() {
@@ -23,5 +24,12 @@ export class CommonService {
         await toast.present();
 
         return false;
+    }
+
+    closePresentModal() {
+        this.modalController.getTop()
+            .then((v) => {
+                v? this.modalController.dismiss(): {}
+            });
     }
 }

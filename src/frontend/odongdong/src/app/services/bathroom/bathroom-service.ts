@@ -75,5 +75,4 @@ export class BathroomService {
             return error.response;
         }
     }
-
 }
