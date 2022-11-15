@@ -21,6 +21,8 @@ export class BathroomDetailComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('data', this.bathroomInfo);
+    
     this.bathroomInfoForDisplay = this.refineBathroomInfo(this.bathroomInfo);
     this.setBathroomDetailInfo(this.bathroomInfoForDisplay);
   }
