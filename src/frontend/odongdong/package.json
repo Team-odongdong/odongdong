@@ -32,6 +32,7 @@
     "@capacitor/network": "^4.0.1",
     "@capacitor/status-bar": "4.0.1",
     "@ionic/angular": "^6.2.9",
+    "@ionic/pwa-elements": "^3.1.1",
     "axios": "^0.27.2",
     "ionic-rating-component": "^1.2.1",
     "ionicons": "^6.0.3",

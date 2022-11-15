@@ -3,7 +3,7 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 import { Device } from '@capacitor/device';
 import { Filesystem } from '@capacitor/filesystem'
 
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 
 import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 
@@ -39,6 +39,7 @@ export class AddBathroomComponent implements OnInit {
     public toastController: ToastController,
     public modalController: ModalController,
     public alertController: AlertController,
+    public loadingController: LoadingController,
     public changeDetectorRef: ChangeDetectorRef,
   ) { }
 
@@ -133,11 +134,17 @@ export class AddBathroomComponent implements OnInit {
       return;
     }
 
+    const loading = await this.loadingController.create({
+      message: '화장실 등록 요청중입니다...',
+    });
+
     const info = this.bathroomInformation();
     const response = await this.bathroomService.addBathroom(
       info,
       this.imageList
     );
+
+    await loading.dismiss();
 
     if(response.data.code === 1000) {
       this.successAddBathroom();
@@ -216,6 +223,7 @@ export class AddBathroomComponent implements OnInit {
     if(this.userPlatform === 'web') { //on web
       this.imageInput.nativeElement.click();
       const imageList = this.imageInput.nativeElement.files;
+      
       await this.onFileChange(imageList);
     } 
     else { //on mobile
@@ -229,13 +237,15 @@ export class AddBathroomComponent implements OnInit {
         image: undefined,
       };
       const image = await Camera.getPhoto({
-        quality: 70,
+        quality: 30,
         allowEditing: false,
         resultType: CameraResultType.Uri,
+        promptLabelHeader: '사진 첨부',
         promptLabelPhoto: '앨범에서 선택',
         promptLabelPicture: '사진 찍기',
         promptLabelCancel: '취소',
       });
+      
       const imagePath =
         this.userPlatform === 'web' ? image.webPath : image.path;
       const splitedImagePath = imagePath.split('/');
@@ -254,15 +264,6 @@ export class AddBathroomComponent implements OnInit {
       this.imageListForDisplay.push(displayImageData);
       this.imageList.push(imageData);
     }
-
-    // const image = await Camera.getPhoto({
-    //   quality: 70,
-    //   allowEditing: true,
-    //   resultType: CameraResultType.Uri,
-    //   promptLabelPhoto: '앨범에서 선택',
-    //   promptLabelPicture: '사진 찍기',
-    //   promptLabelCancel: '취소'
-    // });
 
     this.changeDetectorRef.detectChanges();
   }
