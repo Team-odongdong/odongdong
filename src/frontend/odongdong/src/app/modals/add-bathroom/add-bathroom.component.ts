@@ -3,9 +3,10 @@ import { Camera, CameraResultType } from '@capacitor/camera';
 import { Device } from '@capacitor/device';
 import { Filesystem } from '@capacitor/filesystem'
 
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, ToastController } from '@ionic/angular';
 
 import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
+import { ImageService } from 'src/app/services/image/image-service';
 
 @Component({
   selector: 'app-add-bathroom',
@@ -35,10 +36,12 @@ export class AddBathroomComponent implements OnInit {
   public userPlatform;
 
   constructor(
+    public imageService: ImageService,
     public bathroomService: BathroomService,
     public toastController: ToastController,
     public modalController: ModalController,
     public alertController: AlertController,
+    public loadingController: LoadingController,
     public changeDetectorRef: ChangeDetectorRef,
   ) { }
 
@@ -133,11 +136,17 @@ export class AddBathroomComponent implements OnInit {
       return;
     }
 
+    const loading = await this.loadingController.create({
+      message: '화장실 등록 요청중입니다...',
+    });
+
     const info = this.bathroomInformation();
     const response = await this.bathroomService.addBathroom(
       info,
       this.imageList
     );
+
+    await loading.dismiss();
 
     if(response.data.code === 1000) {
       this.successAddBathroom();
@@ -185,63 +194,51 @@ export class AddBathroomComponent implements OnInit {
     this.isUnisex = this.isUnisex? false: true;    
   }
 
-  async b64toBlob(b64Data, contentType = '', sliceSize = 512) {
-    const byteCharacters = atob(b64Data);
-    const byteArrays = [];
-
-    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-      const slice = byteCharacters.slice(offset, offset + sliceSize);
-
-      const byteNumbers = new Array(slice.length);
-      for (let i = 0; i < slice.length; i++) {
-        byteNumbers[i] = slice.charCodeAt(i);
-      }
-
-      const byteArray = new Uint8Array(byteNumbers);
-      byteArrays.push(byteArray);
-    }
-
-    const blob = new Blob(byteArrays, { type: contentType });
-
-    return blob;
-  }
-
-  async takePictureOrOpenLibrary() {
+  makeImageOnlyOne() {
     if(this.imageList.length && this.imageListForDisplay.length) {
       this.imageList = [];
       this.imageListForDisplay = [];
       this.changeDetectorRef.detectChanges();
     }
+  }
+
+  async takePictureOrOpenLibrary() {
+    this.makeImageOnlyOne();
+
+    const imageData = {
+      fileName: undefined,
+      fileFormat: undefined,
+      fileBlob: undefined,
+    };
+    const displayImageData = {
+      imageName: undefined,
+      image: undefined,
+    };
 
     if(this.userPlatform === 'web') { //on web
       this.imageInput.nativeElement.click();
       const imageList = this.imageInput.nativeElement.files;
-      await this.onFileChange(imageList);
+      
+      await this.onFileChange(imageList, imageData, displayImageData);
     } 
     else { //on mobile
-      const imageData = {
-        fileName: undefined,
-        fileFormat: undefined,
-        fileBlob: undefined,
-      };
-      const displayImageData = {
-        imageName: undefined,
-        image: undefined,
-      };
+      
       const image = await Camera.getPhoto({
-        quality: 70,
+        quality: 30,
         allowEditing: false,
         resultType: CameraResultType.Uri,
+        promptLabelHeader: '사진 첨부',
         promptLabelPhoto: '앨범에서 선택',
         promptLabelPicture: '사진 찍기',
         promptLabelCancel: '취소',
       });
+      
       const imagePath =
         this.userPlatform === 'web' ? image.webPath : image.path;
       const splitedImagePath = imagePath.split('/');
       const imageName = imagePath.split('/')[splitedImagePath.length - 1];
       const imageBase64 = await Filesystem.readFile({ path: imagePath });
-      const blob = await this.b64toBlob(
+      const blob = await this.imageService.b64toBlob(
         imageBase64.data,
         `image/${image.format}`,
       );
@@ -255,28 +252,10 @@ export class AddBathroomComponent implements OnInit {
       this.imageList.push(imageData);
     }
 
-    // const image = await Camera.getPhoto({
-    //   quality: 70,
-    //   allowEditing: true,
-    //   resultType: CameraResultType.Uri,
-    //   promptLabelPhoto: '앨범에서 선택',
-    //   promptLabelPicture: '사진 찍기',
-    //   promptLabelCancel: '취소'
-    // });
-
     this.changeDetectorRef.detectChanges();
   }
 
-  async onFileChange(files) {
-    const imageData = {
-      fileName: undefined,
-      fileFormat: undefined,
-      fileBlob: undefined,
-    };
-    const displayImageData = {
-      imageName: undefined,
-      image: undefined,
-    };
+  async onFileChange(files, imageData, displayImageData) {
     const fileExtension = /(.*?)\.(webp)$/;
 
     for (let i = 0; i < files.length; i++) {
