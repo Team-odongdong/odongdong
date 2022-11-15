@@ -16,6 +16,9 @@ export class BathroomDetailComponent implements OnInit {
   public address: string;
   public isOpened: string;
 
+  public afterRateCheck: number;
+  public isImageExist: boolean;
+
   constructor() { }
 
   ngOnInit() {
@@ -30,6 +33,25 @@ export class BathroomDetailComponent implements OnInit {
     this.address = this.bathroomInfo.address;
     this.imageUrl = this.bathroomInfo.imageUrl;
     this.isOpened = this.bathroomInfo.isOpened;
+
+    this.isImageExist = this.checkImageExist(this.imageUrl);
+    this.afterRateCheck = this.checkRateExist(this.rate)? this.rate: 0;
+  }
+
+  checkImageExist(url: string) {
+    if(url === null || !url.length) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  checkRateExist(rate) {
+    if(rate === undefined || rate === null) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   onRatingChange(inputRate: number) {
