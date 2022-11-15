@@ -5,6 +5,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.graduate.odondong.config.Security.OAuth2AuthenticationSuccessHandler;
 import com.graduate.odondong.service.OAuth.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig{
 
     private final CustomOAuth2UserService customOAuth2UserService;
+	private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -32,6 +34,7 @@ public class SecurityConfig{
             .oauth2Login()
             .defaultSuccessUrl("/api/user/test")
 			.failureUrl("/api/user/login/failure")
+			.successHandler(oAuth2AuthenticationSuccessHandler)
             .userInfoEndpoint()
             .userService(customOAuth2UserService);
 
