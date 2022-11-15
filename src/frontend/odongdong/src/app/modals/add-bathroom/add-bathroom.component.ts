@@ -219,9 +219,18 @@ export class AddBathroomComponent implements OnInit {
       this.imageInput.nativeElement.click();
       const imageList = this.imageInput.nativeElement.files;
       
-      await this.onFileChange(imageList, imageData, displayImageData);
+      await this.onFileChange(imageList);
     } 
     else { //on mobile
+      const imageData = {
+        fileName: undefined,
+        fileFormat: undefined,
+        fileBlob: undefined,
+      };
+      const displayImageData = {
+        imageName: undefined,
+        image: undefined,
+      };
       
       const image = await Camera.getPhoto({
         quality: 30,
@@ -255,7 +264,16 @@ export class AddBathroomComponent implements OnInit {
     this.changeDetectorRef.detectChanges();
   }
 
-  async onFileChange(files, imageData, displayImageData) {
+  async onFileChange(files) {
+    const imageData = {
+      fileName: undefined,
+      fileFormat: undefined,
+      fileBlob: undefined,
+    };
+    const displayImageData = {
+      imageName: undefined,
+      image: undefined,
+    };
     const fileExtension = /(.*?)\.(webp)$/;
 
     for (let i = 0; i < files.length; i++) {
