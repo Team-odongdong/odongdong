@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { Device } from '@capacitor/device';
+import { Filesystem } from '@capacitor/filesystem'
 
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 
@@ -184,6 +185,27 @@ export class AddBathroomComponent implements OnInit {
     this.isUnisex = this.isUnisex? false: true;    
   }
 
+  async b64toBlob(b64Data, contentType = '', sliceSize = 512) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+
+    return blob;
+  }
+
   async takePictureOrOpenLibrary() {
     if(this.imageList.length && this.imageListForDisplay.length) {
       this.imageList = [];
@@ -191,10 +213,46 @@ export class AddBathroomComponent implements OnInit {
       this.changeDetectorRef.detectChanges();
     }
 
-    if(this.userPlatform === 'web') {
+    if(this.userPlatform === 'web') { //on web
       this.imageInput.nativeElement.click();
       const imageList = this.imageInput.nativeElement.files;
       await this.onFileChange(imageList);
+    } 
+    else { //on mobile
+      const imageData = {
+        fileName: undefined,
+        fileFormat: undefined,
+        fileBlob: undefined,
+      };
+      const displayImageData = {
+        imageName: undefined,
+        image: undefined,
+      };
+      const image = await Camera.getPhoto({
+        quality: 70,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        promptLabelPhoto: '앨범에서 선택',
+        promptLabelPicture: '사진 찍기',
+        promptLabelCancel: '취소',
+      });
+      const imagePath =
+        this.userPlatform === 'web' ? image.webPath : image.path;
+      const splitedImagePath = imagePath.split('/');
+      const imageName = imagePath.split('/')[splitedImagePath.length - 1];
+      const imageBase64 = await Filesystem.readFile({ path: imagePath });
+      const blob = await this.b64toBlob(
+        imageBase64.data,
+        `image/${image.format}`,
+      );
+      imageData.fileName = imageName;
+      imageData.fileFormat = image.format;
+      imageData.fileBlob = blob;
+      displayImageData.imageName = imageName;
+      displayImageData.image = `data:image/${image.format};base64,${imageBase64.data}`;
+
+      this.imageListForDisplay.push(displayImageData);
+      this.imageList.push(imageData);
     }
 
     // const image = await Camera.getPhoto({
@@ -272,7 +330,6 @@ export class AddBathroomComponent implements OnInit {
     //   // this.imageList.push(imageData);
     //   this.changeDetectorRef.detectChanges();
     // }
-
 
     this.changeDetectorRef.detectChanges();
   }

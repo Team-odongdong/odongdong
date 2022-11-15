@@ -15,6 +15,10 @@ ionic serve
     ionic serve --host=IP_ADDRESS:PORT_NUM
     ```
 
+- run on device (for capacitor)
+```
+ionic capacitor run android --device
+```
 
 ### 빌드 및 배포
 - 빌드
