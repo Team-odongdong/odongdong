@@ -66,7 +66,7 @@ public class BathroomService {
         bathroomRepository.deleteById(id);
     }
 
-    public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
+    public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException {
         try {
             Bathroom bathroom = Bathroom.builder()
                     .title(bathroomRequestDto.getTitle())
@@ -94,44 +94,29 @@ public class BathroomService {
     public BaseResponse<List<BathroomResponseDto>> get1kmByLongitudeLatitude(Double x, Double y, Double distance) throws BaseException {
         try {
             LocationDto locationDto = LocationDto.builder()
-                .x(x)
-                .y(y)
-                .distance(distance)
-                .build();
+                    .x(x)
+                    .y(y)
+                    .distance(distance)
+                    .build();
             List<BathroomResponseInterface> bathroomResponseDto = bathroomRepository.findBathroomResponseDto(locationDto.getLati_minus(),
-                locationDto.getLati_plus(), locationDto.getLong_minus(), locationDto.getLong_plus());
-            // bathroomResponseDto.stream().map()
+                    locationDto.getLati_plus(), locationDto.getLong_minus(), locationDto.getLong_plus());
             List<BathroomResponseDto> bathroomResponseDtos = bathroomResponseDto.stream().map(
-                (data) -> BathroomResponseDto.builder()
-                    .bathroomId(data.getBathroomId())
-                    .latitude(data.getLatitude())
-                    .longitude(data.getLongitude())
-                    .operationTime(data.getOperationTime())
-                    .rate(data.getRate())
-                    .address(data.getAddress())
-                    .addressDetail(data.getAddressDetail())
-                    .title(data.getTitle())
-                    .imageUrl(data.getImageUrl())
-                    .isLocked(data.getIsLocked())
-                    .register(data.getRegister())
-                    .isUnisex(data.getIsUnisex())
-                    .isOpened(operationTimeValidation.checkBathroomOpen(data.getOperationTime()))
-                    .build()
+                    (data) -> new BathroomResponseDto(data, operationTimeValidation.checkBathroomOpen(data.getOperationTime()))
             ).collect(Collectors.toList());
             return new BaseResponse<>(bathroomResponseDtos);
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
 
-    public BaseResponse<CoordinateInfoDto> getAddressByCoordinate(Double x, Double y) throws BaseException{
+    public BaseResponse<CoordinateInfoDto> getAddressByCoordinate(Double x, Double y) throws BaseException {
         try {
             CoordinateInfoDto address = changeByGeocoderKakao.getAddressByCoordinate(x, y);
-            if(address.getAddress_name() == null) {
+            if (address.getAddress_name() == null) {
                 address = changeByGeocoderNaver.getAddressByCoordinate(x, y);
             }
             return new BaseResponse<>(address);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
 

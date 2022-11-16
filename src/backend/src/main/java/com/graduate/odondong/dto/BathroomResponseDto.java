@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class BathroomResponseDto {
 
 	Long bathroomId;
@@ -20,4 +19,20 @@ public class BathroomResponseDto {
 	Boolean isUnisex;
 	String isOpened;
 	Double rate;
+
+	public BathroomResponseDto (BathroomResponseInterface bathroomResponseInterface, String isOpened) {
+		this.bathroomId = bathroomResponseInterface.getBathroomId();
+		this.title = bathroomResponseInterface.getTitle();
+		this.latitude = bathroomResponseInterface.getLatitude();
+		this.longitude = bathroomResponseInterface.getLongitude();
+		this.isLocked = bathroomResponseInterface.getIsLocked();
+		this.address = bathroomResponseInterface.getAddress();
+		this.addressDetail = bathroomResponseInterface.getAddressDetail();
+		this.operationTime = bathroomResponseInterface.getOperationTime();
+		this.imageUrl = bathroomResponseInterface.getImageUrl();
+		this.register = bathroomResponseInterface.getRegister();
+		this.isUnisex = bathroomResponseInterface.getIsUnisex();
+		this.isOpened = isOpened;
+		this.rate = bathroomResponseInterface.getRate();
+	}
 }
