@@ -2,22 +2,22 @@
 
 <a href="https://odongdong.site/">
   <div align="center">
-    <img src="https://user-images.githubusercontent.com/59170680/200325408-5a397e5e-a9ca-4e71-856f-e2a98e9b4480.png" width="70%" />
+    <img src="https://user-images.githubusercontent.com/59170680/202078396-f59c59eb-3b48-45de-943e-fbe5cd1cdfb1.png" width="70%" />
   </div>
 </a>
 
 <div align="center">
-Web version : https://odongdong.site/
+Web &nbsp; ➡️ &nbsp; https://odongdong.site/
 </div>
 
 <br/>
 
 ## ⚒️ Stacks
 ### Backend
-- Spring(Java)
+- Spring(Java), Spring boot
 - MVC
 ### Frontend
-- Ionic(Angular)
+- Ionic(Angular), Capacitor
 - MVVM
 
 <br/>
