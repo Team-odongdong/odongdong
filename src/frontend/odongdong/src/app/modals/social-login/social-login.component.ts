@@ -23,9 +23,12 @@ export class SocialLoginComponent implements OnInit {
   }
 
   async kakaoLogin() {
-    const response = await this.loginService.kakaoLogin();
+    // const response = await this.loginService.kakaoLogin();
 
-    console.log(response);
+    // console.log(response);
+
+    console.log('social login');
+    
     
   }
 }

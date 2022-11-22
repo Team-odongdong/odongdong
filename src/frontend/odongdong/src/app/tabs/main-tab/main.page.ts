@@ -323,7 +323,9 @@ export class MainPage implements OnInit {
         await this.failGetLocationAlert();
       }
     } catch(error) {
-      this.failGetLocationAlert();
+      // this.failGetLocationAlert();
+      console.log('fail to get current location');    
+      
     }
   }
 
