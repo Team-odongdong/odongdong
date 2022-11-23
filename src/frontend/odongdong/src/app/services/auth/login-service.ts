@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { NavController } from "@ionic/angular";
 
 import axios from "axios";
 import { environment } from "src/environments/environment";
@@ -7,19 +8,28 @@ import { environment } from "src/environments/environment";
     providedIn: 'root',
 })
 export class LoginService {
-    constructor() {}
+    constructor(
+        public navController: NavController,
+    ) {}
 
     async kakaoLogin() {
-        try {
-            const response = await axios({
-                method: 'get',
-                url: `https://kauth.kakao.com/oauth/authorize?client_id=dcbe17d69b2ae21c9daf02612a3b2b9a&redirect_uri=http://${environment.apiUrl}/login/oauth2/code/kakao&response_type=code`,
-                responseType: 'json',
-            });
-            return response;
-        } catch(error) {
-            return error.response;
-        }
+        location.replace(`${environment.apiUrl}/oauth2/authorization/kakao`);
     }
 
+
+    // async cookieTest(temp) {
+    //     console.log('seding', temp);
+        
+    //     try {
+    //         const response = await axios({
+    //             method: 'get',
+    //             url: "https://prod.odongdong.site/api/user/test",
+    //         });
+    //         console.log('response', response);
+            
+    //         return response;
+    //     } catch(error) {
+    //         return error.response;
+    //     }
+    // }
 }
