@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 
 import { AlertController, ModalController } from '@ionic/angular';
 
@@ -10,6 +16,7 @@ import { KakaoMapService } from 'src/app/services/kakao-map/kakao-map-service';
 import { CommonService } from 'src/app/services/common/common-service';
 
 declare let kakao;
+declare let naver;
 
 const myLocationIconUrl = '../assets/svg/map/current-location.svg';
 const iconUrl = '../assets/svg/map/map-marker.svg';
@@ -21,9 +28,8 @@ const addIconUrl = '../assets/images/map/add-new.png';
 @Component({
   selector: 'app-main',
   templateUrl: 'main.page.html',
-  styleUrls: ['main.page.scss']
+  styleUrls: ['main.page.scss'],
 })
-
 export class MainPage implements OnInit {
   @ViewChild('detailContainer') detailContainer: ElementRef<HTMLElement>;
   @ViewChild('map') map: any;
@@ -38,7 +44,7 @@ export class MainPage implements OnInit {
 
   public bathroomList = [];
   public bathroomInfo: any;
-  
+
   public defaultMarkerIcon: any;
   public clickedMarkerIcon: any;
   public addMarkerIcon: any;
@@ -52,7 +58,7 @@ export class MainPage implements OnInit {
   public myLocationMarker: any;
   public markerList = [];
 
-  public mapLevel = 4;
+  public mapLevel = 16;
 
   constructor(
     public commonService: CommonService,
@@ -60,35 +66,37 @@ export class MainPage implements OnInit {
     public kakaoMapService: KakaoMapService,
     public alertController: AlertController,
     public modalController: ModalController,
-    public changeDetectorRef: ChangeDetectorRef,
+    public changeDetectorRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {}
-  
+
   ngAfterViewInit() {
     this.setMarkerImages();
     this.createMap();
   }
-  
-  ionViewWillEnter() {    
+
+  ionViewWillEnter() {
     setTimeout(() => {
       this.checkPermissions()
         .then(() => {
-            this.getBathroomList();
-          })
+          this.getBathroomList();
+        })
         .then(() => {
-            this.trackLocation();
-          });
+          this.trackLocation();
+        });
     }, 300);
   }
 
-
   async getBathroomList() {
-    const response = await this.bathroomService.get1kmBathroomList(this.currentLat, this.currentLng);
-    
-    if(response.data.code === 1000) {
-      this.bathroomList = response.data.result;            
-      
+    const response = await this.bathroomService.get1kmBathroomList(
+      this.currentLat,
+      this.currentLng
+    );
+
+    if (response.data.code === 1000) {
+      this.bathroomList = response.data.result;
+
       //move camera to current location
       this.moveToCurrentLocation(this.currentLat, this.currentLng);
 
@@ -100,13 +108,16 @@ export class MainPage implements OnInit {
   }
 
   async getBathroomListPlain(isFromCurrentButton?: boolean) {
-    const timeout = isFromCurrentButton? 300: 100;
+    const timeout = isFromCurrentButton ? 300 : 100;
 
     setTimeout(async () => {
       const currentCenter = this.map.getCenter();
 
-      const response = await this.bathroomService.get1kmBathroomList(currentCenter.Ma, currentCenter.La);
-      if(response.data.code === 1000) {
+      const response = await this.bathroomService.get1kmBathroomList(
+        currentCenter._lat,
+        currentCenter._lng
+      );
+      if (response.data.code === 1000) {
         this.bathroomList = response.data.result;
 
         this.addMarkers();
@@ -117,16 +128,17 @@ export class MainPage implements OnInit {
   }
 
   moveToCurrentLocation(lat: number, lng: number) {
-    const currentLocation = new kakao.maps.LatLng(lat, lng);
+    const currentLocation = new naver.maps.LatLng(lat, lng);
+
     this.addMyLocationMarker(currentLocation);
     this.map.panTo(currentLocation);
   }
 
   addMyLocationMarker(current: any) {
-    this.myLocationMarker = new kakao.maps.Marker({
+    this.myLocationMarker = new naver.maps.Marker({
       map: this.map,
-      position: new kakao.maps.LatLng(current.getLat(), current.getLng()),
-      image: this.myLocationMarkerIcon,
+      position: new naver.maps.LatLng(current._lat, current._lng),
+      icon: this.myLocationMarkerIcon,
     });
 
     this.myLocationMarker.setMap(this.map);
@@ -134,33 +146,36 @@ export class MainPage implements OnInit {
 
   createMap() {
     setTimeout(() => {
-      kakao.maps.load(() => {
-        //맵 생성 -> 카메라의 중앙, 확대 정도 지정
-        const options = {
-            center: new kakao.maps.LatLng(this.initLatitude, this.initLongitude),
-            level: this.mapLevel,
-            disableDoubleClickZoom: true,
-        };
+      // kakao.maps.load(() => {
+      //맵 생성 -> 카메라의 중앙, 확대 정도 지정
+      const options = {
+        center: new naver.maps.LatLng(this.initLatitude, this.initLongitude),
+        zoom: this.mapLevel,
+        minZoom: 8,
+      };
 
-        const mapRef = document.getElementById('map');
-        this.map = new kakao.maps.Map(mapRef, options);
+      const mapRef = document.getElementById('map');
+      this.map = new naver.maps.Map(mapRef, options);
 
-        //맵 클릭 이벤트 리스너 (좌클릭)
-        this.mapLeftClickListener();
+      //맵 클릭 이벤트 리스너 (좌클릭)
+      this.mapLeftClickListener();
 
-        //맵 클릭 이벤트 리스너 (우클릭)
-        this.mapRightClickListener();
+      //맵 클릭 이벤트 리스너 (우클릭)
+      this.mapRightClickListener();
 
-        //맵 이동 감지
-        this.mapDragEndListener();
-      });
-    }, 300);    
+      //맵 이동 감지
+      this.mapDragEndListener();
+      // });
+    }, 300);
   }
 
   async checkPermissions() {
     const permissions = await Geolocation.checkPermissions();
 
-    if(permissions.coarseLocation === 'denied' || permissions.location === 'denied') {
+    if (
+      permissions.coarseLocation === 'denied' ||
+      permissions.location === 'denied'
+    ) {
       await this.permissionAlert();
     } else {
       await this.getCurrentLocation();
@@ -170,42 +185,51 @@ export class MainPage implements OnInit {
   setMarkerImages() {
     this.defaultMarkerIcon = this.kakaoMapService.createMarkerImage(
       iconUrl,
-      25, 25
+      25,
+      25
     );
 
     this.defaultDisabledMarkerIcon = this.kakaoMapService.createMarkerImage(
       iconDisabledUrl,
-      25, 25
+      25,
+      25
     );
 
     this.clickedMarkerIcon = this.kakaoMapService.createMarkerImage(
       clickedIconUrl,
-      31, 43
+      31,
+      43
     );
 
     this.clickedDisabledMarkerIcon = this.kakaoMapService.createMarkerImage(
       clickedIconDisabledUrl,
-      31, 43
+      31,
+      43
     );
 
     this.addMarkerIcon = this.kakaoMapService.createMarkerImage(
       addIconUrl,
-      25, 35
+      25,
+      35
     );
 
     this.myLocationMarkerIcon = this.kakaoMapService.createMarkerImage(
       myLocationIconUrl,
-      40, 40,
-      'my-loc'
+      40,
+      40
     );
   }
 
   mapLeftClickListener() {
-    kakao.maps.event.addListener(this.map, 'click', () => {
+    naver.maps.Event.addListener(this.map, 'click', () => {
       this.resetMarkersOnMap();
 
-      if(this.selectedMarker) {
-        this.selectedMarker.getImage().Yj === clickedIconUrl? this.selectedMarker.setImage(this.defaultMarkerIcon): this.selectedMarker.setImage(this.defaultDisabledMarkerIcon);
+      if (this.selectedMarker) {
+        if(this.selectedMarker.getIcon().url === clickedIconUrl) {
+          this.selectedMarker.setIcon(this.defaultMarkerIcon)
+        } else if (this.selectedMarker.getIcon().url === clickedIconDisabledUrl) {
+          this.selectedMarker.setIcon(this.defaultDisabledMarkerIcon);
+        }
       }
 
       this.commonService.closePresentModal();
@@ -213,30 +237,40 @@ export class MainPage implements OnInit {
   }
 
   mapRightClickListener() {
-    kakao.maps.event.addListener(this.map, 'rightclick', (mouseEvent) => {
+    naver.maps.Event.addListener(this.map, 'rightclick', (mouseEvent) => {
+      console.log('rightclick');
+      
       this.resetMarkersOnMap();
-      
+
+      console.debug('dfsd', mouseEvent);
+
       const currentLocation = mouseEvent.latLng;
-      
+
       //TODO: refactor (addmarker & addmarkers)
-      this.addMarker = new kakao.maps.Marker({
+      this.addMarker = new naver.maps.Marker({
         map: this.map,
-        position: new kakao.maps.LatLng(currentLocation.getLat(), currentLocation.getLng()),
-        image: this.addMarkerIcon,
+        position: new naver.maps.LatLng(
+          currentLocation.getLat(),
+          currentLocation.getLng()
+        ),
+        icon: this.clickedMarkerIcon,
       });
 
       this.addMarker.setMap(this.map);
       this.addMarker.setZIndex(20);
 
       //show add bathroom component
-      kakao.maps.event.addListener(this.addMarker, 'click', () => {
-        this.showAddBathroomModal(currentLocation.getLat(), currentLocation.getLng());
+      naver.maps.Event.addListener(this.addMarker, 'click', () => {
+        this.showAddBathroomModal(
+          currentLocation.getLat(),
+          currentLocation.getLng()
+        );
       });
     });
   }
 
   mapDragEndListener() {
-    kakao.maps.event.addListener(this.map, 'dragend', () => {
+    naver.maps.Event.addListener(this.map, 'dragend', () => {
       this.kakaoMapService.deleteAllMarkers(this.markerList);
 
       this.getBathroomListPlain();
@@ -246,7 +280,7 @@ export class MainPage implements OnInit {
   /** 클릭된 마커와, 추가하기 마커를 (존재한다면) 삭제한다. */
   resetMarkersOnMap() {
     this.markerClicked = false;
-    if(this.addMarker) {
+    if (this.addMarker) {
       this.addMarker.setMap(null);
       this.addMarker = null;
     }
@@ -255,15 +289,15 @@ export class MainPage implements OnInit {
   //TODO: refactor (addmarker & addmarkers)
   addMarkers() {
     this.bathroomList.forEach((place) => {
-      const marker = new kakao.maps.Marker({
+      const marker = new naver.maps.Marker({
         map: this.map,
-        position: new kakao.maps.LatLng(place.latitude, place.longitude),
-        image: place.isOpened==="Y"? this.defaultMarkerIcon: this.defaultDisabledMarkerIcon,
+        position: new naver.maps.LatLng(place.latitude, place.longitude),
+        icon: place.isOpened === 'Y'? this.defaultMarkerIcon: this.defaultDisabledMarkerIcon,
       });
 
       //detail component를 위한 값 세팅
       marker.bathroomInfo = this.genBathroomInfo(place);
-      
+
       this.markerList.push(marker);
       marker.setMap(this.map);
 
@@ -274,39 +308,51 @@ export class MainPage implements OnInit {
 
   markerLeftClickListener(markerRef, place) {
     //마커 클릭 리스너
-    kakao.maps.event.addListener(markerRef, 'click', () => {
-      this.bathroomInfo = markerRef.bathroomInfo;        
+    naver.maps.Event.addListener(markerRef, 'click', () => {
+      this.bathroomInfo = markerRef.bathroomInfo;
 
       //마커 클릭 시 카메라 이동 정의
-      const cameraMov = this.kakaoMapService.setCameraMovement(this.map.getLevel());
-      const movedLocation = new kakao.maps.LatLng(place.latitude-cameraMov, place.longitude);
+      const cameraMov = this.kakaoMapService.setCameraMovement(
+        this.map.getZoom()
+      );
+      console.log(place);
+
+      const movedLocation = new naver.maps.LatLng(
+        place.latitude - cameraMov,
+        place.longitude
+      );
       this.map.panTo(movedLocation);
 
-
       //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
-      if(!this.markerClicked) {
+      if (!this.markerClicked) {
         this.markerClicked = true;
         this.selectedMarker = markerRef;
 
-        place.isOpened === 'Y'? markerRef.setImage(this.clickedMarkerIcon) : markerRef.setImage(this.clickedDisabledMarkerIcon);
+        place.isOpened === 'Y'
+          ? markerRef.setIcon(this.clickedMarkerIcon)
+          : markerRef.setIcon(this.clickedDisabledMarkerIcon);
       }
 
       //클릭된 마커가 현재 마커가 아닌 경우
-      if(this.selectedMarker !== markerRef) {
+      if (this.selectedMarker !== markerRef) {
         this.markerClicked = false;
         this.changeDetectorRef.detectChanges();
 
         //새로 클릭된 마커는 이미지를 변경한다.
-        markerRef.getImage().Yj === iconUrl? markerRef.setImage(this.clickedMarkerIcon) : markerRef.setImage(this.clickedDisabledMarkerIcon);
+        markerRef.getIcon().url === iconUrl
+          ? markerRef.setIcon(this.clickedMarkerIcon)
+          : markerRef.setIcon(this.clickedDisabledMarkerIcon);
 
         //기존에 선택되어 있는 마커는 기본으로 바꾼다.
-        this.selectedMarker.getImage().Yj === clickedIconUrl? this.selectedMarker.setImage(this.defaultMarkerIcon) : this.selectedMarker.setImage(this.defaultDisabledMarkerIcon);
+        this.selectedMarker.getIcon().url === clickedIconUrl
+          ? this.selectedMarker.setIcon(this.defaultMarkerIcon)
+          : this.selectedMarker.setIcon(this.defaultDisabledMarkerIcon);
         this.selectedMarker.setZIndex(5);
 
         this.markerClicked = true;
         this.changeDetectorRef.detectChanges();
       }
-      
+
       //현재 클릭된 마커를 선택된 마커로 업데이트한다.
       this.selectedMarker = markerRef;
       this.selectedMarker.setZIndex(10);
@@ -316,16 +362,15 @@ export class MainPage implements OnInit {
   async getCurrentLocation() {
     try {
       const coordinates = await Geolocation.getCurrentPosition();
-  
-      if(coordinates.timestamp > 0) {
+
+      if (coordinates.timestamp > 0) {
         await this.setLatLng(coordinates.coords);
       } else {
         await this.failGetLocationAlert();
       }
-    } catch(error) {
+    } catch (error) {
       // this.failGetLocationAlert();
-      console.log('fail to get current location');    
-      
+      console.debug('fail to get current location');
     }
   }
 
@@ -333,7 +378,7 @@ export class MainPage implements OnInit {
     this.currentLat = coord.latitude;
     this.currentLng = coord.longitude;
   }
-  
+
   async trackLocation() {
     this.locationSubscription = await Geolocation.watchPosition(
       {
@@ -342,7 +387,7 @@ export class MainPage implements OnInit {
       },
       (position) => {
         // console.log(position);
-        
+
         this.currentLat = position.coords.latitude;
         this.currentLng = position.coords.longitude;
       }
@@ -355,7 +400,7 @@ export class MainPage implements OnInit {
       buttons: [
         {
           text: '닫기',
-          handler: () => {}
+          handler: () => {},
         },
       ],
     });
@@ -369,7 +414,7 @@ export class MainPage implements OnInit {
       buttons: [
         {
           text: '닫기',
-          handler: () => {}
+          handler: () => {},
         },
       ],
     });
@@ -383,7 +428,7 @@ export class MainPage implements OnInit {
       buttons: [
         {
           text: '닫기',
-          handler: () => {}
+          handler: () => {},
         },
       ],
     });
@@ -391,8 +436,10 @@ export class MainPage implements OnInit {
   }
 
   async showAddBathroomModal(lat: number, lng: number) {
-    const cameraMov = this.kakaoMapService.setCameraMovement(this.map.getLevel());
-    const movedLocation = new kakao.maps.LatLng(lat-cameraMov-0.001, lng);
+    const cameraMov = this.kakaoMapService.setCameraMovement(
+      this.map.getZoom()
+    );
+    const movedLocation = new naver.maps.LatLng(lat - cameraMov - 0.001, lng);
     this.map.panTo(movedLocation);
 
     const modal = await this.modalController.create({
@@ -400,7 +447,7 @@ export class MainPage implements OnInit {
       cssClass: 'add-bathroom-compo',
       componentProps: {
         lat: lat,
-        lng: lng
+        lng: lng,
       },
       showBackdrop: false,
       canDismiss: true,
@@ -423,13 +470,16 @@ export class MainPage implements OnInit {
       operationTime: data.operationTime,
       address: data.address + ' ' + data.addressDetail,
       isUnisex: data.isUnisex,
-    }
-    
+    };
+
     return info;
   }
 
   moveToCurrentButton() {
-    const currentLocation = new kakao.maps.LatLng(this.currentLat, this.currentLng);
+    const currentLocation = new naver.maps.LatLng(
+      this.currentLat,
+      this.currentLng
+    );
     this.map.panTo(currentLocation);
 
     this.kakaoMapService.deleteAllMarkers(this.markerList);
@@ -437,15 +487,15 @@ export class MainPage implements OnInit {
   }
 
   zoomIn() {
-    this.mapLevel = this.map.getLevel();
-    this.mapLevel -= 1;
-    this.map.setLevel(this.mapLevel, {animate: true});
+    this.mapLevel = this.map.getZoom();
+    this.mapLevel += 1;
+    this.map.setZoom(this.mapLevel, true);
   }
 
   zoomOut() {
-    this.mapLevel = this.map.getLevel();
-    this.mapLevel += 1;
-    this.map.setLevel(this.mapLevel, {animate: true});
+    this.mapLevel = this.map.getZoom();
+    this.mapLevel -= 1;
+    this.map.setZoom(this.mapLevel, true);
   }
 
   refresh() {
