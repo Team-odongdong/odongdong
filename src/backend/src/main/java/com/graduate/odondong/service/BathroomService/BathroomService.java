@@ -11,17 +11,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.graduate.odondong.domain.UpdatedBathroom;
+import com.graduate.odondong.dto.*;
+import com.graduate.odondong.repository.UpdatedBathroomRepository;
 import com.graduate.odondong.util.operationTime.OperationTimeValidation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.Rating;
-import com.graduate.odondong.dto.BathroomRequestDto;
-import com.graduate.odondong.dto.BathroomResponseDto;
-import com.graduate.odondong.dto.BathroomResponseInterface;
-import com.graduate.odondong.dto.CoordinateInfoDto;
-import com.graduate.odondong.dto.LocationDto;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.RatingRepository;
 import com.graduate.odondong.util.BaseException;
@@ -36,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(rollbackFor = Exception.class)
 public class BathroomService {
     private final BathroomRepository bathroomRepository;
+    private final UpdatedBathroomRepository updatedBathroomRepository;
     private final RatingRepository ratingRepository;
     private final ChangeByGeocoderKakao changeByGeocoderKakao;
     private final ChangeByGeocoderNaver changeByGeocoderNaver;
@@ -86,6 +85,27 @@ public class BathroomService {
                     .build();
             ratingRepository.save(rating);
             return "SUCCESS";
+        } catch (Exception e) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void registerUpdatedBathroomInfo(BathroomUpdateRequestDto bathroomUpdateRequestDto) throws BaseException{
+        try {
+            UpdatedBathroom updatedBathroom = UpdatedBathroom.builder()
+                    .title(bathroomUpdateRequestDto.getTitle())
+                    .bathroom(bathroomRepository.findById(bathroomUpdateRequestDto.getBathroomId()).get())
+                    .latitude(bathroomUpdateRequestDto.getLatitude())
+                    .longitude(bathroomUpdateRequestDto.getLongitude())
+                    .isLocked(bathroomUpdateRequestDto.getIsLocked())
+                    .address(bathroomUpdateRequestDto.getAddress())
+                    .addressDetail(bathroomUpdateRequestDto.getAddressDetail())
+                    .imageUrl(bathroomUpdateRequestDto.getImageUrl())
+                    .operationTime(bathroomUpdateRequestDto.getOperationTime())
+                    .isUnisex(bathroomUpdateRequestDto.getIsUnisex())
+                    .register(false)
+                    .build();
+            updatedBathroomRepository.save(updatedBathroom);
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
