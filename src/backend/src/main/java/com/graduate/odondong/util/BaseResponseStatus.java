@@ -75,7 +75,11 @@ public enum BaseResponseStatus {
 
     // 6000 : 필요시 만들어서 쓰세요
 
-    TIME_PARSE_ERR(false, 6001, "현재시간 파싱 에러");
+    TIME_PARSE_ERR(false, 6001, "현재시간 파싱 에러"),
+
+    // 7000 : 화장실 갱신 오류
+    PERMIT_UPDATE_BATHROOM_FAIL(false, 7001, "화장실 정보 수정 요청 허가에 실패했습니다."),
+    UPDATE_BATHROOM_FAIL(false, 7002, "화장실 정보 갱신에 실패했습니다.");
 
 
     private final boolean isSuccess;

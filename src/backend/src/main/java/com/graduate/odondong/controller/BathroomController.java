@@ -64,7 +64,7 @@ public class BathroomController {
 
 	@ResponseBody
 	@PostMapping("/api/bathroom/edit")
-	public BaseResponse<BaseResponseStatus> registerUpdatedBathroomRequest(HttpServletRequest request, @RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
+	public BaseResponse<BaseResponseStatus> postUpdatedBathroomRequest(HttpServletRequest request, @RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
 		try {
 			bathroomService.registerUpdatedBathroomInfo(bathroomUpdateRequestDto);
 			return new BaseResponse<>(SUCCESS);
@@ -85,6 +85,19 @@ public class BathroomController {
 	public String RegisterBathroom(@RequestParam("id") Long id) {
 		bathroomService.UpdateBathroom(id);
 		return "redirect:/not-register-bathroom";
+	}
+
+	@PostMapping("/admin/bathroom/edit")
+	@ResponseBody
+	public String postUpdatedBathroom(HttpServletRequest request, @RequestParam("id") Long id) {
+		try {
+			bathroomService.registerUpdatedBathroom(id);
+			return "Success";
+		}
+		catch (BaseException e) {
+			writeExceptionWithRequest(e, request);
+			return "Fail " + e.getStatus().getMessage();
+		}
 	}
 
 	@DeleteMapping("/admin/bathroom/delete")

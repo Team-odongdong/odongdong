@@ -65,6 +65,35 @@ public class BathroomService {
         bathroomRepository.deleteById(id);
     }
 
+    public void registerUpdatedBathroom(Long id) throws BaseException{
+        UpdatedBathroom updatedBathroom;
+        try {
+            updatedBathroom = updatedBathroomRepository.findById(id).get();
+            updatedBathroom.setRegister(true);
+            updatedBathroomRepository.save(updatedBathroom);
+        } catch (Exception e) {
+            throw new BaseException(PERMIT_UPDATE_BATHROOM_FAIL);
+        }
+        try {
+            Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).get();
+            bathroom.setTitle(updatedBathroom.getTitle());
+            bathroom.setLatitude(updatedBathroom.getLatitude());
+            bathroom.setLongitude(updatedBathroom.getLongitude());
+            bathroom.setIsLocked(updatedBathroom.getIsLocked());
+            bathroom.setAddress(updatedBathroom.getAddress());
+            bathroom.setAddressDetail(updatedBathroom.getAddressDetail());
+            bathroom.setOperationTime(updatedBathroom.getOperationTime());
+            bathroom.setImageUrl(updatedBathroom.getImageUrl());
+            bathroom.setRegister(updatedBathroom.getRegister());
+            bathroom.setIsUnisex(updatedBathroom.getIsUnisex());
+            bathroomRepository.save(bathroom);
+            updatedBathroomRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new BaseException(UPDATE_BATHROOM_FAIL);
+        }
+
+    }
+
     public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
         try {
             Bathroom bathroom = Bathroom.builder()
