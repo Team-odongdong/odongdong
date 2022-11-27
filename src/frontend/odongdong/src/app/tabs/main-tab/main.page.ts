@@ -22,7 +22,8 @@ const myLocationIconUrl = '../assets/svg/map/current-location.svg';
 const iconUrl = '../assets/svg/map/map-marker.svg';
 const iconDisabledUrl = '../assets/svg/map/map-marker-disabled.svg';
 const clickedIconUrl = '../assets/images/map/marker-clicked.png';
-const clickedIconDisabledUrl = '../assets/images/map/marker-clicked-disabled.png';
+const clickedIconDisabledUrl =
+  '../assets/images/map/marker-clicked-disabled.png';
 const addIconUrl = '../assets/images/map/add-new.png';
 
 @Component({
@@ -78,13 +79,12 @@ export class MainPage implements OnInit {
 
   ionViewWillEnter() {
     setTimeout(() => {
-      this.checkPermissions()
-        .then(() => {
-          this.getBathroomList();
-        })
-        .then(() => {
-          this.trackLocation();
-        });
+      this.checkPermissions().then(() => {
+        this.getBathroomList();
+      });
+      // .then(() => {
+      //   this.trackLocation();
+      // });
     }, 300);
   }
 
@@ -131,7 +131,9 @@ export class MainPage implements OnInit {
     const currentLocation = new naver.maps.LatLng(lat, lng);
 
     this.addMyLocationMarker(currentLocation);
-    this.map.panTo(currentLocation);
+    this.map.panTo(currentLocation, {
+      duration: 500,
+    });
   }
 
   addMyLocationMarker(current: any) {
@@ -225,9 +227,11 @@ export class MainPage implements OnInit {
       this.resetMarkersOnMap();
 
       if (this.selectedMarker) {
-        if(this.selectedMarker.getIcon().url === clickedIconUrl) {
-          this.selectedMarker.setIcon(this.defaultMarkerIcon)
-        } else if (this.selectedMarker.getIcon().url === clickedIconDisabledUrl) {
+        if (this.selectedMarker.getIcon().url === clickedIconUrl) {
+          this.selectedMarker.setIcon(this.defaultMarkerIcon);
+        } else if (
+          this.selectedMarker.getIcon().url === clickedIconDisabledUrl
+        ) {
           this.selectedMarker.setIcon(this.defaultDisabledMarkerIcon);
         }
       }
@@ -238,22 +242,20 @@ export class MainPage implements OnInit {
 
   mapRightClickListener() {
     naver.maps.Event.addListener(this.map, 'rightclick', (mouseEvent) => {
-      console.log('rightclick');
-      
       this.resetMarkersOnMap();
 
-      console.debug('dfsd', mouseEvent);
+      console.debug('dfsd', mouseEvent.latlng);
 
-      const currentLocation = mouseEvent.latLng;
+      const currentLocation = mouseEvent.latlng;
 
       //TODO: refactor (addmarker & addmarkers)
       this.addMarker = new naver.maps.Marker({
         map: this.map,
         position: new naver.maps.LatLng(
-          currentLocation.getLat(),
-          currentLocation.getLng()
+          currentLocation._lat,
+          currentLocation._lng
         ),
-        icon: this.clickedMarkerIcon,
+        icon: this.addMarkerIcon,
       });
 
       this.addMarker.setMap(this.map);
@@ -261,10 +263,7 @@ export class MainPage implements OnInit {
 
       //show add bathroom component
       naver.maps.Event.addListener(this.addMarker, 'click', () => {
-        this.showAddBathroomModal(
-          currentLocation.getLat(),
-          currentLocation.getLng()
-        );
+        this.showAddBathroomModal(currentLocation._lat, currentLocation._lng);
       });
     });
   }
@@ -292,7 +291,10 @@ export class MainPage implements OnInit {
       const marker = new naver.maps.Marker({
         map: this.map,
         position: new naver.maps.LatLng(place.latitude, place.longitude),
-        icon: place.isOpened === 'Y'? this.defaultMarkerIcon: this.defaultDisabledMarkerIcon,
+        icon:
+          place.isOpened === 'Y'
+            ? this.defaultMarkerIcon
+            : this.defaultDisabledMarkerIcon,
       });
 
       //detail component를 위한 값 세팅
@@ -321,7 +323,9 @@ export class MainPage implements OnInit {
         place.latitude - cameraMov,
         place.longitude
       );
-      this.map.panTo(movedLocation);
+      this.map.panTo(movedLocation, {
+        duration: 500,
+      });
 
       //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
       if (!this.markerClicked) {
@@ -440,7 +444,9 @@ export class MainPage implements OnInit {
       this.map.getZoom()
     );
     const movedLocation = new naver.maps.LatLng(lat - cameraMov - 0.001, lng);
-    this.map.panTo(movedLocation);
+    this.map.panTo(movedLocation, {
+      duration: 500,
+    });
 
     const modal = await this.modalController.create({
       component: AddBathroomComponent,
@@ -480,7 +486,9 @@ export class MainPage implements OnInit {
       this.currentLat,
       this.currentLng
     );
-    this.map.panTo(currentLocation);
+    this.map.panTo(currentLocation, {
+      duration: 500,
+    });
 
     this.kakaoMapService.deleteAllMarkers(this.markerList);
     this.getBathroomListPlain(true);
