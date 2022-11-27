@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, Platform } from '@ionic/angular';
 
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -15,7 +15,6 @@ import { AddBathroomComponent } from 'src/app/modals/add-bathroom/add-bathroom.c
 import { KakaoMapService } from 'src/app/services/kakao-map/kakao-map-service';
 import { CommonService } from 'src/app/services/common/common-service';
 
-declare let kakao;
 declare let naver;
 
 const myLocationIconUrl = '../assets/svg/map/current-location.svg';
@@ -61,14 +60,19 @@ export class MainPage implements OnInit {
 
   public mapLevel = 16;
 
+  public userPlatform: string;
+
   constructor(
+    public platform: Platform,
     public commonService: CommonService,
     public bathroomService: BathroomService,
     public kakaoMapService: KakaoMapService,
     public alertController: AlertController,
     public modalController: ModalController,
     public changeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) {
+    this.setPlatform();
+  }
 
   ngOnInit() {}
 
@@ -86,6 +90,16 @@ export class MainPage implements OnInit {
       //   this.trackLocation();
       // });
     }, 300);
+  }
+
+  setPlatform() {
+    if (this.platform.is('android')) {
+      this.userPlatform = 'md';
+    } else if (this.platform.is('ios' || 'ipad' || 'iphone')) {
+      this.userPlatform = 'ios';
+    } else {
+      this.userPlatform = 'web';
+    }
   }
 
   async getBathroomList() {
@@ -132,7 +146,7 @@ export class MainPage implements OnInit {
 
     this.addMyLocationMarker(currentLocation);
     this.map.panTo(currentLocation, {
-      duration: 500,
+      duration: 700,
     });
   }
 
@@ -162,8 +176,13 @@ export class MainPage implements OnInit {
       //맵 클릭 이벤트 리스너 (좌클릭)
       this.mapLeftClickListener();
 
-      //맵 클릭 이벤트 리스너 (우클릭)
-      this.mapRightClickListener();
+      if (this.userPlatform === 'web') {
+        //맵 클릭 이벤트 리스너 (우클릭)
+        this.mapRightClickListener();
+      } else {
+        //맵 클릭 이벤트 리스너 (롱 탭 - 모바일 전용)
+        this.mapLongTabListener();
+      }
 
       //맵 이동 감지
       this.mapDragEndListener();
@@ -244,11 +263,34 @@ export class MainPage implements OnInit {
     naver.maps.Event.addListener(this.map, 'rightclick', (mouseEvent) => {
       this.resetMarkersOnMap();
 
-      console.debug('dfsd', mouseEvent.latlng);
-
       const currentLocation = mouseEvent.latlng;
 
       //TODO: refactor (addmarker & addmarkers)
+      this.addMarker = new naver.maps.Marker({
+        map: this.map,
+        position: new naver.maps.LatLng(
+          currentLocation._lat,
+          currentLocation._lng
+        ),
+        icon: this.addMarkerIcon,
+      });
+
+      this.addMarker.setMap(this.map);
+      this.addMarker.setZIndex(20);
+
+      //show add bathroom component
+      naver.maps.Event.addListener(this.addMarker, 'click', () => {
+        this.showAddBathroomModal(currentLocation._lat, currentLocation._lng);
+      });
+    });
+  }
+
+  mapLongTabListener() {
+    naver.maps.Event.addListener(this.map, 'longtap', (mouseEvent) => {
+      this.resetMarkersOnMap();
+
+      const currentLocation = mouseEvent.latlng;
+
       this.addMarker = new naver.maps.Marker({
         map: this.map,
         position: new naver.maps.LatLng(
@@ -317,14 +359,13 @@ export class MainPage implements OnInit {
       const cameraMov = this.kakaoMapService.setCameraMovement(
         this.map.getZoom()
       );
-      console.log(place);
 
       const movedLocation = new naver.maps.LatLng(
         place.latitude - cameraMov,
         place.longitude
       );
       this.map.panTo(movedLocation, {
-        duration: 500,
+        duration: 700,
       });
 
       //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
@@ -445,7 +486,7 @@ export class MainPage implements OnInit {
     );
     const movedLocation = new naver.maps.LatLng(lat - cameraMov - 0.001, lng);
     this.map.panTo(movedLocation, {
-      duration: 500,
+      duration: 700,
     });
 
     const modal = await this.modalController.create({
@@ -486,8 +527,8 @@ export class MainPage implements OnInit {
       this.currentLat,
       this.currentLng
     );
-    this.map.panTo(currentLocation, {
-      duration: 500,
+    this.map.morph(currentLocation, 16, {
+      duration: 700,
     });
 
     this.kakaoMapService.deleteAllMarkers(this.markerList);
