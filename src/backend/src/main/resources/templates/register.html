@@ -1,78 +1,85 @@
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html
+  lang="ko"
+  xmlns:th="http://www.thymeleaf.org"
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+  <head>
+    <link rel="stylesheet" href="/static/css/main.css" />
+  </head>
 
-    <head>
-        <link rel="stylesheet" href="/static/css/main.css">
-    </head>
+  <th:block layout:fragment="head"></th:block>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    async function register(event) {
+      const parent = event.closest("#bathroom-item");
+      const value = parent.value;
+      console.log(value);
+      await axios({
+        method: "post",
+        url: "/admin/bathroom/register",
+        params: {
+          id: value,
+        },
+      });
 
-    <th:block layout:fragment="head"></th:block>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-        async function register(event) {
-            let parent = event.target.parentElement;
-            let value = parent.value;
-            console.log(value);
-            await axios({
-                method: "post",
-                url: "/admin/bathroom/register",
-                params : {
-                    id: value
-                }});
+      parent.remove();
+    }
 
-            parent.remove();
-        }
+    async function deleteFun(event) {
+      const parent = event.closest("#bathroom-item");
+      const value = parent.value;
+      console.log(value);
+      axios({
+        method: "delete",
+        url: "/admin/bathroom/delete",
+        params: {
+          id: value,
+        },
+      });
 
-        async function deleteFun(event) {
-            let parent = event.target.parentElement;
-            let value = parent.value;
-            console.log(value);
-            axios({
-                method: "delete",
-                url: "/admin/bathroom/delete",
-                params : {
-                    id: value
-                }});
-
-            parent.remove();
-        }
-    </script>
-    <div>
-        <h1>등록 승인 대기중</h1>
-        <table>
-            <tr>
-                <th>id</th>
-                <th>title</th>
-                <th>lat</th>
-                <th>lng</th>
-                <th>false</th>
-                <th>address</th>
-                <th>addressDetail</th>
-                <th>isLocked</th>
-                <th>create</th>
-                <th>update</th>
-                <th>등록</th>
-                <th>제거</th>
-            </tr>
-            <div th:each="bathroom : ${bathrooms}">
-                <tr th:name="${bathroom.getId()}" th:value="${bathroom.getId()}">
-                    <td th:text="${bathroom.getId()}"></td>
-                    <td th:text="${bathroom.getTitle()}"></td>
-                    <td th:text="${bathroom.getLatitude()}"></td>
-                    <td th:text="${bathroom.getLongitude()}"></td>
-                    <td th:text="${bathroom.getRegister()}"></td>
-                    <td th:text="${bathroom.getAddress()}"></td>
-                    <td th:text="${bathroom.getAddressDetail()}"></td>
-                    <td th:text="${bathroom.getIsLocked()}"></td>
-                    <td th:text="${bathroom.getCreated_at()}"></td>
-                    <td th:text="${bathroom.getUpdated_at()}"></td>
-                    <td><button onclick="register(event)">등록</button></td>
-                    <td><button onclick="deleteFun(event)">제거</button></td>
-                </tr>
-            </div>
-        </table>
-        <!-- <ul th:each="bathroom : ${bathrooms}">
+      parent.remove();
+    }
+  </script>
+  <div>
+    <h1>등록 승인 대기중</h1>
+    <table>
+      <tr>
+        <th>id</th>
+        <th>title</th>
+        <th>lat</th>
+        <th>lng</th>
+        <th>false</th>
+        <th>address</th>
+        <th>addressDetail</th>
+        <th>isLocked</th>
+        <th>create</th>
+        <th>update</th>
+        <th>등록</th>
+        <th>제거</th>
+      </tr>
+      <div th:each="bathroom : ${bathrooms}">
+        <tr
+          id="bathroom-item"
+          th:name="${bathroom.getId()}"
+          th:value="${bathroom.getId()}"
+        >
+          <td th:text="${bathroom.getId()}"></td>
+          <td th:text="${bathroom.getTitle()}"></td>
+          <td th:text="${bathroom.getLatitude()}"></td>
+          <td th:text="${bathroom.getLongitude()}"></td>
+          <td th:text="${bathroom.getRegister()}"></td>
+          <td th:text="${bathroom.getAddress()}"></td>
+          <td th:text="${bathroom.getAddressDetail()}"></td>
+          <td th:text="${bathroom.getIsLocked()}"></td>
+          <td th:text="${bathroom.getCreated_at()}"></td>
+          <td th:text="${bathroom.getUpdated_at()}"></td>
+          <td><button onclick="register(event)">등록</button></td>
+          <td><button onclick="deleteFun(event)">제거</button></td>
+        </tr>
+      </div>
+    </table>
+    <!-- <ul th:each="bathroom : ${bathrooms}">
             <li th:name="${bathroom.getId()}" th:value="${bathroom.getId()}">
                 <a th:text="${bathroom.getId()}"></a>
                 <a>/</a>
@@ -98,5 +105,5 @@
                 <button onclick="deleteFun(event)">제거</button>
             </li>
         </ul> -->
-    </div>
+  </div>
 </html>
