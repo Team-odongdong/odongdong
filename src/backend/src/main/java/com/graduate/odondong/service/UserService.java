@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.graduate.odondong.dto.OAuth.SessionUser;
 import com.graduate.odondong.dto.UserProfileResponseDto;
+import com.graduate.odondong.util.BaseResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,8 +16,8 @@ public class UserService {
 
 	private final HttpSession httpSession;
 
-	public UserProfileResponseDto getUserProfile() {
+	public BaseResponse<UserProfileResponseDto> getUserProfile() {
 		SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
-		return new UserProfileResponseDto(sessionUser);
+		return new BaseResponse<>(new UserProfileResponseDto(sessionUser));
 	}
 }

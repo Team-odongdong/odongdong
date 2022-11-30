@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.graduate.odondong.dto.UserProfileResponseDto;
 import com.graduate.odondong.service.UserService;
+import com.graduate.odondong.util.BaseResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +20,7 @@ public class UserController {
 
 	@ResponseBody
 	@GetMapping(value = "/profile")
-	public UserProfileResponseDto kakaoOauthRedirect(){
+	public BaseResponse<UserProfileResponseDto> kakaoOauthRedirect(){
 		return userService.getUserProfile();
 	}
 
