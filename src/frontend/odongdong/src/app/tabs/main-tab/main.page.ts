@@ -322,7 +322,7 @@ export class MainPage implements OnInit {
 
       const movedLocation = new naver.maps.LatLng(place.latitude - cameraMov, place.longitude);
       this.map.panTo(movedLocation, {
-        duration: 700,
+        duration: 400,
       });
 
       //클릭된 마커가 없는 경우 -> 초기이므로, selectedMarker 값을 설정해 줘야 한다.
