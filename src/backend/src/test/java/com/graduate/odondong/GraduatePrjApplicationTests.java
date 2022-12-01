@@ -34,14 +34,10 @@ class GraduatePrjApplicationTests {
 	// 	bulkInsertPublicBathroom.BulkInsert("경기도공중화장실현황(개방표준).xlsx", bulkInsertEnumMap);
 	// }
 
-// 	@Test
-// 	void naver지오코딩테스트() {
-// 		System.out.println(LocalTime.now());
-// 		CoordinateInfoDto addressByCoordinate1 = changeByGeocoder.getAddressByCoordinate(126.91298945203502,37.574952579149084 );
-// 		System.out.println(LocalTime.now());
-// 		CoordinateInfoDto addressByCoordinate = changeByGeocoderNaver.getAddressByCoordinate(126.91298945203502,37.574952579149084 );
-// 		System.out.println(LocalTime.now());
-// 		return;
-// 	}
+	// @Test
+	// void naver지오코딩테스트() throws JSONException {
+	// 	AddressInfoDto address = changeByGeocoder.getCoordinateByAddress("서울특별시 은평구 진관동 127-23");
+	// 	System.out.println(address);
+	// }
 	
 }
