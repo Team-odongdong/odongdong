@@ -9,14 +9,14 @@ import { Constants } from 'src/constants';
 @Component({
   selector: 'app-setting',
   templateUrl: 'setting.page.html',
-  styleUrls: ['setting.page.scss']
+  styleUrls: ['setting.page.scss'],
 })
 export class SettingPage implements OnInit {
   public app_version: string;
 
   constructor(
     public navController: NavController,
-    public modalController: ModalController,
+    public modalController: ModalController
   ) {}
 
   ngOnInit(): void {}
@@ -24,7 +24,7 @@ export class SettingPage implements OnInit {
   ionViewDidEnter() {
     this.app_version = Constants.APP_VERSION;
   }
-  
+
   onClickBackButton() {
     this.navController.navigateBack('/tabs/main');
   }

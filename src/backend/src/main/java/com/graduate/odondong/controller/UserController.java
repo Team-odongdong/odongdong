@@ -1,5 +1,6 @@
 package com.graduate.odondong.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONException;
@@ -24,7 +25,8 @@ public class UserController {
 
 	@ResponseBody
 	@GetMapping(value = "/test")
-	public String kakaoOauthRedirect() throws JSONException {
+	public String kakaoOauthRedirect(HttpServletRequest httpServletRequest) throws JSONException {
+		HttpSession httpSession1 = httpSession;
 		SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
 		return sessionUser.getEmail();
 	}
