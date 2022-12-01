@@ -1,32 +1,26 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons>
-      <ion-button
-        slot="start"
-        (click)="onClickBackButton()"
-      >
+      <ion-button slot="start" (click)="onClickBackButton()">
         <ion-icon class="back-button" name="chevron-back-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>
-      내 프로필
-    </ion-title>
+    <ion-title> 내 프로필 </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   <div class="profile__title">
     <p>안녕하세요,</p>
-    <p><span class="profile__title--name">무지무지 단무지</span> 님!</p>
+    <p><span class="profile__title--name">{{userName}}</span> 님!</p>
   </div>
 
-  <ion-avatar class="profile-image__container">
-    <img 
-      class="profile-image__image"
-      src="https://bucket-odongdong.s3.ap-northeast-2.amazonaws.com/default/%ED%94%84%EB%A1%9C%ED%95%84_%EA%B8%B0%EB%B3%B8_%EC%9D%B4%EB%AF%B8%EC%A7%80.jpg" 
-      alt="profile-image"
-    >
+  <ion-avatar *ngIf="userImage" class="profile-image__container">
+    <img class="profile-image__image" src="{{userImage}}" alt="profile-image" />
   </ion-avatar>
+  <div *ngIf="!userImage" class="profile-image__container">
+    <button class="profile-image__button" (click)="openSocialLogin()">로그인 하기</button>
+  </div>
 
   <ion-list lines="none">
     <ion-item>

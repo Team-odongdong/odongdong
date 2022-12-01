@@ -8,12 +8,11 @@ import { LoginService } from 'src/app/services/auth/login-service';
   styleUrls: ['./social-login.component.scss'],
 })
 export class SocialLoginComponent implements OnInit {
-
   constructor(
     public loginService: LoginService,
-    public modalController: ModalController,
     public navController: NavController,
-  ) { }
+    public modalController: ModalController,
+  ) {}
 
   ngOnInit() {}
 
@@ -23,10 +22,6 @@ export class SocialLoginComponent implements OnInit {
   }
 
   async kakaoLogin() {
-    const response = await this.loginService.kakaoLogin();
-
-    console.log('social login');
-    
-    
+    await this.loginService.kakaoLogin();
   }
 }
