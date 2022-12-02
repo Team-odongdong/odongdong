@@ -121,19 +121,8 @@ public class BathroomService {
 
     public void registerUpdatedBathroomInfo(BathroomUpdateRequestDto bathroomUpdateRequestDto) throws BaseException{
         try {
-            UpdatedBathroom updatedBathroom = UpdatedBathroom.builder()
-                    .title(bathroomUpdateRequestDto.getTitle())
-                    .bathroom(bathroomRepository.findById(bathroomUpdateRequestDto.getBathroomId()).get())
-                    .latitude(bathroomUpdateRequestDto.getLatitude())
-                    .longitude(bathroomUpdateRequestDto.getLongitude())
-                    .isLocked(bathroomUpdateRequestDto.getIsLocked())
-                    .address(bathroomUpdateRequestDto.getAddress())
-                    .addressDetail(bathroomUpdateRequestDto.getAddressDetail())
-                    .imageUrl(bathroomUpdateRequestDto.getImageUrl())
-                    .operationTime(bathroomUpdateRequestDto.getOperationTime())
-                    .isUnisex(bathroomUpdateRequestDto.getIsUnisex())
-                    .register(false)
-                    .build();
+            Bathroom bathroom = bathroomRepository.findById(bathroomUpdateRequestDto.getBathroomId()).get();
+            UpdatedBathroom updatedBathroom = bathroomUpdateRequestDto.toUpdatedBathroom(bathroom);
             updatedBathroomRepository.save(updatedBathroom);
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
