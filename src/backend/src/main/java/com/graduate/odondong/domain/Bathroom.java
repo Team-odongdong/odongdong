@@ -60,6 +60,19 @@ public class Bathroom {
 		this.isUnisex = isUnisex;
 	}
 
+	public void update(UpdatedBathroom updatedBathroom) {
+		this.title = updatedBathroom.getTitle();
+		this.latitude = updatedBathroom.getLatitude();
+		this.longitude = updatedBathroom.getLongitude();
+		this.isLocked = updatedBathroom.getIsLocked();
+		this.address = updatedBathroom.getAddress();
+		this.addressDetail = updatedBathroom.getAddressDetail();
+		this.operationTime = updatedBathroom.getOperationTime();
+		this.imageUrl = updatedBathroom.getImageUrl();
+		this.register = updatedBathroom.getRegister();
+		this.isUnisex = updatedBathroom.getIsUnisex();
+	}
+
 	public void setRegister(Boolean register) {
 		this.register = register;
 	}

@@ -66,32 +66,14 @@ public class BathroomService {
     }
 
     public void registerUpdatedBathroom(Long id) throws BaseException{
-        UpdatedBathroom updatedBathroom;
-        try {
-            updatedBathroom = updatedBathroomRepository.findById(id).get();
-            updatedBathroom.setRegister(true);
-            updatedBathroomRepository.save(updatedBathroom);
-        } catch (Exception e) {
-            throw new BaseException(PERMIT_UPDATE_BATHROOM_FAIL);
-        }
-        try {
-            Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).get();
-            bathroom.setTitle(updatedBathroom.getTitle());
-            bathroom.setLatitude(updatedBathroom.getLatitude());
-            bathroom.setLongitude(updatedBathroom.getLongitude());
-            bathroom.setIsLocked(updatedBathroom.getIsLocked());
-            bathroom.setAddress(updatedBathroom.getAddress());
-            bathroom.setAddressDetail(updatedBathroom.getAddressDetail());
-            bathroom.setOperationTime(updatedBathroom.getOperationTime());
-            bathroom.setImageUrl(updatedBathroom.getImageUrl());
-            bathroom.setRegister(updatedBathroom.getRegister());
-            bathroom.setIsUnisex(updatedBathroom.getIsUnisex());
-            bathroomRepository.save(bathroom);
-            updatedBathroomRepository.deleteById(id);
-        } catch (Exception e) {
-            throw new BaseException(UPDATE_BATHROOM_FAIL);
-        }
+        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(id).orElseThrow(() -> new BaseException(PERMIT_UPDATE_BATHROOM_FAIL));
+        updatedBathroom.setRegister(true);
+        updatedBathroomRepository.save(updatedBathroom);
 
+        Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).orElseThrow(() -> new BaseException(UPDATE_BATHROOM_FAIL));
+        bathroom.update(updatedBathroom);
+        bathroomRepository.save(bathroom);
+        updatedBathroomRepository.deleteById(id);
     }
 
     public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
