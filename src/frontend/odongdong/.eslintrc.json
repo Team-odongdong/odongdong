@@ -5,7 +5,10 @@
     {
       "files": ["*.ts"],
       "parserOptions": {
-        "project": ["tsconfig.json", "e2e/tsconfig.json"],
+        "project": [
+          "src/frontend/odongdong/tsconfig.json",
+          "src/frontend/odongdong/e2e/tsconfig.json"
+        ],
         "createDefaultProgram": true
       },
       "extends": [

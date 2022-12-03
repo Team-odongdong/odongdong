@@ -6,5 +6,8 @@
         <domain includeSubdomains="true">dapi.kakao.com</domain>
         <!-- map images -->
         <domain includeSubdomains="true">daumcdn.net</domain>
+
+        <domain includeSubdomains="true">map.naver.com</domain>
+        <domain includeSubdomains="true">map.naver.net</domain>
     </domain-config>
 </network-security-config>

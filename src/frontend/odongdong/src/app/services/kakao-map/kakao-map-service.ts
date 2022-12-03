@@ -1,39 +1,41 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
-declare let kakao;
+declare let naver;
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class KakaoMapService {
-    constructor() {}
+  constructor() {}
 
-    createMarkerImage(markerImage, width: number, height: number, alt?: string) {
-        const createdMarker = new kakao.maps.MarkerImage(
-            markerImage,
-            new kakao.maps.Size(width, height),
-            {
-                alt: alt? alt: 'marker',
-            }
-        );
+  createMarkerImage(markerImage, width: number, height: number) {
+    // const createdMarker = new naver.maps.ImageIcon(
+    //   markerImage,
+    //   new naver.maps.Size(width, height),
+    //   {
+    //     alt: alt ? alt : 'marker',
+    //   }
+    // );
+    // return createdMarker;
 
-        return createdMarker;
-    }
+    return {
+      url: markerImage,
+      scaledSize: new naver.maps.Size(width, height),
+    };
+  }
 
-    deleteAllMarkers(markerList) {
-        markerList.forEach((marker) => {
-            marker.setMap(null);
-        });
-    }
+  deleteAllMarkers(markerList) {
+    markerList.forEach((marker) => {
+      marker.setMap(null);
+    });
+  }
 
-    setCameraMovement(level: number) {
-        const levels = [0.00035, 0.0007, 0.0013, 0.003, 0.005, 0.01];
-    
-        if(level > 7) {
-            return 0.01;
-        } else {
-            return levels[level-1];
-        }
-    }
+  setCameraMovement(level: number) {
+    const levels = [
+      100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 0.05, 0.03, 0.01, 0.0055, 0.003,
+      0.0015, 0.0008, 0.0004, 0.0002, 0.0001,
+    ];
 
+    return levels[level];
+  }
 }
