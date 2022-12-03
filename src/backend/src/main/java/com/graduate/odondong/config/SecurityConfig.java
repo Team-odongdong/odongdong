@@ -35,7 +35,7 @@ public class SecurityConfig{
             .logoutSuccessUrl("/")
             .and()
             .oauth2Login()
-            .defaultSuccessUrl("/api/user/test")
+            // .defaultSuccessUrl("/api/user/test")
 			.failureUrl("/api/user/login/failure")
 			.successHandler(oAuth2AuthenticationSuccessHandler)
             .userInfoEndpoint()
