@@ -108,6 +108,13 @@ public class BathroomController {
 		return "Delete";
 	}
 
+	@DeleteMapping("/admin/bathroom/delete-updated")
+	@ResponseBody
+	public String deleteUpdatedBathroom(@RequestParam("id") Long id) {
+		bathroomService.deleteUpdatedBathroom(id);
+		return "deleteUpdated";
+	}
+
 	@ResponseBody
 	@GetMapping("/api/bathroom/address")
 	public BaseResponse<CoordinateInfoDto> AllAddressInfo(HttpServletRequest request,

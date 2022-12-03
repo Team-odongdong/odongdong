@@ -69,6 +69,11 @@ public class BathroomService {
         bathroomRepository.deleteById(id);
     }
 
+    public void deleteUpdatedBathroom(Long id) {
+        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(id).orElseThrow();
+        updatedBathroomRepository.deleteById(id);
+    }
+
     public void registerUpdatedBathroom(Long id) {
         UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("요청된 화장실 정보가 없습니다"));
         updatedBathroom.setRegister(true);
