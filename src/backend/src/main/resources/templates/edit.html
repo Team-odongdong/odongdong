@@ -1,0 +1,70 @@
+<html
+        lang="ko"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+    <link rel="stylesheet" href="/static/css/main.css" />
+</head>
+
+<th:block layout:fragment="head"></th:block>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    async function edit(event) {
+        const parent = event.closest("#updated-bathroomItem");
+        const value = parent.value;
+        console.log(value);
+        await axios({
+            method: "post",
+            url: "/admin/bathroom/edit",
+            params: {
+                id: value,
+            },
+        });
+
+        parent.remove();
+    }
+</script>
+<div>
+    <h1>수정 승인 대기중</h1>
+    <table>
+        <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>lat</th>
+            <th>lng</th>
+            <th>false</th>
+            <th>address</th>
+            <th>addressDetail</th>
+            <th>isLocked</th>
+            <th>운영시간</th>
+            <th>create</th>
+            <th>update</th>
+            <th>등록</th>
+            <th>제거</th>
+        </tr>
+        <div th:each="updatedBathroom : ${updatedBathrooms}">
+            <tr
+                    id="updated-bathroomItem"
+                    th:name="${updatedBathroom.getId()}"
+                    th:value="${updatedBathroom.getId()}"
+            >
+                <td th:text="${updatedBathroom.getId()}"></td>
+                <td th:text="${updatedBathroom.getTitle()}"></td>
+                <td th:text="${updatedBathroom.getLatitude()}"></td>
+                <td th:text="${updatedBathroom.getLongitude()}"></td>
+                <td th:text="${updatedBathroom.getRegister()}"></td>
+                <td th:text="${updatedBathroom.getAddress()}"></td>
+                <td th:text="${updatedBathroom.getAddressDetail()}"></td>
+                <td th:text="${updatedBathroom.getIsLocked()}"></td>
+                <td th:text="${updatedBathroom.getOperationTime()}"></td>
+                <td th:text="${updatedBathroom.getCreated_at()}"></td>
+                <td th:text="${updatedBathroom.getUpdated_at()}"></td>
+                <td><button onclick="edit(event)">등록</button></td>
+                <td><button onclick="deleteFun(event)">제거</button></td>
+            </tr>
+        </div>
+    </table>
+</div>
+</html>

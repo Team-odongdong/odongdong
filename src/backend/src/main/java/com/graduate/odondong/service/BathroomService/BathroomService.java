@@ -53,6 +53,10 @@ public class BathroomService {
         return bathroomRepository.findBathroomsByRegisterIsFalse();
     }
 
+    public List<UpdatedBathroom> notEditBathroomList() {
+        return updatedBathroomRepository.findUpdatedBathroomsByRegisterIsFalse();
+    }
+
     public void UpdateBathroom(Long id) {
         Bathroom bathroom = bathroomRepository.findById(id).get();
         bathroom.setRegister(true);
@@ -65,12 +69,12 @@ public class BathroomService {
         bathroomRepository.deleteById(id);
     }
 
-    public void registerUpdatedBathroom(Long id) throws BaseException{
-        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(id).orElseThrow(() -> new BaseException(PERMIT_UPDATE_BATHROOM_FAIL));
+    public void registerUpdatedBathroom(Long id) {
+        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("요청된 화장실 정보가 없습니다"));
         updatedBathroom.setRegister(true);
         updatedBathroomRepository.save(updatedBathroom);
 
-        Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).orElseThrow(() -> new BaseException(UPDATE_BATHROOM_FAIL));
+        Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).orElseThrow(() -> new IllegalArgumentException("요청된 화장실 정보가 없습니다"));
         bathroom.update(updatedBathroom);
         bathroomRepository.save(bathroom);
         updatedBathroomRepository.deleteById(id);

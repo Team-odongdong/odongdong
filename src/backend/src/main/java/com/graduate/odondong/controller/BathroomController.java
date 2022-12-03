@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.graduate.odondong.domain.UpdatedBathroom;
 import com.graduate.odondong.dto.*;
 import com.graduate.odondong.util.BaseResponseStatus;
 import org.springframework.stereotype.Controller;
@@ -87,17 +88,17 @@ public class BathroomController {
 		return "redirect:/not-register-bathroom";
 	}
 
+	@GetMapping("/admin/bathroom/not-edited")
+	public String getNotEditedBathroomList(Model model) {
+		List<UpdatedBathroom> updatedBathrooms = bathroomService.notEditBathroomList();
+		model.addAttribute("updatedBathrooms", updatedBathrooms);
+		return "edit";
+	}
+
 	@PostMapping("/admin/bathroom/edit")
-	@ResponseBody
 	public String postUpdatedBathroom(HttpServletRequest request, @RequestParam("id") Long id) {
-		try {
 			bathroomService.registerUpdatedBathroom(id);
-			return "Success";
-		}
-		catch (BaseException e) {
-			writeExceptionWithRequest(e, request);
-			return "Fail " + e.getStatus().getMessage();
-		}
+			return "redirect:/admin/bathroom/not-edited";
 	}
 
 	@DeleteMapping("/admin/bathroom/delete")
