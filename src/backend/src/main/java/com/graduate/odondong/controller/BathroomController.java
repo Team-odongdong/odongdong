@@ -1,26 +1,21 @@
 package com.graduate.odondong.controller;
 
+import static com.graduate.odondong.util.BaseResponseStatus.SUCCESS;
 import static com.graduate.odondong.util.ErrorLogWriter.*;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.graduate.odondong.domain.UpdatedBathroom;
+import com.graduate.odondong.dto.*;
+import com.graduate.odondong.util.BaseResponseStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.graduate.odondong.domain.Bathroom;
-import com.graduate.odondong.dto.BathroomRequestDto;
-import com.graduate.odondong.dto.BathroomResponseDto;
-import com.graduate.odondong.dto.BathroomResponseInterface;
-import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.service.AwsS3Service;
 import com.graduate.odondong.service.BathroomService.BathroomService;
 import com.graduate.odondong.util.BaseException;
@@ -68,6 +63,18 @@ public class BathroomController {
 		}
 	}
 
+	@ResponseBody
+	@PostMapping("/api/bathroom/edit")
+	public BaseResponse<BaseResponseStatus> postUpdatedBathroomRequest(HttpServletRequest request, @RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
+		try {
+			bathroomService.registerUpdatedBathroomInfo(bathroomUpdateRequestDto);
+			return new BaseResponse<>(SUCCESS);
+		} catch (BaseException e) {
+			writeExceptionWithRequest(e, request);
+			return new BaseResponse<>(e.getStatus());
+		}
+	}
+
 	@GetMapping("/admin/bathroom/not-registered")
 	public String NotRegisterBathroomList(Model model) {
 		List<Bathroom> bathrooms = bathroomService.NotRegisterBathroomList();
@@ -81,11 +88,31 @@ public class BathroomController {
 		return "redirect:/not-register-bathroom";
 	}
 
+	@GetMapping("/admin/bathroom/not-edited")
+	public String getNotEditedBathroomList(Model model) {
+		List<UpdatedBathroom> updatedBathrooms = bathroomService.notEditBathroomList();
+		model.addAttribute("updatedBathrooms", updatedBathrooms);
+		return "edit";
+	}
+
+	@PostMapping("/admin/bathroom/edit")
+	public String postUpdatedBathroom(HttpServletRequest request, @RequestParam("id") Long id) {
+			bathroomService.registerUpdatedBathroom(id);
+			return "redirect:/admin/bathroom/not-edited";
+	}
+
 	@DeleteMapping("/admin/bathroom/delete")
 	@ResponseBody
 	public String DeleteBathroom(@RequestParam("id") Long id) {
 		bathroomService.DeleteBathroom(id);
 		return "Delete";
+	}
+
+	@DeleteMapping("/admin/bathroom/delete-updated")
+	@ResponseBody
+	public String deleteUpdatedBathroom(@RequestParam("id") Long id) {
+		bathroomService.deleteUpdatedBathroom(id);
+		return "deleteUpdated";
 	}
 
 	@ResponseBody

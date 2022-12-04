@@ -11,17 +11,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.graduate.odondong.domain.UpdatedBathroom;
+import com.graduate.odondong.dto.*;
+import com.graduate.odondong.repository.UpdatedBathroomRepository;
 import com.graduate.odondong.util.operationTime.OperationTimeValidation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.Rating;
-import com.graduate.odondong.dto.BathroomRequestDto;
-import com.graduate.odondong.dto.BathroomResponseDto;
-import com.graduate.odondong.dto.BathroomResponseInterface;
-import com.graduate.odondong.dto.CoordinateInfoDto;
-import com.graduate.odondong.dto.LocationDto;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.RatingRepository;
 import com.graduate.odondong.util.BaseException;
@@ -36,6 +34,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(rollbackFor = Exception.class)
 public class BathroomService {
     private final BathroomRepository bathroomRepository;
+    private final UpdatedBathroomRepository updatedBathroomRepository;
     private final RatingRepository ratingRepository;
     private final ChangeByGeocoderKakao changeByGeocoderKakao;
     private final ChangeByGeocoderNaver changeByGeocoderNaver;
@@ -54,6 +53,10 @@ public class BathroomService {
         return bathroomRepository.findBathroomsByRegisterIsFalse();
     }
 
+    public List<UpdatedBathroom> notEditBathroomList() {
+        return updatedBathroomRepository.findUpdatedBathroomsByRegisterIsFalse();
+    }
+
     public void UpdateBathroom(Long id) {
         Bathroom bathroom = bathroomRepository.findById(id).get();
         bathroom.setRegister(true);
@@ -64,6 +67,22 @@ public class BathroomService {
         Bathroom bathroom = bathroomRepository.findById(id).orElseThrow();
         deletedBathroomService.AddDeletedBathroom(bathroom);
         bathroomRepository.deleteById(id);
+    }
+
+    public void deleteUpdatedBathroom(Long id) {
+        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(id).orElseThrow();
+        updatedBathroomRepository.deleteById(id);
+    }
+
+    public void registerUpdatedBathroom(Long id) {
+        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("요청된 화장실 정보가 없습니다"));
+        updatedBathroom.setRegister(true);
+        updatedBathroomRepository.save(updatedBathroom);
+
+        Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).orElseThrow(() -> new IllegalArgumentException("요청된 화장실 정보가 없습니다"));
+        bathroom.update(updatedBathroom);
+        bathroomRepository.save(bathroom);
+        updatedBathroomRepository.deleteById(id);
     }
 
     public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
@@ -86,6 +105,16 @@ public class BathroomService {
                     .build();
             ratingRepository.save(rating);
             return "SUCCESS";
+        } catch (Exception e) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void registerUpdatedBathroomInfo(BathroomUpdateRequestDto bathroomUpdateRequestDto) throws BaseException{
+        try {
+            Bathroom bathroom = bathroomRepository.findById(bathroomUpdateRequestDto.getBathroomId()).get();
+            UpdatedBathroom updatedBathroom = bathroomUpdateRequestDto.toUpdatedBathroom(bathroom);
+            updatedBathroomRepository.save(updatedBathroom);
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
