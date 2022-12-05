@@ -79,7 +79,10 @@ public enum BaseResponseStatus {
 
     // 7000 : 화장실 갱신 오류
     PERMIT_UPDATE_BATHROOM_FAIL(false, 7001, "화장실 정보 수정 요청 허가에 실패했습니다."),
-    UPDATE_BATHROOM_FAIL(false, 7002, "화장실 정보 갱신에 실패했습니다.");
+    UPDATE_BATHROOM_FAIL(false, 7002, "화장실 정보 갱신에 실패했습니다."),
+
+    //8000
+    GEOCODING_ERROR(false, 8001, "도로명 주소 변환에 실패했습니다.");
 
 
     private final boolean isSuccess;

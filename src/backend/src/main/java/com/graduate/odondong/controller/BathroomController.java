@@ -83,8 +83,7 @@ public class BathroomController {
 				String dirName = "info/";
 				bathroomImgUrl = awsS3Service.upload(multipartFile, dirName);
 			}
-			return new BaseResponse<String>(
-					bathroomService.addBathroom(bathroomRequestDto, bathroomImgUrl));
+			return bathroomService.addBathroom(bathroomRequestDto, bathroomImgUrl);
 		} catch (BaseException e) {
 			e.printStackTrace();
 			writeExceptionWithRequest(e, request);
@@ -116,7 +115,6 @@ public class BathroomController {
 	@GetMapping("/admin/bathroom/all")
 	public List<BathroomResponseInterface> findAllBathrooms() {
 		return bathroomService.findAllBathrooms();
-
 	}
 
 	/**

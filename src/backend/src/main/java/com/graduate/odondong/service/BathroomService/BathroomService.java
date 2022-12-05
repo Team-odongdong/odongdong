@@ -5,9 +5,7 @@ import static com.graduate.odondong.util.BaseResponseStatus.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.graduate.odondong.domain.UpdatedBathroom;
 import com.graduate.odondong.dto.*;
-import com.graduate.odondong.repository.UpdatedBathroomRepository;
 import com.graduate.odondong.util.operationTime.OperationTimeValidation;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,9 +39,8 @@ public class BathroomService {
             }
             return new BaseResponse<>(address);
         }catch (Exception e){
-            throw new BaseException(DATABASE_ERROR);
+            throw new BaseException(GEOCODING_ERROR);
         }
-
     }
 
     public BaseResponse<List<BathroomResponseDto>> findBathroomsAroundDistanceFromCoordinate(Double x, Double y, Double distance) throws BaseException {
@@ -91,26 +88,14 @@ public class BathroomService {
         return bathroomRepository.findBathroomsByRegisterIsFalse();
     }
 
-    public String addBathroom(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
+    public BaseResponse<String> addBathroom(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
         try {
-            Bathroom bathroom = Bathroom.builder()
-                    .title(bathroomRequestDto.getTitle())
-                    .latitude(bathroomRequestDto.getLatitude())
-                    .longitude(bathroomRequestDto.getLongitude())
-                    .isLocked(bathroomRequestDto.getIsLocked())
-                    .address(bathroomRequestDto.getAddress())
-                    .addressDetail(bathroomRequestDto.getAddressDetail())
-                    .register(false)
-                    .imageUrl(bathroomImgUrl)
-                    .isUnisex(bathroomRequestDto.getIsUnisex())
-                    .build();
+            Bathroom bathroom = bathroomRequestDto.toBathroom(bathroomImgUrl);
             bathroomRepository.save(bathroom);
-            Rating rating = Rating.builder()
-                    .score(bathroomRequestDto.getRate())
-                    .bathroom(bathroomRepository.findById(bathroom.getId()).get())
-                    .build();
+
+            Rating rating = bathroomRequestDto.toRating(bathroom);
             ratingRepository.save(rating);
-            return "SUCCESS";
+            return new BaseResponse<>(SUCCESS);
         } catch (Exception e) {
             throw new BaseException(DATABASE_ERROR);
         }
