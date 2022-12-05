@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.graduate.odondong.domain.UpdatedBathroom;
 import com.graduate.odondong.dto.*;
+import com.graduate.odondong.service.BathroomService.DeletedBathroomService;
+import com.graduate.odondong.service.BathroomService.UpdatedBathroomService;
 import com.graduate.odondong.util.BaseResponseStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BathroomController {
 	private final BathroomService bathroomService;
+	private final DeletedBathroomService deletedBathroomService;
+	private final UpdatedBathroomService updatedBathroomService;
 	private final AwsS3Service awsS3Service;
 
 	/**
@@ -38,7 +42,7 @@ public class BathroomController {
 	public BaseResponse<CoordinateInfoDto> findAllBathroomsFromCoordinate(HttpServletRequest request,
 																		  @RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
 		try {
-			return bathroomService.getAddressByCoordinate(x, y);
+			return bathroomService.findAllBathroomsFromCoordinate(x, y);
 		} catch (BaseException e) {
 			writeExceptionWithRequest(e, request);
 			return new BaseResponse<>(e.getStatus());
@@ -55,7 +59,7 @@ public class BathroomController {
 																							 @RequestParam("longitude") Double x, @RequestParam("latitude") Double y,
 																							 @RequestParam("distance") Double distance) {
 		try {
-			return bathroomService.get1kmByLongitudeLatitude(y, x, distance);
+			return bathroomService.findBathroomsAroundDistanceFromCoordinate(y, x, distance);
 		} catch (BaseException e) {
 			e.printStackTrace();
 			writeExceptionWithRequest(e, request);
@@ -80,7 +84,7 @@ public class BathroomController {
 				bathroomImgUrl = awsS3Service.upload(multipartFile, dirName);
 			}
 			return new BaseResponse<String>(
-					bathroomService.RegisterBathroomRequest(bathroomRequestDto, bathroomImgUrl));
+					bathroomService.addBathroom(bathroomRequestDto, bathroomImgUrl));
 		} catch (BaseException e) {
 			e.printStackTrace();
 			writeExceptionWithRequest(e, request);
@@ -96,7 +100,7 @@ public class BathroomController {
 	@PostMapping("/api/bathroom/edit")
 	public BaseResponse<BaseResponseStatus> modifyBathroomRequest(HttpServletRequest request, @RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
 		try {
-			bathroomService.registerUpdatedBathroomInfo(bathroomUpdateRequestDto);
+			updatedBathroomService.addUpdatedBathroom(bathroomUpdateRequestDto);
 			return new BaseResponse<>(SUCCESS);
 		} catch (BaseException e) {
 			writeExceptionWithRequest(e, request);
@@ -111,7 +115,7 @@ public class BathroomController {
 	@ResponseBody
 	@GetMapping("/admin/bathroom/all")
 	public List<BathroomResponseInterface> findAllBathrooms() {
-		return bathroomService.bathroomList();
+		return bathroomService.findAllBathrooms();
 
 	}
 
@@ -122,7 +126,7 @@ public class BathroomController {
 	@ResponseBody
 	@GetMapping("/admin/bathroom/registered")
 	public List<Bathroom> findAddedBathrooms() {
-		return bathroomService.RegisterBathroomList();
+		return bathroomService.findAddedBathrooms();
 	}
 
 	/**
@@ -131,7 +135,7 @@ public class BathroomController {
 	 **/
 	@GetMapping("/admin/bathroom/not-registered")
 	public String findNotAddedBathrooms(Model model) {
-		List<Bathroom> bathrooms = bathroomService.NotRegisterBathroomList();
+		List<Bathroom> bathrooms = bathroomService.findNotAddedBathrooms();
 		model.addAttribute("bathrooms", bathrooms);
 		return "register";
 	}
@@ -142,7 +146,7 @@ public class BathroomController {
 	 **/
 	@GetMapping("/admin/bathroom/not-edited")
 	public String findNotModifiedBathrooms(Model model) {
-		List<UpdatedBathroom> updatedBathrooms = bathroomService.notEditBathroomList();
+		List<UpdatedBathroom> updatedBathrooms = updatedBathroomService.findNotModifiedBathrooms();
 		model.addAttribute("updatedBathrooms", updatedBathrooms);
 		return "edit";
 	}
@@ -152,8 +156,8 @@ public class BathroomController {
 	 * [POST] /admin/bathroom/register
 	 **/
 	@PostMapping("/admin/bathroom/register")
-	public String acceptBathroomAdd(@RequestParam("id") Long id) {
-		bathroomService.UpdateBathroom(id);
+	public String acceptBathroomAdd(@RequestParam("id") Long bathroomId) {
+		bathroomService.saveAddedBathroom(bathroomId);
 		return "redirect:/not-register-bathroom";
 	}
 
@@ -162,8 +166,8 @@ public class BathroomController {
 	 * [POST] /admin/bathroom/edit
 	 **/
 	@PostMapping("/admin/bathroom/edit")
-	public String acceptBathroomModify(HttpServletRequest request, @RequestParam("id") Long id) {
-			bathroomService.registerUpdatedBathroom(id);
+	public String acceptBathroomModify(HttpServletRequest request, @RequestParam("id") Long updatedBathroomId) {
+			updatedBathroomService.saveModifiedBathroom(updatedBathroomId);
 			return "redirect:/admin/bathroom/not-edited";
 	}
 
@@ -173,8 +177,9 @@ public class BathroomController {
 	 **/
 	@DeleteMapping("/admin/bathroom/delete")
 	@ResponseBody
-	public String removeNotAddedBathroom(@RequestParam("id") Long id) {
-		bathroomService.DeleteBathroom(id);
+	public String removeNotAddedBathroom(@RequestParam("id") Long bathroomId) {
+		deletedBathroomService.addDeletedBathroom(bathroomId);
+		bathroomService.removeNotAddedBathroom(bathroomId);
 		return "Delete";
 	}
 
@@ -184,8 +189,8 @@ public class BathroomController {
 	 **/
 	@DeleteMapping("/admin/bathroom/delete-updated")
 	@ResponseBody
-	public String removeNotModifiedBathroom(@RequestParam("id") Long id) {
-		bathroomService.deleteUpdatedBathroom(id);
+	public String removeNotModifiedBathroom(@RequestParam("id") Long updatedBathroomId) {
+		updatedBathroomService.removeNotModifiedBathroom(updatedBathroomId);
 		return "deleteUpdated";
 	}
 

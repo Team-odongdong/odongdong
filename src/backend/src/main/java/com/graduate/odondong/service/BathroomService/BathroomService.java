@@ -2,12 +2,6 @@ package com.graduate.odondong.service.BathroomService;
 
 import static com.graduate.odondong.util.BaseResponseStatus.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,58 +28,70 @@ import lombok.RequiredArgsConstructor;
 @Transactional(rollbackFor = Exception.class)
 public class BathroomService {
     private final BathroomRepository bathroomRepository;
-    private final UpdatedBathroomRepository updatedBathroomRepository;
     private final RatingRepository ratingRepository;
     private final ChangeByGeocoderKakao changeByGeocoderKakao;
     private final ChangeByGeocoderNaver changeByGeocoderNaver;
-    private final DeletedBathroomService deletedBathroomService;
     private final OperationTimeValidation operationTimeValidation;
 
-    public List<BathroomResponseInterface> bathroomList() {
+    public BaseResponse<CoordinateInfoDto> findAllBathroomsFromCoordinate(Double x, Double y) throws BaseException{
+        try {
+            CoordinateInfoDto address = changeByGeocoderKakao.getAddressByCoordinate(x, y);
+            if(address.getAddress_name() == null) {
+                address = changeByGeocoderNaver.getAddressByCoordinate(x, y);
+            }
+            return new BaseResponse<>(address);
+        }catch (Exception e){
+            throw new BaseException(DATABASE_ERROR);
+        }
+
+    }
+
+    public BaseResponse<List<BathroomResponseDto>> findBathroomsAroundDistanceFromCoordinate(Double x, Double y, Double distance) throws BaseException {
+        try {
+            LocationDto locationDto = LocationDto.builder()
+                    .x(x)
+                    .y(y)
+                    .distance(distance)
+                    .build();
+            List<BathroomResponseInterface> bathroomResponseDto = bathroomRepository.findBathroomResponseDto(locationDto.getLati_minus(),
+                    locationDto.getLati_plus(), locationDto.getLong_minus(), locationDto.getLong_plus());
+            // bathroomResponseDto.stream().map()
+            List<BathroomResponseDto> bathroomResponseDtos = bathroomResponseDto.stream().map(
+                    (data) -> BathroomResponseDto.builder()
+                            .bathroomId(data.getBathroomId())
+                            .latitude(data.getLatitude())
+                            .longitude(data.getLongitude())
+                            .operationTime(data.getOperationTime())
+                            .rate(data.getRate())
+                            .address(data.getAddress())
+                            .addressDetail(data.getAddressDetail())
+                            .title(data.getTitle())
+                            .imageUrl(data.getImageUrl())
+                            .isLocked(data.getIsLocked())
+                            .register(data.getRegister())
+                            .isUnisex(data.getIsUnisex())
+                            .isOpened(operationTimeValidation.checkBathroomOpen(data.getOperationTime()))
+                            .build()
+            ).collect(Collectors.toList());
+            return new BaseResponse<>(bathroomResponseDtos);
+        }catch (Exception e) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<BathroomResponseInterface> findAllBathrooms() {
         return bathroomRepository.findAllBathroomResponseDto();
     }
 
-    public List<Bathroom> RegisterBathroomList() {
+    public List<Bathroom> findAddedBathrooms() {
         return bathroomRepository.findBathroomsByRegisterIsTrue();
     }
 
-    public List<Bathroom> NotRegisterBathroomList() {
+    public List<Bathroom> findNotAddedBathrooms() {
         return bathroomRepository.findBathroomsByRegisterIsFalse();
     }
 
-    public List<UpdatedBathroom> notEditBathroomList() {
-        return updatedBathroomRepository.findUpdatedBathroomsByRegisterIsFalse();
-    }
-
-    public void UpdateBathroom(Long id) {
-        Bathroom bathroom = bathroomRepository.findById(id).get();
-        bathroom.setRegister(true);
-        bathroomRepository.save(bathroom);
-    }
-
-    public void DeleteBathroom(Long id) {
-        Bathroom bathroom = bathroomRepository.findById(id).orElseThrow();
-        deletedBathroomService.AddDeletedBathroom(bathroom);
-        bathroomRepository.deleteById(id);
-    }
-
-    public void deleteUpdatedBathroom(Long id) {
-        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(id).orElseThrow();
-        updatedBathroomRepository.deleteById(id);
-    }
-
-    public void registerUpdatedBathroom(Long id) {
-        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("요청된 화장실 정보가 없습니다"));
-        updatedBathroom.setRegister(true);
-        updatedBathroomRepository.save(updatedBathroom);
-
-        Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).orElseThrow(() -> new IllegalArgumentException("요청된 화장실 정보가 없습니다"));
-        bathroom.update(updatedBathroom);
-        bathroomRepository.save(bathroom);
-        updatedBathroomRepository.deleteById(id);
-    }
-
-    public String RegisterBathroomRequest(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
+    public String addBathroom(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
         try {
             Bathroom bathroom = Bathroom.builder()
                     .title(bathroomRequestDto.getTitle())
@@ -110,59 +116,13 @@ public class BathroomService {
         }
     }
 
-    public void registerUpdatedBathroomInfo(BathroomUpdateRequestDto bathroomUpdateRequestDto) throws BaseException{
-        try {
-            Bathroom bathroom = bathroomRepository.findById(bathroomUpdateRequestDto.getBathroomId()).get();
-            UpdatedBathroom updatedBathroom = bathroomUpdateRequestDto.toUpdatedBathroom(bathroom);
-            updatedBathroomRepository.save(updatedBathroom);
-        } catch (Exception e) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+    public void saveAddedBathroom(Long bathroomId) {
+        Bathroom bathroom = bathroomRepository.findById(bathroomId).get();
+        bathroom.setRegister(true);
+        bathroomRepository.save(bathroom);
     }
 
-    public BaseResponse<List<BathroomResponseDto>> get1kmByLongitudeLatitude(Double x, Double y, Double distance) throws BaseException {
-        try {
-            LocationDto locationDto = LocationDto.builder()
-                .x(x)
-                .y(y)
-                .distance(distance)
-                .build();
-            List<BathroomResponseInterface> bathroomResponseDto = bathroomRepository.findBathroomResponseDto(locationDto.getLati_minus(),
-                locationDto.getLati_plus(), locationDto.getLong_minus(), locationDto.getLong_plus());
-            // bathroomResponseDto.stream().map()
-            List<BathroomResponseDto> bathroomResponseDtos = bathroomResponseDto.stream().map(
-                (data) -> BathroomResponseDto.builder()
-                    .bathroomId(data.getBathroomId())
-                    .latitude(data.getLatitude())
-                    .longitude(data.getLongitude())
-                    .operationTime(data.getOperationTime())
-                    .rate(data.getRate())
-                    .address(data.getAddress())
-                    .addressDetail(data.getAddressDetail())
-                    .title(data.getTitle())
-                    .imageUrl(data.getImageUrl())
-                    .isLocked(data.getIsLocked())
-                    .register(data.getRegister())
-                    .isUnisex(data.getIsUnisex())
-                    .isOpened(operationTimeValidation.checkBathroomOpen(data.getOperationTime()))
-                    .build()
-            ).collect(Collectors.toList());
-            return new BaseResponse<>(bathroomResponseDtos);
-        }catch (Exception e) {
-            throw new BaseException(DATABASE_ERROR);
-        }
-    }
-
-    public BaseResponse<CoordinateInfoDto> getAddressByCoordinate(Double x, Double y) throws BaseException{
-        try {
-            CoordinateInfoDto address = changeByGeocoderKakao.getAddressByCoordinate(x, y);
-            if(address.getAddress_name() == null) {
-                address = changeByGeocoderNaver.getAddressByCoordinate(x, y);
-            }
-            return new BaseResponse<>(address);
-        }catch (Exception e){
-            throw new BaseException(DATABASE_ERROR);
-        }
-
+    public void removeNotAddedBathroom(Long bathroomId) {
+        bathroomRepository.deleteById(bathroomId);
     }
 }

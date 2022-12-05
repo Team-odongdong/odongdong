@@ -2,6 +2,7 @@ package com.graduate.odondong.service.BathroomService;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.DeletedBathroom;
+import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.DeletedBathroomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,10 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class DeletedBathroomService {
-	
+
+	private final BathroomRepository bathroomRepository;
 	private final DeletedBathroomRepository deletedBathroomRepository;
-	
-	public void AddDeletedBathroom(Bathroom bathroom) {
+
+	public void addDeletedBathroom(Long bathroomId) {
+		Bathroom bathroom = bathroomRepository.findById(bathroomId).orElseThrow();
 		DeletedBathroom deletedBathroom = DeletedBathroom.builder()
 				.title(bathroom.getTitle())
 				.isUnisex(bathroom.getIsUnisex())
