@@ -29,24 +29,49 @@ public class BathroomController {
 	private final BathroomService bathroomService;
 	private final AwsS3Service awsS3Service;
 
+	/**
+	 * 현재 위치 주변 모든 화장실 정보 조회 api
+	 * [GET] /api/bathroom/address
+	 **/
 	@ResponseBody
-	@GetMapping("/admin/bathroom/all")
-	public List<BathroomResponseInterface> AllBathroomList() {
-		return bathroomService.bathroomList();
-
+	@GetMapping("/api/bathroom/address")
+	public BaseResponse<CoordinateInfoDto> findAllBathroomsFromCoordinate(HttpServletRequest request,
+																		  @RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
+		try {
+			return bathroomService.getAddressByCoordinate(x, y);
+		} catch (BaseException e) {
+			writeExceptionWithRequest(e, request);
+			return new BaseResponse<>(e.getStatus());
+		}
 	}
 
+	/**
+	 * 현재 위치 주변 지정 거리 반경 화장실 정보 조회 api
+	 * [GET] /api/bathroom/list
+	 **/
 	@ResponseBody
-	@GetMapping("/admin/bathroom/registered")
-	public List<Bathroom> RegisterBathroomList() {
-		return bathroomService.RegisterBathroomList();
+	@GetMapping("/api/bathroom/list")
+	public BaseResponse<List<BathroomResponseDto>> findBathroomsAroundDistanceFromCoordinate(HttpServletRequest request,
+																							 @RequestParam("longitude") Double x, @RequestParam("latitude") Double y,
+																							 @RequestParam("distance") Double distance) {
+		try {
+			return bathroomService.get1kmByLongitudeLatitude(y, x, distance);
+		} catch (BaseException e) {
+			e.printStackTrace();
+			writeExceptionWithRequest(e, request);
+			return new BaseResponse<>(e.getStatus());
+		}
 	}
 
+	/**
+	 * 화장실 등록 요청 api
+	 * [POST] /api/bathroom/add
+	 **/
 	@ResponseBody
 	@PostMapping("/api/bathroom/add")
-	public BaseResponse<String> RegisterBathroomRequest(HttpServletRequest request,
-		@RequestPart BathroomRequestDto bathroomRequestDto,
-		@RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile) {
+	public BaseResponse<String> addBathroomRequest(HttpServletRequest request,
+												   @RequestPart BathroomRequestDto bathroomRequestDto,
+												   @RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile) {
 		try {
 			String bathroomImgUrl = bathroomRequestDto.getImageUrl();
 
@@ -55,7 +80,7 @@ public class BathroomController {
 				bathroomImgUrl = awsS3Service.upload(multipartFile, dirName);
 			}
 			return new BaseResponse<String>(
-				bathroomService.RegisterBathroomRequest(bathroomRequestDto, bathroomImgUrl));
+					bathroomService.RegisterBathroomRequest(bathroomRequestDto, bathroomImgUrl));
 		} catch (BaseException e) {
 			e.printStackTrace();
 			writeExceptionWithRequest(e, request);
@@ -63,9 +88,13 @@ public class BathroomController {
 		}
 	}
 
+	/**
+	 * 화장실 정보 수정 요청 api
+	 * [POST] /api/bathroom/edit
+	 **/
 	@ResponseBody
 	@PostMapping("/api/bathroom/edit")
-	public BaseResponse<BaseResponseStatus> postUpdatedBathroomRequest(HttpServletRequest request, @RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
+	public BaseResponse<BaseResponseStatus> modifyBathroomRequest(HttpServletRequest request, @RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
 		try {
 			bathroomService.registerUpdatedBathroomInfo(bathroomUpdateRequestDto);
 			return new BaseResponse<>(SUCCESS);
@@ -75,70 +104,89 @@ public class BathroomController {
 		}
 	}
 
+	/**
+	 * 모든 화장실 정보 조회 api
+	 * [GET] /admin/bathroom/all
+	 **/
+	@ResponseBody
+	@GetMapping("/admin/bathroom/all")
+	public List<BathroomResponseInterface> findAllBathrooms() {
+		return bathroomService.bathroomList();
+
+	}
+
+	/**
+	 * 등록된 화장실 정보 조회 api
+	 * [GET] /admin/bathroom/registered
+	 **/
+	@ResponseBody
+	@GetMapping("/admin/bathroom/registered")
+	public List<Bathroom> findAddedBathrooms() {
+		return bathroomService.RegisterBathroomList();
+	}
+
+	/**
+	 * 등록 요청된 화장실 정보 조회 api
+	 * [GET] /admin/bathroom/not-registered
+	 **/
 	@GetMapping("/admin/bathroom/not-registered")
-	public String NotRegisterBathroomList(Model model) {
+	public String findNotAddedBathrooms(Model model) {
 		List<Bathroom> bathrooms = bathroomService.NotRegisterBathroomList();
 		model.addAttribute("bathrooms", bathrooms);
 		return "register";
 	}
 
-	@PostMapping("/admin/bathroom/register")
-	public String RegisterBathroom(@RequestParam("id") Long id) {
-		bathroomService.UpdateBathroom(id);
-		return "redirect:/not-register-bathroom";
-	}
-
+	/**
+	 * 수정 요청된 화장실 정보 조회 api
+	 * [GET] /admin/bathroom/not-edited
+	 **/
 	@GetMapping("/admin/bathroom/not-edited")
-	public String getNotEditedBathroomList(Model model) {
+	public String findNotModifiedBathrooms(Model model) {
 		List<UpdatedBathroom> updatedBathrooms = bathroomService.notEditBathroomList();
 		model.addAttribute("updatedBathrooms", updatedBathrooms);
 		return "edit";
 	}
 
+	/**
+	 * 화장실 등록 요청 승인 api
+	 * [POST] /admin/bathroom/register
+	 **/
+	@PostMapping("/admin/bathroom/register")
+	public String acceptBathroomAdd(@RequestParam("id") Long id) {
+		bathroomService.UpdateBathroom(id);
+		return "redirect:/not-register-bathroom";
+	}
+
+	/**
+	 * 화장실 수정 요청 승인 api
+	 * [POST] /admin/bathroom/edit
+	 **/
 	@PostMapping("/admin/bathroom/edit")
-	public String postUpdatedBathroom(HttpServletRequest request, @RequestParam("id") Long id) {
+	public String acceptBathroomModify(HttpServletRequest request, @RequestParam("id") Long id) {
 			bathroomService.registerUpdatedBathroom(id);
 			return "redirect:/admin/bathroom/not-edited";
 	}
 
+	/**
+	 * 화장실 삭제 api
+	 * [DELETE] /admin/bathroom/edit
+	 **/
 	@DeleteMapping("/admin/bathroom/delete")
 	@ResponseBody
-	public String DeleteBathroom(@RequestParam("id") Long id) {
+	public String removeNotAddedBathroom(@RequestParam("id") Long id) {
 		bathroomService.DeleteBathroom(id);
 		return "Delete";
 	}
 
+	/**
+	 * 화장실 수정 반려 api
+	 * [DELETE] /admin/bathroom/edit
+	 **/
 	@DeleteMapping("/admin/bathroom/delete-updated")
 	@ResponseBody
-	public String deleteUpdatedBathroom(@RequestParam("id") Long id) {
+	public String removeNotModifiedBathroom(@RequestParam("id") Long id) {
 		bathroomService.deleteUpdatedBathroom(id);
 		return "deleteUpdated";
-	}
-
-	@ResponseBody
-	@GetMapping("/api/bathroom/address")
-	public BaseResponse<CoordinateInfoDto> AllAddressInfo(HttpServletRequest request,
-		@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
-		try {
-			return bathroomService.getAddressByCoordinate(x, y);
-		} catch (BaseException e) {
-			writeExceptionWithRequest(e, request);
-			return new BaseResponse<>(e.getStatus());
-		}
-	}
-
-	@ResponseBody
-	@GetMapping("/api/bathroom/list")
-	public BaseResponse<List<BathroomResponseDto>> get1kmBathroom(HttpServletRequest request,
-		@RequestParam("longitude") Double x, @RequestParam("latitude") Double y,
-		@RequestParam("distance") Double distance) {
-		try {
-			return bathroomService.get1kmByLongitudeLatitude(y, x, distance);
-		} catch (BaseException e) {
-			e.printStackTrace();
-			writeExceptionWithRequest(e, request);
-			return new BaseResponse<>(e.getStatus());
-		}
 	}
 
 }

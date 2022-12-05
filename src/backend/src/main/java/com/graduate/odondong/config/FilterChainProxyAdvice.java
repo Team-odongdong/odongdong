@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
+import static com.graduate.odondong.util.ErrorLogWriter.writeExceptionWithRequest;
+
 @Aspect
 @Component
 @Slf4j
@@ -19,7 +21,7 @@ public class FilterChainProxyAdvice {
 	public void handleRequestRejectedException(ProceedingJoinPoint pjp) throws Throwable {
 		try {
 			pjp.proceed();
-		} catch (RequestRejectedException exception) {
+		} catch (RequestRejectedException e) {
 			HttpServletRequest request = (HttpServletRequest)pjp.getArgs()[0];
 			String ip = request.getHeader("X-Forwarded-For");
 			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
@@ -46,6 +48,7 @@ public class FilterChainProxyAdvice {
 			if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
 				ip = request.getRemoteAddr();
 			}
+			writeExceptionWithRequest(e, request);
 			log.error("ip 주소는 " + ip + "입니다");
 		}
 	}

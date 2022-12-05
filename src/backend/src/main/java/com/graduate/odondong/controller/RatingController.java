@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
 @RestController
 @RequiredArgsConstructor
 public class RatingController {
@@ -18,7 +17,7 @@ public class RatingController {
     private final RatingService ratingService;
 
     @PostMapping("/api/bathroom/rating")
-    public BaseResponse<String> postBathroomRate(@RequestBody RatingRequestDto ratingRequestDto) {
+    public BaseResponse<String> addBathroomRate(@RequestBody RatingRequestDto ratingRequestDto) {
         try {
             return new BaseResponse<>(ratingService.createRating(ratingRequestDto));
         }
