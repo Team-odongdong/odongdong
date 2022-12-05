@@ -16,7 +16,7 @@ public class UserService {
 
 	private final HttpSession httpSession;
 
-	public BaseResponse<UserProfileResponseDto> getUserProfile() {
+	public BaseResponse<UserProfileResponseDto> findUserProfile() {
 		SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
 		return new BaseResponse<>(new UserProfileResponseDto(sessionUser));
 	}

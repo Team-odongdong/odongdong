@@ -21,7 +21,7 @@ public class UserController {
 	@ResponseBody
 	@GetMapping(value = "/profile")
 	public BaseResponse<UserProfileResponseDto> kakaoOauthRedirect(){
-		return userService.getUserProfile();
+		return userService.findUserProfile();
 	}
 
 	@GetMapping(value = "/login")

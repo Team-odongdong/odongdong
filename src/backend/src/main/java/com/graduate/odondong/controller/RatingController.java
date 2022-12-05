@@ -19,7 +19,7 @@ public class RatingController {
     @PostMapping("/api/bathroom/rating")
     public BaseResponse<String> addBathroomRate(@RequestBody RatingRequestDto ratingRequestDto) {
         try {
-            return new BaseResponse<>(ratingService.createRating(ratingRequestDto));
+            return new BaseResponse<>(ratingService.addRating(ratingRequestDto));
         }
         catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());

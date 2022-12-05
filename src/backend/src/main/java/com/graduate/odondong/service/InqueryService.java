@@ -13,7 +13,7 @@ public class InqueryService {
 
     private final InqueryRepository inqueryRepository;
 
-    public void createInquery(String contents) {
+    public void addInquery(String contents) {
         Inquery inquery = Inquery.builder().content(contents).build();
         inqueryRepository.save(inquery);
     }
