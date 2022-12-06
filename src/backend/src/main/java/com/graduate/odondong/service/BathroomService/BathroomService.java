@@ -88,21 +88,17 @@ public class BathroomService {
         return bathroomRepository.findBathroomsByRegisterIsFalse();
     }
 
-    public BaseResponse<String> addBathroom(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) throws BaseException{
-        try {
-            Bathroom bathroom = bathroomRequestDto.toBathroom(bathroomImgUrl);
-            bathroomRepository.save(bathroom);
+    public BaseResponse<String> addBathroom(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) {
+        Bathroom bathroom = bathroomRequestDto.toBathroom(bathroomImgUrl);
+        bathroomRepository.save(bathroom);
 
-            Rating rating = bathroomRequestDto.toRating(bathroom);
-            ratingRepository.save(rating);
-            return new BaseResponse<>(SUCCESS);
-        } catch (Exception e) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+        Rating rating = bathroomRequestDto.toRating(bathroom);
+        ratingRepository.save(rating);
+        return new BaseResponse<>(SUCCESS);
     }
 
-    public void saveAddedBathroom(Long bathroomId) {
-        Bathroom bathroom = bathroomRepository.findById(bathroomId).get();
+    public void saveAddedBathroom(Long bathroomId) throws BaseException {
+        Bathroom bathroom = bathroomRepository.findById(bathroomId).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
         bathroom.setRegister(true);
         bathroomRepository.save(bathroom);
     }

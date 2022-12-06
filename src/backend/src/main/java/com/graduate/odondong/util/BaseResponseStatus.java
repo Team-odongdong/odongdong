@@ -46,8 +46,9 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_PASSWORD(false, 2031, "비밀번호 형식을 확인해주세요."),
 
     /**
-     * 3000 : Response 오류
+     * 3000 : Bathroom 오류
      */
+    NOT_FOUND_BATHROOM(false, 3000, "없는 화장실 입니다."),
 
 
     /**

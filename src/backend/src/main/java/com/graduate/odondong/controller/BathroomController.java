@@ -76,19 +76,18 @@ public class BathroomController {
 	public BaseResponse<String> addBathroomRequest(HttpServletRequest request,
 												   @RequestPart BathroomRequestDto bathroomRequestDto,
 												   @RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile) {
-		try {
-			String bathroomImgUrl = bathroomRequestDto.getImageUrl();
+		String bathroomImgUrl = bathroomRequestDto.getImageUrl();
+		String dirName = "info/";
 
-			if (multipartFile != null) {
-				String dirName = "info/";
+		if (multipartFile != null) {
+			try {
 				bathroomImgUrl = awsS3Service.upload(multipartFile, dirName);
+			} catch (BaseException e) {
+				writeExceptionWithRequest(e, request);
+				return new BaseResponse<>(e.getStatus());
 			}
-			return bathroomService.addBathroom(bathroomRequestDto, bathroomImgUrl);
-		} catch (BaseException e) {
-			e.printStackTrace();
-			writeExceptionWithRequest(e, request);
-			return new BaseResponse<>(e.getStatus());
 		}
+		return bathroomService.addBathroom(bathroomRequestDto, bathroomImgUrl);
 	}
 
 	/**
@@ -154,9 +153,13 @@ public class BathroomController {
 	 * [POST] /admin/bathroom/register
 	 **/
 	@PostMapping("/admin/bathroom/register")
-	public String acceptBathroomAdd(@RequestParam("id") Long bathroomId) {
-		bathroomService.saveAddedBathroom(bathroomId);
-		return "redirect:/not-register-bathroom";
+	public String acceptBathroomAdd(HttpServletRequest request, @RequestParam("id") Long bathroomId) {
+		try {
+			bathroomService.saveAddedBathroom(bathroomId);
+		} catch (BaseException e) {
+			writeExceptionWithRequest(e, request);
+		}
+		return "redirect:/admin/bathroom/not-edited";
 	}
 
 	/**
