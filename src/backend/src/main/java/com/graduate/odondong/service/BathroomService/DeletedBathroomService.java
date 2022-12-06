@@ -4,9 +4,12 @@ import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.DeletedBathroom;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.DeletedBathroomRepository;
+import com.graduate.odondong.util.BaseException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static com.graduate.odondong.util.BaseResponseStatus.NOT_FOUND_BATHROOM;
 
 @Service
 @RequiredArgsConstructor
@@ -16,8 +19,8 @@ public class DeletedBathroomService {
 	private final BathroomRepository bathroomRepository;
 	private final DeletedBathroomRepository deletedBathroomRepository;
 
-	public void addDeletedBathroom(Long bathroomId) {
-		Bathroom bathroom = bathroomRepository.findById(bathroomId).orElseThrow();
+	public void addDeletedBathroom(Long bathroomId) throws BaseException{
+		Bathroom bathroom = bathroomRepository.findById(bathroomId).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
 		DeletedBathroom deletedBathroom = DeletedBathroom.builder()
 				.title(bathroom.getTitle())
 				.isUnisex(bathroom.getIsUnisex())

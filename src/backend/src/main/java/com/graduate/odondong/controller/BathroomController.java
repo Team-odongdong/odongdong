@@ -183,8 +183,12 @@ public class BathroomController {
 	 **/
 	@DeleteMapping("/admin/bathroom/delete")
 	@ResponseBody
-	public String removeNotAddedBathroom(@RequestParam("id") Long bathroomId) {
-		deletedBathroomService.addDeletedBathroom(bathroomId);
+	public String removeNotAddedBathroom(HttpServletRequest request, @RequestParam("id") Long bathroomId) {
+		try {
+			deletedBathroomService.addDeletedBathroom(bathroomId);
+		} catch (BaseException e) {
+			writeExceptionWithRequest(e, request);
+		}
 		bathroomService.removeNotAddedBathroom(bathroomId);
 		return "Delete";
 	}
