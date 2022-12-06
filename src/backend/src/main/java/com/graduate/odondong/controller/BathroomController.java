@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.graduate.odondong.domain.UpdatedBathroom;
 import com.graduate.odondong.dto.*;
 import com.graduate.odondong.service.BathroomService.DeletedBathroomService;
