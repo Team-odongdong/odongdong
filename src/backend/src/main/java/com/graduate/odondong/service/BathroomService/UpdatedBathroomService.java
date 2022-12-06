@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
+import static com.graduate.odondong.util.BaseResponseStatus.NOT_FOUND_BATHROOM;
 
 @Service
 @RequiredArgsConstructor
@@ -27,28 +28,24 @@ public class UpdatedBathroomService {
     }
 
     public void addUpdatedBathroom(BathroomUpdateRequestDto bathroomUpdateRequestDto) throws BaseException {
-        try {
-            Bathroom bathroom = bathroomRepository.findById(bathroomUpdateRequestDto.getBathroomId()).get();
-            UpdatedBathroom updatedBathroom = bathroomUpdateRequestDto.toUpdatedBathroom(bathroom);
-            updatedBathroomRepository.save(updatedBathroom);
-        } catch (Exception e) {
-            throw new BaseException(DATABASE_ERROR);
-        }
+        Bathroom bathroom = bathroomRepository.findById(bathroomUpdateRequestDto.getBathroomId()).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
+        UpdatedBathroom updatedBathroom = bathroomUpdateRequestDto.toUpdatedBathroom(bathroom);
+        updatedBathroomRepository.save(updatedBathroom);
     }
 
-    public void saveModifiedBathroom(Long updatedBathroomId) {
-        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(updatedBathroomId).orElseThrow(() -> new IllegalArgumentException("요청된 화장실 정보가 없습니다"));
+    public void saveModifiedBathroom(Long updatedBathroomId) throws BaseException{
+        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(updatedBathroomId).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
         updatedBathroom.setRegister(true);
         updatedBathroomRepository.save(updatedBathroom);
 
-        Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).orElseThrow(() -> new IllegalArgumentException("요청된 화장실 정보가 없습니다"));
+        Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
         bathroom.update(updatedBathroom);
         bathroomRepository.save(bathroom);
         updatedBathroomRepository.deleteById(updatedBathroomId);
     }
 
-    public void removeNotModifiedBathroom(Long updatedBathroomId) {
-        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(updatedBathroomId).orElseThrow();
+    public void removeNotModifiedBathroom(Long updatedBathroomId) throws BaseException{
+        UpdatedBathroom updatedBathroom = updatedBathroomRepository.findById(updatedBathroomId).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
         updatedBathroomRepository.deleteById(updatedBathroomId);
     }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.graduate.odondong.domain.UpdatedBathroom;
 import com.graduate.odondong.dto.*;
 import com.graduate.odondong.service.BathroomService.DeletedBathroomService;
@@ -168,8 +169,12 @@ public class BathroomController {
 	 **/
 	@PostMapping("/admin/bathroom/edit")
 	public String acceptBathroomModify(HttpServletRequest request, @RequestParam("id") Long updatedBathroomId) {
+		try {
 			updatedBathroomService.saveModifiedBathroom(updatedBathroomId);
-			return "redirect:/admin/bathroom/not-edited";
+		} catch (BaseException e){
+			writeExceptionWithRequest(e, request);
+		}
+		return "redirect:/admin/bathroom/not-edited";
 	}
 
 	/**
@@ -190,8 +195,12 @@ public class BathroomController {
 	 **/
 	@DeleteMapping("/admin/bathroom/delete-updated")
 	@ResponseBody
-	public String removeNotModifiedBathroom(@RequestParam("id") Long updatedBathroomId) {
-		updatedBathroomService.removeNotModifiedBathroom(updatedBathroomId);
+	public String removeNotModifiedBathroom(HttpServletRequest request, @RequestParam("id") Long updatedBathroomId) {
+		try {
+			updatedBathroomService.removeNotModifiedBathroom(updatedBathroomId);
+		} catch (BaseException e) {
+			writeExceptionWithRequest(e, request);
+		}
 		return "deleteUpdated";
 	}
 
