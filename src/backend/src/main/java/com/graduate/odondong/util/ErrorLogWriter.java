@@ -1,9 +1,10 @@
 package com.graduate.odondong.util;
 
-import lombok.extern.slf4j.Slf4j;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ErrorLogWriter {
@@ -39,8 +40,20 @@ public class ErrorLogWriter {
      * @param exception
      * @param request
      */
-    public static void writeExceptionWithRequest(Exception exception, HttpServletRequest request) {
-        log.error("{} - Authorization: {} | uri: {} {} | query string: {}", exception.getMessage(), request.getHeader("Authorization"),
+    public static void writeExceptionWithRequest(BaseException exception, HttpServletRequest request) {
+        log.error("{} clientIp: {} - Authorization: {} | uri: {} {} | query string: {}", exception.getStatus().getMessage(), getClientIp(request), request.getHeader("Authorization"),
+                request.getMethod(), request.getRequestURI(), parameterMapToString(request.getParameterMap()));
+    }
+
+    /**
+     * 로그에 request 정보, exception 메세지를 남긴다.
+     * Authorization 헤더가 없는 경우
+     * AOP 에러 로그
+     * @param exception
+     * @param request
+     */
+    public static void writeExceptionWithAopRequest(Exception exception, HttpServletRequest request) {
+        log.error("{} clientIp: {} - Authorization: {} | uri: {} {} | query string: {}", exception.getMessage(), getClientIp(request), request.getHeader("Authorization"),
                 request.getMethod(), request.getRequestURI(), parameterMapToString(request.getParameterMap()));
     }
 
@@ -71,5 +84,35 @@ public class ErrorLogWriter {
                 .map(p -> p.getKey() + "=" + String.join(",", p.getValue()))
                 .reduce((p1, p2) -> p1 + "&" + p2)
                 .orElse("");
+    }
+
+    private static String getClientIp(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-Real-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("X-RealIP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("REMOTE_ADDR");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        return ip;
     }
 }

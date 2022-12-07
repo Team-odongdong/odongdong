@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.context.request.RequestContextListener;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @EnableJpaAuditing
 @SpringBootApplication
 public class OdondongApplication {

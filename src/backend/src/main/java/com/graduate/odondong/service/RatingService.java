@@ -23,7 +23,7 @@ import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
 public class RatingService {
     private final BathroomRepository bathroomRepository;
     private final RatingRepository ratingRepository;
-    public String createRating(RatingRequestDto ratingRequestDto) throws BaseException {
+    public String addRating(RatingRequestDto ratingRequestDto) throws BaseException {
         try {
             Rating rating = Rating.builder()
                     .score(ratingRequestDto.getScore())
