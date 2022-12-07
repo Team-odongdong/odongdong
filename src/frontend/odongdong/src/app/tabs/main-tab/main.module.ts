@@ -9,6 +9,8 @@ import { BathroomDetailComponent } from 'src/app/components/bathroom-detail/bath
 import { BathroomDetailComponentModule } from 'src/app/components/bathroom-detail/bathroom-detail.module';
 import { AddBathroomComponent } from 'src/app/modals/add-bathroom/add-bathroom.component';
 import { AddBathroomComponentModule } from 'src/app/modals/add-bathroom/add-bathroom.module';
+import { DataFilterComponentModule } from 'src/app/components/data-filter/data-filter.module';
+import { DataFilterComponent } from 'src/app/components/data-filter/data-filter.component';
 
 @NgModule({
   imports: [
@@ -18,8 +20,9 @@ import { AddBathroomComponentModule } from 'src/app/modals/add-bathroom/add-bath
     MainPageRoutingModule,
     AddBathroomComponentModule,
     BathroomDetailComponentModule,
+    DataFilterComponentModule,
   ],
   declarations: [MainPage],
-  entryComponents: [BathroomDetailComponent, AddBathroomComponent],
+  entryComponents: [BathroomDetailComponent, AddBathroomComponent, DataFilterComponent],
 })
 export class MainPageModule {}

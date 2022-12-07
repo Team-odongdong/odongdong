@@ -1,0 +1,26 @@
+* {
+    z-index: 5;
+}
+
+.marker-filter {
+    &__container {
+        position: fixed;
+        top: 2%;
+        right: 2%;
+
+        width: fit-content;
+        height: max-content;
+
+        text-align: right;
+
+        border-radius: 10px;
+    }
+
+    &__filter {
+        font-size: 12px;
+
+        &--item {
+            font-size: 12px;
+        }
+    }
+}
