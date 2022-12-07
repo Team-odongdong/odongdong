@@ -95,17 +95,21 @@ def formatting(str):
 
 
 if __name__ == "__main__":
-    flag = True
     conn = pymysql.connect(
-        host='host', user='user',
-        password='password', db='dbName', charset='utf8')
+        host='**', user='**',
+        password='**', db='**', charset='utf8')
     cur = conn.cursor()
-    selectQuery = "SELECT * FROM bathroom LIMIT 2;"
+    selectQuery = "SELECT * FROM bathroom LIMIT 10;"
     cur.execute(selectQuery)
     resultSet = cur.fetchall()
     for result in resultSet :
+        flag = True
         formatTime = result[10]
         formatTime = formatting(formatTime)
+        
+        if flag == False :
+            print(result[0], end=",")
+
         updateQuery = "UPDATE bathroom SET operation_time = %s WHERE bathroom_id = %s;"
         vals = (formatTime, int(result[0]) )
         cur.execute(updateQuery, vals)
