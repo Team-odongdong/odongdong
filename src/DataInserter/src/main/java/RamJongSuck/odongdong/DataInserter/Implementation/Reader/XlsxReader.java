@@ -59,8 +59,8 @@ public class XlsxReader implements DataReader {
 						continue;
 					}
 
-
-					map.put(key, cellValue);
+					if(!map.containsKey(key))
+						map.put(key, cellValue);
 				}
 				index++;
 			}
