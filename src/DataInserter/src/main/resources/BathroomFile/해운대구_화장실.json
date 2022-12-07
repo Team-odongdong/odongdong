@@ -1,0 +1,394 @@
+[
+  {
+    "toiletName": "해운대해수욕장 1호 공중화장실 (Haeundae Haesuyokjang Public Toilet No.1)",
+    "tel": null,
+    "address": "우동 621-6(해운대관광안내소 옆) (621-6, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.15893",
+    "lng": "129.15969"
+  },
+  {
+    "toiletName": "해운대해수욕장 2호 공중화장실 (Haeundae Haesuyokjang Public Toilet No.2)",
+    "tel": null,
+    "address": "우동 622-26(공영주차장 인근) (622-26, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.15855",
+    "lng": "129.15795"
+  },
+  {
+    "toiletName": " 해운대해수욕장 3호 공중화장실 (Haeundae Haesuyokjang Public Toilet No.3)",
+    "tel": null,
+    "address": "우동 703-5(이파란산책로 인근) (703-5, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.15762437622188",
+    "lng": "129.155989056757"
+  },
+  {
+    "toiletName": "해운대해수욕장 이벤트광장 모바일 공중화장실 (Haeundae Haesuyokjang Event Gwangjang Mobile Public Toilet)",
+    "tel": null,
+    "address": "중동 1411-23(이벤트광장) (1411-23, Jung-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.159490303621645",
+    "lng": "129.16259060912094"
+  },
+  {
+    "toiletName": " 해운대해수욕장 LCT 소공원 공중화장실 (Haeundae Haesuyokjang LCT Sogongwon Public Toilet) ",
+    "tel": null,
+    "address": "해운대해변로298번길 34(LCT 소공원 내) (34, Haeundaehaebyeon-ro 298beon-gil)",
+    "charge": "",
+    "lat": "35.15995",
+    "lng": "129.16821"
+  },
+  {
+    "toiletName": " 송정해수욕장 1호 공중화장실 (Songjeong Haesuyokjang Public Toilet No.1)",
+    "tel": null,
+    "address": "송정동 산52-1(죽도공원입구) (San 52-1, Songjeong-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.17980",
+    "lng": "129.20522"
+  },
+  {
+    "toiletName": " 송정해수욕장 2호 공중화장실 (Songjeong Haesuyokjang Public Toilet No.2)",
+    "tel": null,
+    "address": " 송정해변로 62(송정관광안내소 뒤편) (62, Songjeonghaebyeon-ro)",
+    "charge": "",
+    "lat": "35.17944",
+    "lng": "129.19953"
+  },
+  {
+    "toiletName": " 송정해수욕장 3호 공중화장실 (Songjeong Haesuyokjang Public Toilet No.3)",
+    "tel": null,
+    "address": "송정해변로 102(광어골 지하차도 옆편) (102, Songjeonghaebyeon-ro)",
+    "charge": "",
+    "lat": "35.17634",
+    "lng": "129.19717"
+  },
+  {
+    "toiletName": "동백공원 산정 공중화장실 (Dongbaek Gongwon Sanjeong Public Toilet)",
+    "tel": null,
+    "address": "우동 708-3(최치원 광장 산책로) (708-3, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.154162",
+    "lng": "129.152094"
+  },
+  {
+    "toiletName": "동백공원 생태 공중화장실 (Dongbaek Gongwon Saengtae Public Toilet)",
+    "tel": null,
+    "address": "우동 721(동백공원 공영주차장) (721, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.15618",
+    "lng": "129.15210"
+  },
+  {
+    "toiletName": " 동백공원 대체 공중화장실 (Dongbaek Gongwon Daeche Public Toilet)",
+    "tel": null,
+    "address": " 우동 721(누리마루 주차장 입구) (721, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.15403",
+    "lng": "129.15102"
+  },
+  {
+    "toiletName": " 동백유원지 공중화장실 (Dongbaek Yuwonji Public Toilet)",
+    "tel": null,
+    "address": "해운대해변로 220 (송림 공원주차장) (220, Haeundaehaebyeon-ro)",
+    "charge": "",
+    "lat": "35.15840",
+    "lng": "129.15542"
+  },
+  {
+    "toiletName": " 청사포공원 해월정 공중화장실 (Cheongsapo Gongwon Haewoljeong Public Toilet)",
+    "tel": null,
+    "address": "중동 산42-25(해월정 인근) (San 42-25, Jung-dong, Haeundae-gu) ",
+    "charge": "",
+    "lat": "35.157091",
+    "lng": "129.182150"
+  },
+  {
+    "toiletName": " 청사포공원 어울마당 공중화장실 (Cheongsapo Gongwon Eoulmadang Public Toilet)",
+    "tel": null,
+    "address": " 중동 670-1(어울마당 내) (670-1, Jung-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.15971",
+    "lng": "129.18463"
+  },
+  {
+    "toiletName": "올림픽공원 공중화장실(Olympic Gongwon Public Toilet)",
+    "tel": null,
+    "address": "우동 1413-5(올림픽공원 내) (1413-5, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.16467",
+    "lng": "129.13388"
+  },
+  {
+    "toiletName": "청사포 다릿돌 전망대 공중화장실 (Cheongsapo Daritdol Jeonmangdae Public Toilet) ",
+    "tel": null,
+    "address": "청사포로 167 (167, Cheongsapo-ro)",
+    "charge": "",
+    "lat": "35.163270533309586",
+    "lng": "129.195303080395"
+  },
+  {
+    "toiletName": "오산공원 공중화장실(Osan Gongwon Public Toilet)",
+    "tel": null,
+    "address": " 중1동 1762 (1762, Jung-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.16711792193767",
+    "lng": "129.173244408122"
+  },
+  {
+    "toiletName": "부흥공원 공중화장실(Buheung Gongwon Public Toilet)",
+    "tel": null,
+    "address": " 좌2동 1325 (1325, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.16926",
+    "lng": "129.18165"
+  },
+  {
+    "toiletName": "장산공원 공중화장실(Jangsan Gongwon Public Toilet)",
+    "tel": null,
+    "address": "좌3동 1371-1 (1371-1, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.17557",
+    "lng": "129.16627"
+  },
+  {
+    "toiletName": "APEC나루공원1호 공중화장실 (APEC Naru Gongwon Public Toilet No.1) ",
+    "tel": null,
+    "address": "우2동 1494 (1494, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.16856",
+    "lng": "129.12747"
+  },
+  {
+    "toiletName": "APEC나루공원2호 공중화장실(APEC Naru Gongwon Public Toilet No.2) ",
+    "tel": null,
+    "address": "우2동 1494 (1494, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.17147",
+    "lng": "129.12539"
+  },
+  {
+    "toiletName": "초록공원 공중화장실(Chorok Gongwon Public Toilet)",
+    "tel": null,
+    "address": "반여동 산110-2 (San 110-2, Banyeo-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.203452",
+    "lng": "129.136736"
+  },
+  {
+    "toiletName": "아시아선수촌공원 공중화장실(Asia Seonsuchon Gongwon Public Toilet) ",
+    "tel": null,
+    "address": "반여1동 1634 (1634, Banyeo-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.202209",
+    "lng": "129.122677"
+  },
+  {
+    "toiletName": "반송공원 공중화장실(Bansong Gongwon Public Toilet)",
+    "tel": null,
+    "address": "반송동 844-2 (844-2, Bansong-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.22118",
+    "lng": "129.16210"
+  },
+  {
+    "toiletName": "명장공원(반여저류) 공중화장실 (Myeongjang Gongwon Public Toilet)",
+    "tel": null,
+    "address": "반여4동 604 (604, Banyeo-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.209360149714904",
+    "lng": "129.11440847898004"
+  },
+  {
+    "toiletName": "산들공원 공중화장실 (Sandeul Gongwon Public Toilet)",
+    "tel": null,
+    "address": "좌4동 1397 (1397, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.17941",
+    "lng": "129.17253"
+  },
+  {
+    "toiletName": "미리내공원 공중화장실 (Mirinae Gongwon Public Toilet)",
+    "tel": null,
+    "address": "좌4동 1416 (1416, Jwa-dong, Haeundae-gu) ",
+    "charge": "",
+    "lat": "35.17827",
+    "lng": "129.17914"
+  },
+  {
+    "toiletName": "와우공원 공중화장실 (Wau Gongwon Public Toilet)",
+    "tel": null,
+    "address": "좌2동 1452 (1452, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.16504",
+    "lng": "129.18120"
+  },
+  {
+    "toiletName": "햇살공원 공중화장실 (Haetsal Gongwon Public Toilet)",
+    "tel": null,
+    "address": "좌1동 1293 (1293, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.17536",
+    "lng": "129.17464"
+  },
+  {
+    "toiletName": "견우공원 공중화장실 (Gyeonu Gongwon Public Toilet)",
+    "tel": null,
+    "address": "좌1동 1311 (1311, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.17152",
+    "lng": "129.17989"
+  },
+  {
+    "toiletName": "푸른공원 공중화장실 (Pureun Gongwon Public Toilet)",
+    "tel": null,
+    "address": "좌3동 1349 (1349, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.17198",
+    "lng": "129.16837"
+  },
+  {
+    "toiletName": "꿈나무공원 공중화장실 (Kkumnamu Gongwon Public Toilet)",
+    "tel": null,
+    "address": "좌2동 1336 (1336, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.166349",
+    "lng": "129.177681"
+  },
+  {
+    "toiletName": "꽃다래공원 공중화장실 (Kkotdarae Gongwon Public Toilet)",
+    "tel": null,
+    "address": "반송동 산51-120 (San 51-120, Bansong-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.219453",
+    "lng": "129.156083"
+  },
+  {
+    "toiletName": "꽃다래공원 공중화장실 (Kkotdarae Gongwon Public Toilet)",
+    "tel": null,
+    "address": "반송동 산51-120 (San 51-120, Bansong-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.21858",
+    "lng": "129.15710"
+  },
+  {
+    "toiletName": "대천공원1호 공중화장실(신시가지근린공원 2-1호) (Daecheon Gongwon Public Toilet No.1)",
+    "tel": null,
+    "address": "좌동 1381 (1381, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.18098",
+    "lng": "129.16725"
+  },
+  {
+    "toiletName": "대천공원2호 공중화장실 (신시가지근린공원 2-2호) (Daecheon Gongwon Public Toilet No.2)",
+    "tel": null,
+    "address": "좌동 1390 (1390, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.18133",
+    "lng": "129.16786"
+  },
+  {
+    "toiletName": "대천공원3호 공중화장실 (Daecheon Gongwon Public Toilet No.3)",
+    "tel": null,
+    "address": "좌4동 1384 (1384, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.178648",
+    "lng": "129.168037"
+  },
+  {
+    "toiletName": "대천공원4호 공중화장실 (Daecheon Gongwon Public Toilet No.4)",
+    "tel": null,
+    "address": "좌4동 1393-1 (1393-1, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.179694",
+    "lng": "129.168659"
+  },
+  {
+    "toiletName": "장산산림욕장 1호 공중화장실(Jangsan Sallimnyokjang Public Toilet No.1)",
+    "tel": null,
+    "address": "좌동 산78-1 (San 78-1, Jwa-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.18404",
+    "lng": "129.16531"
+  },
+  {
+    "toiletName": "장산산림욕장 2호 공중화장실 (Jangsan Sallimnyokjang Public Toilet No.2)",
+    "tel": null,
+    "address": "우동 산2-4 (San 2-4, U-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.18733",
+    "lng": "129.16310"
+  },
+  {
+    "toiletName": "장산산림욕장 3호 공중화장실 (Jangsan Sallimnyokjang Public Toilet No.3)",
+    "tel": null,
+    "address": "장산로 331-39 (331-39, Jangsan-ro)",
+    "charge": "",
+    "lat": "35.183102",
+    "lng": "129.166022"
+  },
+  {
+    "toiletName": "우동성불사임도 공중화장실 (U-dong Seongbulsa Imdo Public Toilet)",
+    "tel": null,
+    "address": "재송동 산74-1번지 (San 74-1, Jaesong-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.18158",
+    "lng": "129.13721"
+  },
+  {
+    "toiletName": "장산 억새밭 공중화장실 (Jangsan Eoksaebat Public Toilet)",
+    "tel": null,
+    "address": "반여동 산4-1번지 (San 4-1, Banyeo-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.203273",
+    "lng": "129.152498"
+  },
+  {
+    "toiletName": "반여산림생태공원 공중화장실 (Banyeo Sallim Saengtae Gongwon Public Toilet)",
+    "tel": null,
+    "address": "반여동 산4-17번지 ( San 4-17, Banyeo-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.19759",
+    "lng": "129.13808"
+  },
+  {
+    "toiletName": "수영강 세월교 공중화장실(Suyeonggang Sewolgyo Public Toilet)",
+    "tel": null,
+    "address": "반여동 1502-16 (1502-16, Banyeo-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.2044385932428",
+    "lng": "129.11940834180652"
+  },
+  {
+    "toiletName": "수영강관리사무소 공중화장실 (Suyeonggang Gwallisamuso Public Toilet)",
+    "tel": null,
+    "address": "삼어로 94-141 (94-141, Sameo-ro)",
+    "charge": "",
+    "lat": "35.21074",
+    "lng": "129.12034"
+  },
+  {
+    "toiletName": "수영강변 공중화장실 (Suyeonggangbyeon Public Toilet)",
+    "tel": null,
+    "address": "반여동 1502-16 (1502-16, Banyeo-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.21091",
+    "lng": "129.12149"
+  },
+  {
+    "toiletName": "수영강 동천교 공중화장실 (Suyeonggang Dongcheongyo Public Toilet",
+    "tel": null,
+    "address": "석대동 591-6 (591-6, Seokdae-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.21759",
+    "lng": "129.11884"
+  },
+  {
+    "toiletName": "석대천 공중화장실 (Seokdaecheon Public Toilet)",
+    "tel": null,
+    "address": "반여동 1502-49 (1502-49, Banyeo-dong, Haeundae-gu)",
+    "charge": "",
+    "lat": "35.21723789869253",
+    "lng": "129.12502723580747"
+  }
+]

@@ -32,13 +32,44 @@ public class DataInserterApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
+		// xlsxFileInsert();
+		jsonFileInsert();
+	}
+
+	private void jsonFileInsert() {
+		Map<String, String> bathroomMap = new HashMap<>();
+		bathroomMap.put("toiletName", "title");
+		bathroomMap.put("address", "address");
+		bathroomMap.put("lat", "latitude");
+		bathroomMap.put("lng", "longitude");
+
+		Map<String, DatabaseType> databaseTypeMap = new HashMap<>();
+		databaseTypeMap.put("title", DatabaseType.VARCHAR);
+		databaseTypeMap.put("address", DatabaseType.VARCHAR);
+		databaseTypeMap.put("latitude", DatabaseType.FLOAT);
+		databaseTypeMap.put("longitude", DatabaseType.FLOAT);
+		databaseTypeMap.put("address_detail", DatabaseType.VARCHAR);
+
+		Consumer<Map<String, String>> mapConsumer = (map) -> {
+			try {
+				AddressInfoDto address = coordinateByGeocoderKakao.getCoordinateByAddress(map.get("address"));
+				map.put("address_detail", address.getAddress_detail());
+			} catch (JSONException e) {
+				throw new RuntimeException(e);
+			}
+		};
+
+		DataConfig dataConfig = new BathroomConfig("해운대구_화장실.json", bathroomMap, DomainType.bathroom, databaseTypeMap, mapConsumer);
+		queryRunner.runQuery(dataConfig);
+	}
+
+	private void xlsxFileInsert() {
 		Map<String, String> bathroomMap = new HashMap<>();
 		bathroomMap.put("화장실명", "title");
 		bathroomMap.put("소재지도로명주소", "address");
 		bathroomMap.put("소재지지번주소", "address");
 		bathroomMap.put("남녀공용화장실여부", "is_unisex");
 		bathroomMap.put("개방시간", "operation_time");
-
 
 		Map<String, DatabaseType> databaseTypeMap = new HashMap<>();
 		databaseTypeMap.put("title", DatabaseType.VARCHAR);
@@ -62,6 +93,5 @@ public class DataInserterApplication implements CommandLineRunner {
 
 		DataConfig dataConfig = new BathroomConfig("test.xlsx", bathroomMap, DomainType.bathroom, databaseTypeMap, mapConsumer);
 		queryRunner.runQuery(dataConfig);
-
 	}
 }

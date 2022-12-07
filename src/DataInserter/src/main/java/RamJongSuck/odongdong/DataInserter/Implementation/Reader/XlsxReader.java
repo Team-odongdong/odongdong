@@ -15,14 +15,14 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import RamJongSuck.odongdong.DataInserter.Interface.DataReader;
 import lombok.Getter;
 
 @Getter
-public class XlsxReader {
+public class XlsxReader implements DataReader {
 
 	List<Map<String,String>> mapList = new ArrayList<>();
 	public XlsxReader(String filePath, Map<String, String> fileToDatabaseMap) {
-
 		readXlsxFile(filePath, fileToDatabaseMap);
 	}
 

@@ -15,7 +15,6 @@ public class BathroomConfig implements DataConfig {
 	Map<String, String> changeMap;
 	Consumer<Map<String, String>> mapConsumer;
 	DomainType domainType;
-
 	Map<String, DatabaseType> databaseColumnTypeMap;
 
 	public BathroomConfig(String fileName, Map<String, String> changeMap, DomainType domainType,

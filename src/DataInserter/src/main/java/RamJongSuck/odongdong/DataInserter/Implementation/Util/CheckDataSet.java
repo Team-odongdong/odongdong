@@ -2,6 +2,7 @@ package RamJongSuck.odongdong.DataInserter.Implementation.Util;
 
 import org.springframework.stereotype.Component;
 
+import RamJongSuck.odongdong.DataInserter.Implementation.DataSet.JsonDataSet;
 import RamJongSuck.odongdong.DataInserter.Implementation.DataSet.XlsxDataSet;
 import RamJongSuck.odongdong.DataInserter.Interface.DataConfig;
 import RamJongSuck.odongdong.DataInserter.Interface.DataSet;
@@ -14,7 +15,7 @@ public class CheckDataSet {
 		if(dataConfig.getFileType().equals(FileType.XLSX)) {
 			return new XlsxDataSet(dataConfig);
 		} else if (dataConfig.getFileType().equals(FileType.JSON)) {
-			return null;
+			return new JsonDataSet(dataConfig);
 		} else if (dataConfig.getFileType().equals(FileType.XML)) {
 			return null;
 		}
