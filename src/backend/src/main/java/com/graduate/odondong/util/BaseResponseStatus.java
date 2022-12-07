@@ -18,6 +18,11 @@ public enum BaseResponseStatus {
     NOT_FOUND_BATHROOM(false, 2000, "없는 화장실 입니다."),
 
     /**
+     *  3000 : User 오류
+     */
+    USERS_EMPTY_USER_ID(false, 3010, "유저 아이디 값을 확인해주세요."),
+
+    /**
      * 4000 : Database, Server 오류
      */
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
