@@ -40,7 +40,7 @@ public class BulkInsertPublicBathroom {
 	/**
 	 * @Param Map<String, String> : 바꾸려는 ColumnName -> DB ColumnName
 	 * */
-	public void BulkInsert(String fileName, Map<String, BulkInsertEnum> changeMap) {
+	public void bulkInsert(String fileName, Map<String, BulkInsertEnum> changeMap) {
 
 		List<Bathroom> bathroomList = new ArrayList<>();
 

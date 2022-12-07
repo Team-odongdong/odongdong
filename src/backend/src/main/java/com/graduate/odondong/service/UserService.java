@@ -26,9 +26,8 @@ public class UserService {
 		return userRepository.findById(sessionUser.getId())
 			.orElseThrow(() -> new BaseException(BaseResponseStatus.USERS_EMPTY_USER_ID));
 	}
-
-	public BaseResponse<UserProfileResponseDto> getUserProfile() {
-		SessionUser sessionUser = (SessionUser)httpSession.getAttribute("user");
+	public BaseResponse<UserProfileResponseDto> findUserProfile() {
+		SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
 		return new BaseResponse<>(new UserProfileResponseDto(sessionUser));
 	}
 }

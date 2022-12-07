@@ -7,15 +7,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class InqueryController {
 
     private final InqueryService inqueryService;
 
-    @ResponseBody
     @PostMapping("/api/mail/send")
-    public void CreateInquery(@RequestBody String contents) {
-        inqueryService.createInquery(contents);
+    public void addInquery(@RequestBody String contents) {
+        inqueryService.addInquery(contents);
     }
 }
