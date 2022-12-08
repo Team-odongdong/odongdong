@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.graduate.odondong.service.BathroomService.BathroomService;
-import com.graduate.odondong.service.BathroomService.BulkInsertPublicBathroom;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderNaver;
 
@@ -13,8 +12,6 @@ class GraduatePrjApplicationTests {
 
 	@Autowired
 	ChangeByGeocoderKakao changeByGeocoder;
-	@Autowired
-	BulkInsertPublicBathroom bulkInsertPublicBathroom;
 	@Autowired
 	BathroomService bathroomService;
 
@@ -29,7 +26,6 @@ class GraduatePrjApplicationTests {
 	// 	bulkInsertEnumMap.put("남녀공용화장실여부", BulkInsertEnum.isUnisex);
 	// 	bulkInsertEnumMap.put("소재지지번주소", BulkInsertEnum.addressDetail);
 	// 	bulkInsertEnumMap.put("개방시간", BulkInsertEnum.operationTime);
-	//
 	//
 	// 	bulkInsertPublicBathroom.BulkInsert("경기도공중화장실현황(개방표준).xlsx", bulkInsertEnumMap);
 	// }
