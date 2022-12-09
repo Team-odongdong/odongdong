@@ -11,25 +11,17 @@
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script>
-    async function register(event) {
-      const parent = event.closest("#bathroom-item");
-      const value = parent.value;
-      console.log(value);
+    async function register(id) {
       await axios({
         method: "post",
         url: "/admin/bathroom/register",
         params: {
-          id: value,
+          id: id,
         },
       });
-
-      parent.remove();
     }
 
-    async function deleteFun(event) {
-      const parent = event.closest("#bathroom-item");
-      const value = parent.value;
-      console.log(value);
+    async function deleteFun(id) {
       axios({
         method: "delete",
         url: "/admin/bathroom/delete",
@@ -37,8 +29,6 @@
           id: value,
         },
       });
-
-      parent.remove();
     }
   </script>
   <div>
@@ -74,36 +64,20 @@
           <td th:text="${bathroom.getIsLocked()}"></td>
           <td th:text="${bathroom.getCreated_at()}"></td>
           <td th:text="${bathroom.getUpdated_at()}"></td>
-          <td><button onclick="register(event)">등록</button></td>
-          <td><button onclick="deleteFun(event)">제거</button></td>
+          <td>
+            <button
+                    type="button"
+                    th:attr="onclick=|register(${bathroom.getId()})|">등록
+            </button>
+          </td>
+          <td>
+            <button
+                    type="button"
+                    th:attr="onclick=|deleteFun(${bathroom.getId()})|">제거
+            </button>
+          </td>
         </tr>
       </div>
     </table>
-    <!-- <ul th:each="bathroom : ${bathrooms}">
-            <li th:name="${bathroom.getId()}" th:value="${bathroom.getId()}">
-                <a th:text="${bathroom.getId()}"></a>
-                <a>/</a>
-                <a th:text="${bathroom.getTitle()}"></a>
-                <a>/</a>
-                <a th:text="${bathroom.getLatitude()}"></a>
-                <a>/</a>
-                <a th:text="${bathroom.getLongitude()}"></a>
-                <a>/</a>
-                <a th:text="${bathroom.getRegister()}"></a>
-                <a>/</a>
-                <a th:text="${bathroom.getAddress()}"></a>
-                <a>/</a>
-                <a th:text="${bathroom.getAddressDetail()}"></a>
-                <a>/</a>
-                <a th:text="${bathroom.getIsLocked()}"></a>
-                <a>/</a>
-                <a th:text="${bathroom.getCreated_at()}"></a>
-                <a>/</a>
-                <a th:text="${bathroom.getUpdated_at()}"></a>
-                <a>/</a>
-                <button onclick="register(event)">등록</button>
-                <button onclick="deleteFun(event)">제거</button>
-            </li>
-        </ul> -->
   </div>
 </html>
