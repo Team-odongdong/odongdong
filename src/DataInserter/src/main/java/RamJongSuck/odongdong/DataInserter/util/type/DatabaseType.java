@@ -1,19 +1,19 @@
-package RamJongSuck.odongdong.DataInserter.type;
+package RamJongSuck.odongdong.DataInserter.util.type;
 
 public enum DatabaseType {
 	VARCHAR, FLOAT, DATETIME, BOOLEAN;
 
 	public String getDatabaseFormat(String data) {
-		if(data == null || data.isEmpty()) {
+		if (data == null || data.isEmpty()) {
 			return "\"\"";
 		}
 
-		if(this.equals(DatabaseType.VARCHAR)) {
+		if (this.equals(DatabaseType.VARCHAR)) {
 			return "\"" + data + "\"";
 		} else if (this.equals(DatabaseType.FLOAT)) {
 			return Double.valueOf(data).toString();
 		} else if (this.equals(DatabaseType.BOOLEAN)) {
-			if(data.equals("Y") || data.equals("1") || data.equals("YES") || data.equals("공중화장실")) {
+			if (data.equals("Y") || data.equals("1") || data.equals("YES") || data.equals("공중화장실")) {
 				return "true";
 			}
 			return "false";

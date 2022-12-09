@@ -1,11 +1,11 @@
-package RamJongSuck.odongdong.DataInserter.Implementation.Util;
+package RamJongSuck.odongdong.DataInserter.util;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import RamJongSuck.odongdong.DataInserter.Interface.DataConfig;
-import RamJongSuck.odongdong.DataInserter.Interface.DataReader;
+import RamJongSuck.odongdong.DataInserter.reader.DataReader;
+import RamJongSuck.odongdong.DataInserter.dataconfig.DataConfig;
 
 public class InsertTargetListMaker {
 

@@ -1,4 +1,4 @@
-package RamJongSuck.odongdong.DataInserter.Implementation.Util;
+package RamJongSuck.odongdong.DataInserter.util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,11 +7,11 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import RamJongSuck.odongdong.DataInserter.Dto.AddressDetailInfoDto;
-import RamJongSuck.odongdong.DataInserter.Dto.AddressInfoDto;
+import RamJongSuck.odongdong.DataInserter.dto.AddressDetailInfoDto;
+import RamJongSuck.odongdong.DataInserter.dto.AddressInfoDto;
 
 @Component
-public class CoordinateByGeocoderKakao{
+public class CoordinateByGeocoderKakao {
 
 	@Value("${kakao.REST_API_KEY}")
 	private String REST_API_KEY;
