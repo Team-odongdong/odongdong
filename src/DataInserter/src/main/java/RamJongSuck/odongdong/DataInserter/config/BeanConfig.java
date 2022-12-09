@@ -10,19 +10,19 @@ import org.springframework.context.annotation.Configuration;
 import RamJongSuck.odongdong.DataInserter.dataconfig.producer.ConfigProducer;
 import RamJongSuck.odongdong.DataInserter.dataconfig.producer.JsonConfigProducer;
 import RamJongSuck.odongdong.DataInserter.dataconfig.producer.XlsxConfigProducer;
+import RamJongSuck.odongdong.DataInserter.util.CoordinateByGeocoderKakao;
 
 @Configuration
 public class BeanConfig {
 
 	@Bean
 	List<ConfigProducer> configProducerList(
-		@Autowired JsonConfigProducer jsonConfigProducer,
-		@Autowired XlsxConfigProducer xlsxConfigProducer
+		@Autowired CoordinateByGeocoderKakao coordinateByGeocoderKakao
 	) {
 		List<ConfigProducer> configList = new ArrayList<>();
 
-		configList.add(jsonConfigProducer);
-		configList.add(xlsxConfigProducer);
+		configList.add(new JsonConfigProducer(coordinateByGeocoderKakao, "해운대구_화장실.json"));
+		configList.add(new XlsxConfigProducer(coordinateByGeocoderKakao, "test.xlsx"));
 
 		return configList;
 	}

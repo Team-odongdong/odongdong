@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import RamJongSuck.odongdong.DataInserter.dataSet.DataSet;
@@ -17,12 +20,11 @@ import RamJongSuck.odongdong.DataInserter.util.type.DatabaseType;
 import RamJongSuck.odongdong.DataInserter.util.type.DomainType;
 import lombok.RequiredArgsConstructor;
 
-@Component
 @RequiredArgsConstructor
 public class JsonConfigProducer implements ConfigProducer {
 
 	private final CoordinateByGeocoderKakao coordinateByGeocoderKakao;
-	private final String fileName = "해운대구_화장실.json";
+	private final String fileName;
 
 	@Override
 	public DataConfig getDataConfig() {

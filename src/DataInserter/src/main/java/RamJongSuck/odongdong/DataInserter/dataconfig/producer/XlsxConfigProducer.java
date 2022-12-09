@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 
 import org.json.JSONException;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import RamJongSuck.odongdong.DataInserter.dataSet.DataSet;
@@ -17,12 +18,11 @@ import RamJongSuck.odongdong.DataInserter.util.type.DatabaseType;
 import RamJongSuck.odongdong.DataInserter.util.type.DomainType;
 import lombok.RequiredArgsConstructor;
 
-@Component
 @RequiredArgsConstructor
 public class XlsxConfigProducer implements ConfigProducer {
 
 	private final CoordinateByGeocoderKakao coordinateByGeocoderKakao;
-	private final String fileName = "test.xlsx";
+	private final String fileName;
 
 	@Override
 	public DataConfig getDataConfig() {
