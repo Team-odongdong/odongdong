@@ -55,6 +55,9 @@ def formatting(str):
             #     flag = False
             #     return str
 
+            if(et == '00:00'):
+                et = '24:00'
+
             if (":" in st):
                 if (":" in et):
                     st_hour, st_min = st.split(":")
@@ -86,7 +89,7 @@ def formatting(str):
             if (ex == w):
                 cnt += 1
 
-    if (cnt == 1):
+    if (cnt <= 1):
         flag = True
     else:
         flag = False
