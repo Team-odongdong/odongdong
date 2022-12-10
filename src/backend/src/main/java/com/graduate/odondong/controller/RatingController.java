@@ -1,5 +1,6 @@
 package com.graduate.odondong.controller;
 
+import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.RatingRequestDto;
 import com.graduate.odondong.dto.RatingResponseDto;
 import com.graduate.odondong.service.BathroomService.BathroomService;
@@ -27,9 +28,9 @@ public class RatingController {
 
     @PostMapping("")
     public BaseResponse<String> addBathroomRate(@RequestBody RatingRequestDto ratingRequestDto) {
-        Long userId = userService.getUserInfo().getId();
+        User user = userService.getUserInfo();
         try {
-            return new BaseResponse<>(ratingService.addRating(ratingRequestDto,userId));
+            return new BaseResponse<>(ratingService.addRating(ratingRequestDto,user));
         }
         catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
