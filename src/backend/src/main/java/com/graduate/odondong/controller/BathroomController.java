@@ -159,7 +159,7 @@ public class BathroomController {
 		} catch (BaseException e) {
 			writeExceptionWithRequest(e, request);
 		}
-		return "redirect:/admin/bathroom/not-edited";
+		return "redirect:/admin/bathroom/not-registered";
 	}
 
 	/**
