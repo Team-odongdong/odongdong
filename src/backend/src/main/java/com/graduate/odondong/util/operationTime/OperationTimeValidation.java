@@ -1,11 +1,12 @@
 package com.graduate.odondong.util.operationTime;
 
-import org.springframework.stereotype.Service;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.regex.Pattern;
+
+import org.springframework.stereotype.Service;
 
 @Service
 public class OperationTimeValidation {
@@ -24,19 +25,14 @@ public class OperationTimeValidation {
         }
 
         if (operation == null) {
-            return "Y";
+            return "unknown";
         }
         if (operation.equals("24시간")) {
             return "Y";
         }
-        if (operation.contains("평일")) {
-            if (dayOfWeekValue == 6 || dayOfWeekValue == 7) {
-                return "N";
-            }
-            return "Y";
-        }
 
-        if (operation.length() == 11) {
+        String pattern = "^\\d{2}:\\d{2}~\\d{2}:\\d{2}$";
+        if (Pattern.matches(pattern, operation)) {
             String[] operationTime = operation.split("~");
             Date startDateTime = null;
             Date endDateTime = null;
@@ -52,6 +48,6 @@ public class OperationTimeValidation {
             return "Y";
         }
 
-        return "Y";
+        return "unknown";
     }
 }
