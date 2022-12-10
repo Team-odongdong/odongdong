@@ -20,6 +20,7 @@ public enum BaseResponseStatus {
     /**
      *  3000 : User 오류
      */
+    USER_NOT_LOGIN(false, 3000, "로그인 해주세요."),
     USERS_EMPTY_USER_ID(false, 3010, "유저 아이디 값을 확인해주세요."),
 
     /**
