@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
 
@@ -37,11 +38,9 @@ public class RatingService {
         }
     }
 
-    public RatingResponseDto findBathroomRateById(Long bathroomId, Long userId) throws BaseException {
-        Rating rating = ratingRepository.findByBathroomIdAndUserId(bathroomId, userId)
-                .orElseGet(() -> null);
+    public RatingResponseDto findBathroomRateById(Long bathroomId, Long userId) {
+        Rating rating = ratingRepository.findByBathroomIdAndUserId(bathroomId, userId).orElseGet(() -> null);
         return new RatingResponseDto(rating);
     }
-
 
 }
