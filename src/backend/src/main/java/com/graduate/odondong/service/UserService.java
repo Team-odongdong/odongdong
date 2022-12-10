@@ -19,8 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
-import static com.graduate.odondong.util.BaseResponseStatus.NOT_FOUND_BATHROOM;
-import static com.graduate.odondong.util.BaseResponseStatus.USERS_EMPTY_USER_ID;
+import static com.graduate.odondong.util.BaseResponseStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class UserService {
 	private final BathroomRepository bathroomRepository;
 
 	public User getUserInfo() throws BaseException {
-		SessionUser sessionUser = Optional.ofNullable((SessionUser)httpSession.getAttribute("user")).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
+		SessionUser sessionUser = Optional.ofNullable((SessionUser)httpSession.getAttribute("user")).orElseThrow(() -> new BaseException(USER_NOT_LOGIN));
 		return userRepository.findById(sessionUser.getId())
 			.orElseThrow(() -> new BaseException(USERS_EMPTY_USER_ID));
 	}
