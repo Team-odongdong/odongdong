@@ -19,16 +19,18 @@
           id: id,
         },
       });
+      await window.location.reload();
     }
 
     async function deleteFun(id) {
-      axios({
+      await axios({
         method: "delete",
         url: "/admin/bathroom/delete",
         params: {
-          id: value,
+          id: id,
         },
       });
+      await window.location.reload();
     }
   </script>
   <div>

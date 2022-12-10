@@ -11,19 +11,15 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
-    async function edit(event) {
-        const parent = event.closest("#updated-bathroomItem");
-        const value = parent.value;
-        console.log(value);
+    async function edit(id) {
         await axios({
             method: "post",
             url: "/admin/bathroom/edit",
             params: {
-                id: value,
+                id: id,
             },
         });
-
-        parent.remove();
+        await window.location.reload();
     }
 </script>
 <div>
@@ -61,8 +57,18 @@
                 <td th:text="${updatedBathroom.getOperationTime()}"></td>
                 <td th:text="${updatedBathroom.getCreated_at()}"></td>
                 <td th:text="${updatedBathroom.getUpdated_at()}"></td>
-                <td><button onclick="edit(event)">등록</button></td>
-                <td><button onclick="deleteFun(event)">제거</button></td>
+                <td>
+                    <button
+                            type="button"
+                            th:attr="onclick=|edit(${bathroom.getId()})|">등록
+                    </button>
+                </td>
+                <td>
+                    <button
+                            type="button"
+                            th:attr="onclick=|deleteFun(${bathroom.getId()})|">반려
+                    </button>
+                </td>
             </tr>
         </div>
     </table>
