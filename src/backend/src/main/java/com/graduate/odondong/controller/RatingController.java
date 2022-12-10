@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.graduate.odondong.util.ErrorLogWriter.writeExceptionWithRequest;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/rating")
@@ -29,18 +31,20 @@ public class RatingController {
         try {
             userId = userService.getUserInfo().getId();
         } catch (BaseException e) {
+            writeExceptionWithRequest(e, request);
             return new BaseResponse<>(e.getStatus());
         }
         return new BaseResponse<>(ratingService.findBathroomRateById(bathroomId, userId));
     }
 
     @PostMapping("")
-    public BaseResponse<String> addBathroomRate(@RequestBody RatingRequestDto ratingRequestDto) {
+    public BaseResponse<String> addBathroomRate(HttpServletRequest request, @RequestBody RatingRequestDto ratingRequestDto) {
         User user;
         try {
             user = userService.getUserInfo();
             return new BaseResponse<>(ratingService.addRating(ratingRequestDto,user));
         } catch (BaseException e) {
+            writeExceptionWithRequest(e, request);
             return new BaseResponse<>(e.getStatus());
         }
     }
