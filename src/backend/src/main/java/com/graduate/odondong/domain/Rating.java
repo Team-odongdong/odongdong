@@ -25,7 +25,10 @@ public class Rating {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="bathroom_id")
     private Bathroom bathroom;
-    private Long userId;
+
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name= "user_id")
+    private User user;
 
     @CreatedDate
     @Column(updatable = false)
@@ -34,11 +37,11 @@ public class Rating {
     private LocalDateTime updated_at;
 
     @Builder
-    public Rating(Long id, Double score, Bathroom bathroom, Long userId) {
+    public Rating(Long id, Double score, Bathroom bathroom, User user) {
         this.id = id;
         this.score = score;
         this.bathroom = bathroom;
-        this.userId = userId;
+        this.user = user;
     }
 
 

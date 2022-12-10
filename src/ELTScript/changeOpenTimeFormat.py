@@ -102,12 +102,14 @@ if __name__ == "__main__":
         host='**', user='**',
         password='**', db='**', charset='utf8')
     cur = conn.cursor()
-    selectQuery = "SELECT * FROM bathroom LIMIT 10;"
+    selectQuery = "SELECT * FROM bathroom;"
     cur.execute(selectQuery)
     resultSet = cur.fetchall()
     for result in resultSet :
         flag = True
         formatTime = result[10]
+        if formatTime is None :
+            continue
         formatTime = formatting(formatTime)
         
         if flag == False :
