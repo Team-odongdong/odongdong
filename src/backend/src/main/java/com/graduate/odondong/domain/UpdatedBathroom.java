@@ -23,7 +23,9 @@ public class UpdatedBathroom {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="bathroom_id")
     private Bathroom bathroom;
-    private Long userId;
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name= "user_id")
+    private User user;
     private String title;
     private Double latitude;
     private Double longitude;
@@ -42,9 +44,9 @@ public class UpdatedBathroom {
     private LocalDateTime updated_at;
 
     @Builder
-    public UpdatedBathroom(Long id, Long userId, Bathroom bathroom, String title, Double latitude, Double longitude, String isLocked, String address, String addressDetail, String imageUrl, String operationTime, Boolean isUnisex, Boolean register) {
+    public UpdatedBathroom(Long id, User user, Bathroom bathroom, String title, Double latitude, Double longitude, String isLocked, String address, String addressDetail, String imageUrl, String operationTime, Boolean isUnisex, Boolean register) {
         this.id = id;
-        this.userId = userId;
+        this.user = user;
         this.bathroom = bathroom;
         this.title = title;
         this.latitude = latitude;
