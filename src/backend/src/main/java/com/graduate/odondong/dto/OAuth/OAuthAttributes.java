@@ -3,9 +3,6 @@ package com.graduate.odondong.dto.OAuth;
 import java.util.Map;
 import java.util.Optional;
 
-import com.graduate.odondong.domain.User;
-import com.graduate.odondong.util.type.Role;
-
 import lombok.Builder;
 import lombok.Getter;
 
@@ -34,6 +31,9 @@ public class OAuthAttributes {
 
 		if ("kakao".equals(registrationId)) {
 			return ofKakao(userNameAttributeName, attributes);
+		}
+		else if ("apple".equals(registrationId)) {
+			return ofApple(userNameAttributeName, attributes);
 		}
 		return ofGoogle(userNameAttributeName, attributes);
 	}
@@ -68,12 +68,22 @@ public class OAuthAttributes {
 		return Optional.of(build);
 	}
 
-	public User toEntity() {
-		return User.builder()
-			.name(name)
-			.email(email)
-			.picture(picture)
-			.role(Role.GUEST)
+	private static Optional<OAuthAttributes> ofApple(String userNameAttributeName,
+		Map<String, Object> attributes) {
+		Map<String, Object> properties = (Map<String, Object>)attributes.get("properties");
+		Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
+
+		if (!properties.containsKey("nickname") || !kakaoAccount.containsKey("email") || !properties.containsKey(
+			"profile_image"))
+			return Optional.empty();
+
+		OAuthAttributes build = OAuthAttributes.builder()
+			.name((String)properties.get("nickname"))
+			.email((String)kakaoAccount.get("email"))
+			.picture((String)properties.get("profile_image"))
+			.attributes(attributes)
+			.nameAttributeKey(userNameAttributeName)
 			.build();
+		return Optional.of(build);
 	}
 }
