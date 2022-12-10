@@ -23,12 +23,12 @@ import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
 public class RatingService {
     private final BathroomRepository bathroomRepository;
     private final RatingRepository ratingRepository;
-    public String addRating(RatingRequestDto ratingRequestDto) throws BaseException {
+    public String addRating(RatingRequestDto ratingRequestDto, Long userId) throws BaseException {
         try {
             Rating rating = Rating.builder()
                     .score(ratingRequestDto.getScore())
                     .bathroom(bathroomRepository.findById(ratingRequestDto.getBathroomId()).get())
-                    .userId(ratingRequestDto.getUserId())
+                    .userId(userId)
                     .build();
             ratingRepository.save(rating);
             return "SUCCESS";
@@ -37,10 +37,10 @@ public class RatingService {
         }
     }
 
-    public Double retrieveRatingById(Long bathroomId) throws BaseException
-    {
-        double tmp = 3.1;
-        return tmp;
+    public RatingResponseDto findBathroomRateById(Long bathroomId, Long userId) throws BaseException {
+        Rating rating = ratingRepository.findByBathroomIdAndUserId(bathroomId, userId)
+                .orElseGet(() -> null);
+        return new RatingResponseDto(rating);
     }
 
 
