@@ -1,5 +1,6 @@
 package com.graduate.odondong.controller;
 
+import com.fasterxml.jackson.databind.ser.Serializers;
 import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.RatingRequestDto;
 import com.graduate.odondong.dto.RatingResponseDto;
@@ -12,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/rating")
@@ -21,18 +24,23 @@ public class RatingController {
     private final UserService userService;
 
     @GetMapping("")
-    public BaseResponse<RatingResponseDto> findBathroomRate(@RequestParam("id") Long bathroomId) {
-        Long userId = userService.getUserInfo().getId();
+    public BaseResponse<RatingResponseDto> findBathroomRate(HttpServletRequest request, @RequestParam("id") Long bathroomId) {
+        Long userId;
+        try {
+            userId = userService.getUserInfo().getId();
+        } catch (BaseException e) {
+            return new BaseResponse<>(e.getStatus());
+        }
         return new BaseResponse<>(ratingService.findBathroomRateById(bathroomId, userId));
     }
 
     @PostMapping("")
     public BaseResponse<String> addBathroomRate(@RequestBody RatingRequestDto ratingRequestDto) {
-        User user = userService.getUserInfo();
+        User user;
         try {
+            user = userService.getUserInfo();
             return new BaseResponse<>(ratingService.addRating(ratingRequestDto,user));
-        }
-        catch (BaseException e) {
+        } catch (BaseException e) {
             return new BaseResponse<>(e.getStatus());
         }
     }
