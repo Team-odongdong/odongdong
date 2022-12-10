@@ -3,6 +3,8 @@ package com.graduate.odondong.service;
 import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ser.Serializers;
+import com.graduate.odondong.domain.Bathroom;
+import com.graduate.odondong.repository.BathroomRepository;
 import org.springframework.stereotype.Service;
 
 import com.graduate.odondong.domain.User;
@@ -26,6 +28,7 @@ public class UserService {
 
 	private final HttpSession httpSession;
 	private final UserRepository userRepository;
+	private final BathroomRepository bathroomRepository;
 
 	public User getUserInfo() throws BaseException {
 		SessionUser sessionUser = Optional.ofNullable((SessionUser)httpSession.getAttribute("user")).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
@@ -34,6 +37,7 @@ public class UserService {
 	}
 	public BaseResponse<UserProfileResponseDto> findUserProfile() {
 		SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
+		//Bathroom bathroom = bathroomRepository.findByUserId(sessionUser.getId());
 		return new BaseResponse<>(new UserProfileResponseDto(sessionUser));
 	}
 }
