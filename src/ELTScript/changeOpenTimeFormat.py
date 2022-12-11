@@ -110,6 +110,9 @@ if __name__ == "__main__":
         formatTime = result[10]
         formatTime = formatting(formatTime)
         
+        if formatTime is None :
+            continue
+
         if flag == False :
             print(result[0], end=",")
 
