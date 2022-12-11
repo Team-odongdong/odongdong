@@ -1,0 +1,12 @@
+.container {
+    background: var(--bg_white);
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        margin: -3px 16px;
+
+        .title {
+        }
+    }
+}
