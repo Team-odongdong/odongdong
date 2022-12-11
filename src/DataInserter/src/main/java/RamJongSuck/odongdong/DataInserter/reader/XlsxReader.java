@@ -1,4 +1,4 @@
-package RamJongSuck.odongdong.DataInserter.Implementation.Reader;
+package RamJongSuck.odongdong.DataInserter.reader;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,13 +15,13 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import RamJongSuck.odongdong.DataInserter.Interface.DataReader;
 import lombok.Getter;
 
 @Getter
 public class XlsxReader implements DataReader {
 
-	List<Map<String,String>> mapList = new ArrayList<>();
+	List<Map<String, String>> mapList = new ArrayList<>();
+
 	public XlsxReader(String filePath, Map<String, String> fileToDatabaseMap) {
 		readXlsxFile(filePath, fileToDatabaseMap);
 	}
@@ -43,23 +43,23 @@ public class XlsxReader implements DataReader {
 	private void fillMapList(Iterator<Row> rowIterator, Map<String, String> fileToDatabaseMap) {
 		Map<Integer, String> indexMap = getIndexMapByFirstRow(fileToDatabaseMap, rowIterator.next());
 
-		while(rowIterator.hasNext()) {
+		while (rowIterator.hasNext()) {
 			Row row = rowIterator.next();
 			Iterator<Cell> cellIterator = row.cellIterator();
-			Map<String,String> map = new HashMap<>();
+			Map<String, String> map = new HashMap<>();
 			int index = 0;
-			while(cellIterator.hasNext()) {
+			while (cellIterator.hasNext()) {
 				Cell cell = cellIterator.next();
-				if(indexMap.containsKey(index)) {
+				if (indexMap.containsKey(index)) {
 					String key = indexMap.get(index);
 					String cellValue = getCellValue(cell);
 
-					if(cellValue.isEmpty() || cellValue.equals("")) {
+					if (cellValue.isEmpty() || cellValue.equals("")) {
 						index++;
 						continue;
 					}
 
-					if(!map.containsKey(key))
+					if (!map.containsKey(key))
 						map.put(key, cellValue);
 				}
 				index++;
@@ -72,9 +72,9 @@ public class XlsxReader implements DataReader {
 		Map<Integer, String> map = new HashMap<>();
 		Iterator<Cell> cellIterator = row.cellIterator();
 		int index = 0;
-		while(cellIterator.hasNext()){
+		while (cellIterator.hasNext()) {
 			String cellValue = getCellValue(cellIterator.next());
-			if(fileToDatabaseMap.containsKey(cellValue)) {
+			if (fileToDatabaseMap.containsKey(cellValue)) {
 				String databaseColumnName = fileToDatabaseMap.get(cellValue);
 				map.put(index, databaseColumnName);
 			}
@@ -93,6 +93,5 @@ public class XlsxReader implements DataReader {
 			default -> null;
 		};
 	}
-
 
 }

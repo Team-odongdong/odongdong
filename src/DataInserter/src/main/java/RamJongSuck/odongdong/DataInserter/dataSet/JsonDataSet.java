@@ -1,14 +1,13 @@
-package RamJongSuck.odongdong.DataInserter.Implementation.DataSet;
+package RamJongSuck.odongdong.DataInserter.dataSet;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import RamJongSuck.odongdong.DataInserter.Implementation.Reader.JsonReader;
-import RamJongSuck.odongdong.DataInserter.Implementation.Util.InsertTargetListMaker;
-import RamJongSuck.odongdong.DataInserter.Implementation.Util.QueryMaker;
-import RamJongSuck.odongdong.DataInserter.Interface.DataConfig;
-import RamJongSuck.odongdong.DataInserter.Interface.DataSet;
+import RamJongSuck.odongdong.DataInserter.reader.JsonReader;
+import RamJongSuck.odongdong.DataInserter.util.InsertTargetListMaker;
+import RamJongSuck.odongdong.DataInserter.util.QueryMaker;
+import RamJongSuck.odongdong.DataInserter.dataconfig.DataConfig;
 
 public class JsonDataSet implements DataSet {
 

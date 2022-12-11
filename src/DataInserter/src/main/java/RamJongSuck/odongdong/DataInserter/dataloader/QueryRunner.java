@@ -1,11 +1,8 @@
-package RamJongSuck.odongdong.DataInserter.Implementation;
+package RamJongSuck.odongdong.DataInserter.dataloader;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import RamJongSuck.odongdong.DataInserter.Implementation.Util.CheckDataSet;
-import RamJongSuck.odongdong.DataInserter.Interface.DataConfig;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -16,11 +13,8 @@ public class QueryRunner {
 	@PersistenceContext
 	EntityManager em;
 
-	@Autowired
-	CheckDataSet checkDataSet;
-
-	public void runQuery(DataConfig dataConfig) {
-		int changeNum = excuteQuery(checkDataSet.getDataSetByConfig(dataConfig).getInsertQuery());
+	public void runQuery(String queryString) {
+		int changeNum = excuteQuery(queryString);
 		System.out.println(String.format("총 %d개의 데이터가 업데이트 되었습니다.", changeNum));
 	}
 
