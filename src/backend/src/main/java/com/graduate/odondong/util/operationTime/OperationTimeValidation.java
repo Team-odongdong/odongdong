@@ -25,7 +25,7 @@ public class OperationTimeValidation {
         }
 
         if (operation == null) {
-            return "unknown";
+            return "U";
         }
         if (operation.equals("24시간")) {
             return "Y";
@@ -48,6 +48,6 @@ public class OperationTimeValidation {
             return "Y";
         }
 
-        return "unknown";
+        return "U";
     }
 }
