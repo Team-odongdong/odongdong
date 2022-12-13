@@ -8,9 +8,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.graduate.odondong.domain.UpdatedBathroom;
+import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.*;
 import com.graduate.odondong.service.BathroomService.DeletedBathroomService;
 import com.graduate.odondong.service.BathroomService.UpdatedBathroomService;
+import com.graduate.odondong.service.UserService;
 import com.graduate.odondong.util.BaseResponseStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,7 @@ public class BathroomController {
 	private final BathroomService bathroomService;
 	private final DeletedBathroomService deletedBathroomService;
 	private final UpdatedBathroomService updatedBathroomService;
+	private final UserService userService;
 	private final AwsS3Service awsS3Service;
 
 	/**
@@ -98,7 +101,8 @@ public class BathroomController {
 	@PostMapping("/api/bathroom/edit")
 	public BaseResponse<BaseResponseStatus> modifyBathroomRequest(HttpServletRequest request, @RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
 		try {
-			updatedBathroomService.addUpdatedBathroom(bathroomUpdateRequestDto);
+			User user = userService.getUserInfo();
+			updatedBathroomService.addUpdatedBathroom(bathroomUpdateRequestDto,user);
 			return new BaseResponse<>(SUCCESS);
 		} catch (BaseException e) {
 			writeExceptionWithRequest(e, request);
