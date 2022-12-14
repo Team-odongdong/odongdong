@@ -13,16 +13,16 @@ import { DataFilterComponentModule } from 'src/app/components/data-filter/data-f
 import { DataFilterComponent } from 'src/app/components/data-filter/data-filter.component';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    MainPageRoutingModule,
-    AddBathroomComponentModule,
-    BathroomDetailComponentModule,
-    DataFilterComponentModule,
-  ],
-  declarations: [MainPage],
-  entryComponents: [BathroomDetailComponent, AddBathroomComponent, DataFilterComponent],
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        MainPageRoutingModule,
+        AddBathroomComponentModule,
+        BathroomDetailComponentModule,
+        DataFilterComponentModule,
+    ],
+    declarations: [MainPage],
+    entryComponents: [BathroomDetailComponent, AddBathroomComponent, DataFilterComponent],
 })
 export class MainPageModule {}

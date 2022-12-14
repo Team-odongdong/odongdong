@@ -1,3 +1,7 @@
+* {
+    background: transparent;
+}
+
 .container {
     background: var(--bg_white);
 
@@ -7,12 +11,13 @@
         margin: -3px 16px;
 
         .title {
-
             &__name {
                 color: black;
                 font-weight: bold;
                 font-size: 16px;
                 margin-bottom: 0;
+
+                width: max-content;
             }
 
             &__rate {
@@ -21,10 +26,20 @@
         }
 
         .locker {
-            line-height: 47px;
+            // line-height: 47px;
+
+            &__container {
+                padding-left: 0.625rem;
+            }
 
             &__img {
                 display: inline;
+
+                &--small::part(image) {
+                    height: fit-content;
+
+                    margin-top: 1.1rem;
+                }
             }
         }
     }
@@ -66,11 +81,33 @@
 
 ion-img {
     height: max(100%, 150px);
-    
 }
 
-.images ion-img{
+.images ion-img {
     width: 100%;
-    height: 225px;
+    height: 14.0625rem;
     object-fit: unset;
+}
+
+.images-small ion-img {
+    position: absolute;
+    right: 0;
+
+    height: 100%;
+    aspect-ratio: 1.1/1;
+    object-fit: cover;
+
+    transform: translateY(-10px);
+
+    &::part(image) {
+        border-radius: 0 16px 16px 0;
+    }
+}
+
+.small-pd {
+    padding: 10px 0;
+}
+
+.flex {
+    display: flex;
 }

@@ -4,9 +4,6 @@
     <div #detailContainer class="container__detail" *ngIf="markerClicked">
         <app-bathroom-detail [bathroomInfo]="bathroomInfo"></app-bathroom-detail>
     </div>
-    <app-bathroom-detail-brief
-        imageUrl="https://bucket-odongdong.s3.ap-northeast-2.amazonaws.com/default/default-img.png"
-    ></app-bathroom-detail-brief>
 
     <div *ngIf="!markerClicked" class="handler__container">
         <button class="handler__container--refresh elevation__1" (click)="refresh()">

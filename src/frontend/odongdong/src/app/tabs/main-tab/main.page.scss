@@ -10,7 +10,7 @@
     }
 
     &__detail {
-        background: var(--bg_white);
+        background: transparent;
         position: absolute;
         bottom: 17%;
         left: 10px;
@@ -24,7 +24,7 @@
     bottom: 17%;
 
     padding: 0 15px;
-    
+
     z-index: 5;
 
     width: 100%;
@@ -32,7 +32,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
-    
+
     &--current {
         display: flex;
         align-items: center;
@@ -42,7 +42,7 @@
         height: 45px;
 
         margin-bottom: 10px;
-    
+
         img {
             width: 25px;
             height: 25px;
@@ -97,7 +97,6 @@
     &--refresh:active {
         background: var(--primary_container_blue);
     }
-
 }
 
 .elevation__1 {

@@ -18,6 +18,8 @@ export class BathroomDetailComponent implements OnInit {
     public address: string;
     public isOpened: string;
 
+    public extended = false;
+
     constructor() {}
 
     ngOnInit() {
@@ -49,5 +51,9 @@ export class BathroomDetailComponent implements OnInit {
 
     onRatingChange(inputRate: number) {
         this.rate = inputRate;
+    }
+
+    extendDetail() {
+        this.extended = !this.extended;
     }
 }
