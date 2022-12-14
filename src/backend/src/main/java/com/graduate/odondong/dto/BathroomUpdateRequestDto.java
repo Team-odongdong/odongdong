@@ -2,6 +2,7 @@ package com.graduate.odondong.dto;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.UpdatedBathroom;
+import com.graduate.odondong.domain.User;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,11 +39,11 @@ public class BathroomUpdateRequestDto {
     }
 
 
-    public UpdatedBathroom toUpdatedBathroom(Bathroom bathroom) {
+    public UpdatedBathroom toUpdatedBathroom(Bathroom bathroom, User user) {
         return UpdatedBathroom.builder()
                 .title(title)
-                .userId(userId)
                 .bathroom(bathroom)
+                .user(user)
                 .latitude(latitude)
                 .longitude(longitude)
                 .isLocked(isLocked)

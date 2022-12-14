@@ -2,6 +2,7 @@ package com.graduate.odondong.service.BathroomService;
 
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.UpdatedBathroom;
+import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.BathroomUpdateRequestDto;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.UpdatedBathroomRepository;
@@ -27,9 +28,9 @@ public class UpdatedBathroomService {
         return updatedBathroomRepository.findUpdatedBathroomsByRegisterIsFalse();
     }
 
-    public void addUpdatedBathroom(BathroomUpdateRequestDto bathroomUpdateRequestDto) throws BaseException {
+    public void addUpdatedBathroom(BathroomUpdateRequestDto bathroomUpdateRequestDto, User user) throws BaseException {
         Bathroom bathroom = bathroomRepository.findById(bathroomUpdateRequestDto.getBathroomId()).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
-        UpdatedBathroom updatedBathroom = bathroomUpdateRequestDto.toUpdatedBathroom(bathroom);
+        UpdatedBathroom updatedBathroom = bathroomUpdateRequestDto.toUpdatedBathroom(bathroom, user);
         updatedBathroomRepository.save(updatedBathroom);
     }
 
@@ -41,7 +42,6 @@ public class UpdatedBathroomService {
         Bathroom bathroom = bathroomRepository.findById(updatedBathroom.getBathroom().getId()).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
         bathroom.update(updatedBathroom);
         bathroomRepository.save(bathroom);
-        updatedBathroomRepository.deleteById(updatedBathroomId);
     }
 
     public void removeNotModifiedBathroom(Long updatedBathroomId) throws BaseException{
