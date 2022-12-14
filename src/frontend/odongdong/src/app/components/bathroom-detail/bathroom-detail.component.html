@@ -1,48 +1,47 @@
-<div class="container elevation__3">
-  <div class="container__header">
-    <div class="title">
-      <p class="title__name">{{bathroomName}}</p>
-      <div class="title__rate">
-        <ionic-rating-component #rating
-          activeIcon = "star"
-          defaultIcon = "star"
-          halfStar="true"
-          activeColor = var(--secondary_blue)
-          defaultColor = var(--middle_gray)
-          readonly="true"
-          fontSize="14px"
-          rating={{rate}}
-          (ratingChanged)="onRatingChange($event)"
-        ></ionic-rating-component>
-      </div>
+<div
+    class="container elevation__3 small-pd"
+    [ngClass]="extended ? null : 'flex'"
+    (click)="extendDetail()"
+>
+    <div class="container__header">
+        <div class="title">
+            <p class="title__name">{{ bathroomName }}</p>
+            <div class="title__rate">
+                <ionic-rating-component
+                    #rating
+                    activeIcon="star"
+                    defaultIcon="star"
+                    halfStar="true"
+                    activeColor="var(--secondary_blue)"
+                    defaultColor="var(--middle_gray)"
+                    readonly="true"
+                    fontSize="14px"
+                    rating="{{ rate }}"
+                    (ratingChanged)="onRatingChange($event)"
+                ></ionic-rating-component>
+            </div>
+        </div>
+        <div class="locker__container">
+            <ion-img
+                *ngIf="isLocked === 'Y'"
+                class="locker__img"
+                [ngClass]="extended ? 'locker__img' : 'locker__img--small'"
+                src="../../../assets/svg/map/locked.svg"
+            ></ion-img>
+        </div>
     </div>
-    <div class="locker">
-       <ion-img
-        *ngIf="isLocked === 'Y'"
-        class="locker__img"
-        src="../../../assets/svg/map/locked.svg"
-      ></ion-img>
+    <div *ngIf="imageUrl" [ngClass]="extended ? 'images' : 'images-small'">
+        <ion-img src="{{ imageUrl }}"></ion-img>
     </div>
-  </div>
-  <div *ngIf="imageUrl" class="images">
-    <ion-img
-      src={{imageUrl}}
-    ></ion-img>
-  </div>
-  <div class="container__body">
-    <p 
-      *ngIf="isOpened==='Y'" 
-      class="available"
-    >이용 가능 <span *ngIf="isLocked==='Y'">- 비밀번호 있음</span>
-    </p>
-    <p
-      *ngIf="isOpened==='N'"
-      class="available-not"
-    >이용 불가</p>
+    <div *ngIf="extended" class="container__body">
+        <p *ngIf="isOpened === 'Y'" class="available">
+            이용 가능 <span *ngIf="isLocked === 'Y'">- 비밀번호 있음</span>
+        </p>
+        <p *ngIf="isOpened === 'N'" class="available-not">이용 불가</p>
 
-    <p *ngIf="isOpened==='Y'" class="operation-time">{{operationTime}}</p>
-    <p *ngIf="isOpened==='N'" class="operation-time-not">{{operationTime}}</p>
-    <p class="address">{{address}}</p>
-  </div>
-  <div class="empty-space__30"></div>
+        <p *ngIf="isOpened === 'Y'" class="operation-time">{{ operationTime }}</p>
+        <p *ngIf="isOpened === 'N'" class="operation-time-not">{{ operationTime }}</p>
+        <p class="address">{{ address }}</p>
+    </div>
+    <div *ngIf="extended" class="empty-space__10"></div>
 </div>
