@@ -32,7 +32,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-		if(1==1) throw new RuntimeException("여기 왔다");
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> service = new DefaultOAuth2UserService();
 		OAuth2User oAuth2User = service.loadUser(userRequest); // Oath2 정보를 가져옴
 
