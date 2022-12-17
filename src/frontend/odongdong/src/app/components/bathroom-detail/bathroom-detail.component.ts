@@ -1,4 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { EditBathroomComponent } from 'src/app/modals/edit-bathroom/edit-bathroom.component';
 
 @Component({
     selector: 'app-bathroom-detail',
@@ -20,7 +22,9 @@ export class BathroomDetailComponent implements OnInit {
 
     public extended = false;
 
-    constructor() {}
+    public editedRate = 0;
+
+    constructor(public modalController: ModalController) {}
 
     ngOnInit() {
         this.bathroomInfoForDisplay = this.refineBathroomInfo(this.bathroomInfo);
@@ -50,10 +54,18 @@ export class BathroomDetailComponent implements OnInit {
     }
 
     onRatingChange(inputRate: number) {
-        this.rate = inputRate;
+        this.editedRate = inputRate;
     }
 
     extendDetail() {
-        this.extended = !this.extended;
+        this.extended = true;
+    }
+
+    async editBathroom() {
+        console.log('edit click');
+        const modal = await this.modalController.create({
+            component: EditBathroomComponent,
+        });
+        await modal.present();
     }
 }

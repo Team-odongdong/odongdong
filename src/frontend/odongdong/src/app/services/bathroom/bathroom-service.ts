@@ -1,15 +1,14 @@
-import { Injectable } from "@angular/core";
-import axios from "axios";
-import { environment } from "src/environments/environment";
-import { CommonService } from "../common/common-service";
+import { Injectable } from '@angular/core';
+import axios from 'axios';
+import { BathroomInfo } from 'src/app/entities/bathroom';
+import { environment } from 'src/environments/environment';
+import { CommonService } from '../common/common-service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class BathroomService {
-    constructor(
-        public commonService: CommonService,
-    ) {}
+    constructor(public commonService: CommonService) {}
 
     async get1kmBathroomList(lat: number, lng: number) {
         try {
@@ -19,37 +18,40 @@ export class BathroomService {
                 responseType: 'json',
             });
             return response;
-        } catch(error) {
+        } catch (error) {
             return error.response;
         }
     }
 
     async addBathroom(data, images?) {
-        if(!(await this.commonService.checkNetworkStatus())) return;
+        if (!(await this.commonService.checkNetworkStatus())) {
+            return;
+        }
 
         try {
+            /* eslint-disable */
             const bathroomRequestDto = {
-                "latitude": data.latitude,
-                "longitude": data.longitude,
-                "title": data.title,
-                "isLocked": data.isLocked,
-                "address": data.address,
-                "addressDetail": data.addressDetail,
-                "imageUrl": "",
-                "rate": data.rate,
-                "isUnisex": data.isUnisex,
+                'latitude': data.latitude,
+                'longitude': data.longitude,
+                'title': data.title,
+                'isLocked': data.isLocked,
+                'address': data.address,
+                'addressDetail': data.addressDetail,
+                'imageUrl': '',
+                'rate': data.rate,
+                'isUnisex': data.isUnisex,
             };
+            /* eslint-enable */
 
             const formData = new FormData();
 
             const json = JSON.stringify(bathroomRequestDto);
-            const blob = new Blob([json], { type: "application/json" });
-            formData.append("bathroomRequestDto", blob);
-            
-            if(images.length) {
-                formData.append("bathroomImg", images[0].fileBlob, images[0].fileName);
-            }
+            const blob = new Blob([json], { type: 'application/json' });
+            formData.append('bathroomRequestDto', blob);
 
+            if (images.length) {
+                formData.append('bathroomImg', images[0].fileBlob, images[0].fileName);
+            }
 
             const response = await axios({
                 method: 'post',
@@ -58,8 +60,38 @@ export class BathroomService {
                 responseType: 'json',
             });
             return response;
-        } catch(error) {
+        } catch (error) {
             return error.reponse;
+        }
+    }
+
+    async editBathroom(data: BathroomInfo) {
+        /* eslint-disable */
+        const bathroomRequestDto = {
+            'address': data.address,
+            'addressDetail': data.addressDetail,
+            'bathroomId': data.bathroomId,
+            'imageUrl': data.imageUrl,
+            'isLocked': data.isLocked,
+            'isUnisex': data.isUnisex,
+            'latitude': data.latitude,
+            'longitude': data.longitude,
+            'operationTime': data.operationTime,
+            'title': data.title,
+            'userId': 1,
+        };
+        /* eslint-enable */
+
+        try {
+            const response = await axios({
+                method: 'post',
+                url: `${environment.apiUrl}/api/bathroom/edit`,
+                data,
+                responseType: 'json',
+            });
+            return response;
+        } catch (error) {
+            return error.response;
         }
     }
 
@@ -71,7 +103,7 @@ export class BathroomService {
                 responseType: 'json',
             });
             return response;
-        } catch(error) {
+        } catch (error) {
             return error.response;
         }
     }
