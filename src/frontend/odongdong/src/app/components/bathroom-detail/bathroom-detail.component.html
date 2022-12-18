@@ -9,6 +9,7 @@
             <div class="title__rate">
                 <ionic-rating-component
                     #rating
+                    class="rating-container"
                     activeIcon="star"
                     defaultIcon="star"
                     halfStar="true"
@@ -35,10 +36,12 @@
         <p *ngIf="isOpened === 'Y'" class="available">
             이용 가능 <span *ngIf="isLocked === 'Y'">- 비밀번호 있음</span>
         </p>
-        <p *ngIf="isOpened === 'N'" class="available-not">이용 불가</p>
+        <p *ngIf="isOpened === 'N' || isOpened === 'U'" class="available-not">이용 불가</p>
 
         <p *ngIf="isOpened === 'Y'" class="operation-time">{{ operationTime }}</p>
-        <p *ngIf="isOpened === 'N'" class="operation-time-not">{{ operationTime }}</p>
+        <p *ngIf="isOpened === 'N' || isOpened === 'U'" class="operation-time-not">
+            {{ operationTime }}
+        </p>
         <p class="address">{{ address }}</p>
     </div>
 

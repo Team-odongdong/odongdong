@@ -2,13 +2,13 @@ ion-app {
     &.web {
         margin: 0 auto;
         width: 100%;
-        max-width: 500px;
+        max-width: 400px;
     }
 }
 
 // only for safari browser
-@media not all and (min-resolution:.001dpcm) {
-    @supports (-webkit-appearance:none) {
+@media not all and (min-resolution: 0.001dpcm) {
+    @supports (-webkit-appearance: none) {
         ion-app {
             margin-bottom: 7%;
         }

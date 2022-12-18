@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: 'oauth2/redirect',
     loadChildren: () => import('./pages/kakao-login-redirect/kakao-login-redirect.module').then(m => m.KakaoLoginRedirectPageModule)
+  },
+  {
+    path: 'edit-bathroom',
+    loadChildren: () => import('./pages/edit-bathroom/edit-bathroom.module').then( m => m.EditBathroomPageModule)
   }
 ];
 @NgModule({

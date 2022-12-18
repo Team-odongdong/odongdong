@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
-import { EditBathroomComponent } from 'src/app/modals/edit-bathroom/edit-bathroom.component';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { ModalController, NavController } from '@ionic/angular';
+import { CommonService } from 'src/app/services/common/common-service';
 
 @Component({
     selector: 'app-bathroom-detail',
@@ -24,7 +24,11 @@ export class BathroomDetailComponent implements OnInit {
 
     public editedRate = 0;
 
-    constructor(public modalController: ModalController) {}
+    constructor(
+        public navController: NavController,
+        public commonService: CommonService,
+        public modalController: ModalController,
+    ) {}
 
     ngOnInit() {
         this.bathroomInfoForDisplay = this.refineBathroomInfo(this.bathroomInfo);
@@ -62,10 +66,10 @@ export class BathroomDetailComponent implements OnInit {
     }
 
     async editBathroom() {
+        this.commonService.closePresentModal();
+
         console.log('edit click');
-        const modal = await this.modalController.create({
-            component: EditBathroomComponent,
-        });
-        await modal.present();
+
+        this.navController.navigateForward('/edit-bathroom');
     }
 }
