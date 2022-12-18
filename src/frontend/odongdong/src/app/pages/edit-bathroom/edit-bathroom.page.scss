@@ -1,0 +1,52 @@
+ion-toolbar {
+    --border-width: 0 !important;
+    --background-color: var(--bg_white);
+}
+
+ion-icon {
+    color: var(--outline_gray);
+}
+
+ion-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--outline_gray);
+}
+
+ion-checkbox {
+    --size: 24px;
+    --background-checked: var(--primary_blue);
+    --checkmark-width: 3px;
+    --size: 24px;
+}
+ion-checkbox::part(container) {
+    border-radius: 4px;
+}
+
+.input {
+    &__container {
+        margin-top: 10px;
+    }
+}
+#bathroom-name {
+    padding-right: 50px;
+    z-index: 1;
+}
+
+.unisex {
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-right: 10px;
+
+        color: var(--surface-gray);
+    }
+}
+
+.rating {
+    &__container {
+        margin-top: 12.5px;
+    }
+}

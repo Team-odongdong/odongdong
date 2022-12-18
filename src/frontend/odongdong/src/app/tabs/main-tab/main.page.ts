@@ -486,6 +486,7 @@ export class MainPage implements OnInit {
 
     genBathroomInfo(data) {
         const info = {
+            id: data.bathroomId,
             title: data.title,
             rate: data.rate,
             isLocked: data.isLocked,

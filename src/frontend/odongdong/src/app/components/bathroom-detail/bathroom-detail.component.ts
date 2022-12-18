@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { NavigationExtras } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { CommonService } from 'src/app/services/common/common-service';
 
@@ -12,6 +13,7 @@ export class BathroomDetailComponent implements OnInit {
 
     public bathroomInfoForDisplay: any;
 
+    public bathroomId: number;
     public bathroomName: string;
     public rate: number;
     public isLocked: string;
@@ -48,6 +50,7 @@ export class BathroomDetailComponent implements OnInit {
     }
 
     setBathroomDetailInfo(bathroonInfo: any) {
+        this.bathroomId = bathroonInfo.id;
         this.bathroomName = bathroonInfo.title;
         this.rate = bathroonInfo.rate;
         this.isLocked = bathroonInfo.isLocked;
@@ -68,8 +71,15 @@ export class BathroomDetailComponent implements OnInit {
     async editBathroom() {
         this.commonService.closePresentModal();
 
-        console.log('edit click');
+        const props: NavigationExtras = {
+            state: {
+                bathroomInfo: this.bathroomInfoForDisplay,
+            },
+        };
 
-        this.navController.navigateForward('/edit-bathroom');
+        this.navController.navigateForward(
+            `/edit-bathroom/${this.bathroomInfoForDisplay.id}`,
+            props,
+        );
     }
 }
