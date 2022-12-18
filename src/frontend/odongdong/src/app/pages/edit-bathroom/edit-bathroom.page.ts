@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, NavParams } from '@ionic/angular';
+import { NavController, NavParams, ToastController } from '@ionic/angular';
 import { BathroomInfo } from 'src/app/entities/bathroom';
+import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 
 @Component({
     selector: 'app-edit-bathroom',
@@ -28,6 +29,8 @@ export class EditBathroomPage implements OnInit {
         public navParams: NavParams,
         public navController: NavController,
         public activatedRoute: ActivatedRoute,
+        public bathroomService: BathroomService,
+        public toastController: ToastController,
     ) {}
 
     ngOnInit() {
@@ -54,6 +57,26 @@ export class EditBathroomPage implements OnInit {
         this.rating = this.bathroomInfo.rate;
     }
 
+    genBathroomInfo() {
+        /* eslint-disable */
+        const updatedBathroom: BathroomInfo = {
+            'address': this.bathroomAddress,
+            'addressDetail': this.bathroomAddressDetail,
+            'bathroomId': this.bathroomInfo.bathroomId,
+            'isLocked': this.isLocked,
+            'isUnisex': this.isUnisex,
+            'latitude': this.latitude,
+            'longitude': this.longitude,
+            'operationTime': this.operationTime,
+            'title': this.bathroomName,
+            'rate': this.rating,
+            'imageUrl': this.bathroomInfo.imageUrl,
+        };
+        /* eslint-enable */
+
+        return updatedBathroom;
+    }
+
     goBack() {
         this.navController.navigateBack('/tabs/main');
     }
@@ -69,6 +92,36 @@ export class EditBathroomPage implements OnInit {
     }
 
     onRatingChange(rating: number) {
-        console.log(rating);
+        this.rating = rating;
+    }
+
+    async onClickSaveButton() {
+        const data = this.genBathroomInfo();
+
+        const response = await this.bathroomService.editBathroom(data);
+
+        if (response.data.code === 1000) {
+            await this.successEditBathroomToast();
+        } else {
+            await this.failEditBathroomToast();
+        }
+
+        this.navController.back();
+    }
+
+    async successEditBathroomToast() {
+        const toast = await this.toastController.create({
+            message: '화장실 수정을 요청했습니다!',
+            duration: 1500,
+        });
+        await toast.present();
+    }
+
+    async failEditBathroomToast() {
+        const toast = await this.toastController.create({
+            message: '네트워크를 확인 후 다시 시도해주세요!',
+            duration: 2000,
+        });
+        await toast.present();
     }
 }

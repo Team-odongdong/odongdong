@@ -1,3 +1,8 @@
+ion-content {
+    --padding-start: 1.75rem;
+    --padding-end: 1.75rem;
+}
+
 ion-toolbar {
     --border-width: 0 !important;
     --background-color: var(--bg_white);
@@ -21,6 +26,14 @@ ion-checkbox {
 }
 ion-checkbox::part(container) {
     border-radius: 4px;
+}
+
+ion-input {
+    font-size: 16px;
+
+    --padding-start: 16px;
+    --padding-top: 8px;
+    --padding-bottom: 8px;
 }
 
 .input {

@@ -66,22 +66,6 @@ export class BathroomService {
     }
 
     async editBathroom(data: BathroomInfo) {
-        /* eslint-disable */
-        const bathroomRequestDto = {
-            'address': data.address,
-            'addressDetail': data.addressDetail,
-            'bathroomId': data.bathroomId,
-            'imageUrl': data.imageUrl,
-            'isLocked': data.isLocked,
-            'isUnisex': data.isUnisex,
-            'latitude': data.latitude,
-            'longitude': data.longitude,
-            'operationTime': data.operationTime,
-            'title': data.title,
-            'userId': 1,
-        };
-        /* eslint-enable */
-
         try {
             const response = await axios({
                 method: 'post',
