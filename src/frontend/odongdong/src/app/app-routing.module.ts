@@ -20,6 +20,13 @@ const routes: Routes = [
                 (m) => m.EditBathroomPageModule,
             ),
     },
+    {
+        path: 'register-list',
+        loadChildren: () =>
+            import('./pages/register-list/register-list.module').then(
+                (m) => m.RegisterListPageModule,
+            ),
+    },
 ];
 @NgModule({
     imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
