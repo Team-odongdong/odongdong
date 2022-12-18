@@ -4,6 +4,9 @@ import { NavController, NavParams, ToastController } from '@ionic/angular';
 import { BathroomInfo } from 'src/app/entities/bathroom';
 import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 
+import * as dayjs from 'dayjs';
+import { TimeService } from 'src/app/services/time/time-service';
+
 @Component({
     selector: 'app-edit-bathroom',
     templateUrl: './edit-bathroom.page.html',
@@ -25,6 +28,9 @@ export class EditBathroomPage implements OnInit {
     public isValid = true;
     public is24hours = true;
 
+    public inputStartTime: string;
+    public inputEndTime: string;
+
     constructor(
         public router: Router,
         public navParams: NavParams,
@@ -32,6 +38,7 @@ export class EditBathroomPage implements OnInit {
         public activatedRoute: ActivatedRoute,
         public bathroomService: BathroomService,
         public toastController: ToastController,
+        public timeService: TimeService,
     ) {}
 
     ngOnInit() {
@@ -59,18 +66,27 @@ export class EditBathroomPage implements OnInit {
     }
 
     genBathroomInfo() {
+        if (this.inputStartTime === undefined) {
+            this.inputStartTime = this.timeService.formatTimeToHourAndMinute(dayjs().format());
+        }
+        if (this.inputEndTime === undefined) {
+            this.inputEndTime = this.timeService.formatTimeToHourAndMinute(dayjs().format());
+        }
+
         /* eslint-disable */
         const updatedBathroom: BathroomInfo = {
             'address': this.bathroomAddress,
             'addressDetail': this.bathroomAddressDetail,
-            'bathroomId': this.bathroomInfo.bathroomId,
+            'bathroomId': this.bathroomInfo.id,
             'isLocked': this.isLocked,
             'isUnisex': this.isUnisex,
-            'latitude': this.latitude,
-            'longitude': this.longitude,
-            'operationTime': this.operationTime,
+            'latitude': this.bathroomInfo.latitude,
+            'longitude': this.bathroomInfo.longitude,
+            'operationTime': this.is24hours
+                ? '24시간'
+                : this.inputStartTime + '~' + this.inputEndTime,
             'title': this.bathroomName,
-            'rate': this.rating,
+            'rate': this.bathroomInfo.rate,
             'imageUrl': this.bathroomInfo.imageUrl,
         };
         /* eslint-enable */
@@ -92,10 +108,6 @@ export class EditBathroomPage implements OnInit {
 
     checkIsLocked() {
         this.isLocked = this.isLocked === 'Y' ? 'N' : 'Y';
-    }
-
-    onRatingChange(rating: number) {
-        this.rating = rating;
     }
 
     async onClickSaveButton() {
@@ -126,5 +138,13 @@ export class EditBathroomPage implements OnInit {
             duration: 2000,
         });
         await toast.present();
+    }
+
+    onStartTimeChanged(time) {
+        this.inputStartTime = time.time;
+    }
+
+    onEndTimeChanged(time) {
+        this.inputEndTime = time.time;
     }
 }

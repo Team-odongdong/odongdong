@@ -10,4 +10,5 @@ export interface BathroomInfo {
     isUnisex: boolean;
     operationTime?: string;
     bathroomId?: number;
+    id?: number;
 }

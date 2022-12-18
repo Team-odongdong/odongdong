@@ -493,8 +493,11 @@ export class MainPage implements OnInit {
             imageUrl: data.imageUrl,
             isOpened: data.isOpened,
             operationTime: data.operationTime,
-            address: data.address + ' ' + data.addressDetail,
+            address: data.address,
+            addressDetail: data.addressDetail,
             isUnisex: data.isUnisex,
+            latitude: data.latitude,
+            longitude: data.longitude,
         };
 
         return info;

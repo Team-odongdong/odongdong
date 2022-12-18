@@ -55,7 +55,7 @@ export class BathroomDetailComponent implements OnInit {
         this.rate = bathroonInfo.rate;
         this.isLocked = bathroonInfo.isLocked;
         this.operationTime = bathroonInfo.operationTime;
-        this.address = bathroonInfo.address;
+        this.address = bathroonInfo.address + ' ' + this.bathroomInfo.addressDetail;
         this.imageUrl = bathroonInfo.imageUrl;
         this.isOpened = bathroonInfo.isOpened;
     }

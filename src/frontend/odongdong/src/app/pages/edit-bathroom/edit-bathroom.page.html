@@ -54,7 +54,10 @@
     </div>
     <div class="empty-space__10"></div>
     <div *ngIf="!is24hours">
-        <app-time-picker></app-time-picker>
+        <app-time-picker
+            (startTime)="onStartTimeChanged($event)"
+            (endTime)="onEndTimeChanged($event)"
+        ></app-time-picker>
     </div>
 
     <div class="empty-space__20"></div>

@@ -33,6 +33,7 @@
     "@capacitor/status-bar": "4.0.1",
     "@ionic/angular": "^6.2.9",
     "axios": "^0.27.2",
+    "dayjs": "^1.11.7",
     "ionic-rating-component": "^1.2.1",
     "ionicons": "^6.0.3",
     "rxjs": "~6.6.0",

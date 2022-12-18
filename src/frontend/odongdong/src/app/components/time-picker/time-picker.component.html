@@ -7,7 +7,6 @@
                 <ion-datetime
                     id="datetime-start"
                     presentation="time"
-                    [(ngModel)]="startTime"
                     (ionChange)="onChangeStartTime($event)"
                 ></ion-datetime>
             </ng-template>
@@ -24,12 +23,9 @@
                 <ion-datetime
                     id="datetime-end"
                     presentation="time"
-                    [(ngModel)]="endTime"
                     (ionChange)="onChangeEndTime($event)"
                 ></ion-datetime>
             </ng-template>
         </ion-modal>
     </div>
-
-    <ion-button (click)="clic()">임시</ion-button>
 </section>
