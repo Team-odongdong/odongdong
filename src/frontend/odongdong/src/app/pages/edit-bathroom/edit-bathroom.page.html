@@ -12,7 +12,7 @@
 <ion-content>
     <div class="empty-space__10"></div>
 
-    <ion-label>화장실 이름</ion-label>
+    <ion-label class="input__label">화장실 이름</ion-label>
     <div class="input__container">
         <ion-input
             id="bathroom-name"
@@ -26,9 +26,13 @@
 
     <div class="empty-space__20"></div>
 
-    <ion-label>위치</ion-label>
+    <ion-label class="input__label">위치</ion-label>
     <div class="input__container">
-        <ion-input placeholder="주소를 입력하세요." [(ngModel)]="bathroomAddress"></ion-input>
+        <ion-input
+            class="input__address"
+            placeholder="주소를 입력하세요."
+            [(ngModel)]="bathroomAddress"
+        ></ion-input>
         <ion-input
             placeholder="상세주소를 입력하세요."
             [(ngModel)]="bathroomAddressDetail"
@@ -37,6 +41,16 @@
 
     <div class="empty-space__20"></div>
 
+    <div class="operation-time__label">
+        <ion-label class="input__label">운영 시간</ion-label>
+    </div>
+    <div class="empty-space__10"></div>
+    <app-time-picker></app-time-picker>
+
+    <div class="empty-space__20"></div>
+
+    <ion-label class="input__label">기타 사항</ion-label>
+    <div class="empty-space__5"></div>
     <div class="unisex__container">
         <p>남녀 공용 화장실이라면 체크해주세요!</p>
         <ion-checkbox
@@ -45,8 +59,6 @@
             (ionChange)="checkIsUnisex()"
         ></ion-checkbox>
     </div>
-
-    <div class="empty-space__10"></div>
 
     <div class="unisex__container">
         <p>화장실이 잠겨있다면 체크해주세요!</p>
@@ -59,22 +71,5 @@
 
     <div class="empty-space__20"></div>
 
-    <ion-label>별점</ion-label>
-    <div>
-        <ionic-rating-component
-            activeIcon="star"
-            defaultIcon="star"
-            halfStar="true"
-            activeColor="var(--secondary_blue)"
-            defaultColor="var(--middle_gray)"
-            readonly="false"
-            fontSize="32px"
-            rating="{{rating}}"
-            (ratingChanged)="onRatingChange($event)"
-        ></ionic-rating-component>
-    </div>
-
-    <div class="empty-space__30"></div>
-
-    <ion-button expand="block" (click)="onClickSaveButton()">저장하기</ion-button>
+    <ion-button class="submit" expand="block" (click)="onClickSaveButton()">저장하기</ion-button>
 </ion-content>

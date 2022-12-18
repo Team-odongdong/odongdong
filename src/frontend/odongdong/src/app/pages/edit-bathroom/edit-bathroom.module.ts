@@ -8,17 +8,20 @@ import { EditBathroomPageRoutingModule } from './edit-bathroom-routing.module';
 
 import { EditBathroomPage } from './edit-bathroom.page';
 import { IonicRatingComponent, IonicRatingComponentModule } from 'ionic-rating-component';
+import { TimePickerComponent } from 'src/app/components/time-picker/time-picker.component';
+import { TimePickerComponentModule } from 'src/app/components/time-picker/time-picker.module';
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         IonicModule,
+        TimePickerComponentModule,
         IonicRatingComponentModule,
         EditBathroomPageRoutingModule,
     ],
     providers: [NavParams],
     declarations: [EditBathroomPage],
-    entryComponents: [IonicRatingComponent],
+    entryComponents: [TimePickerComponent, IonicRatingComponent],
 })
 export class EditBathroomPageModule {}

@@ -1,0 +1,23 @@
+<section class="time-picker__container">
+    <div>
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+        <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+                <ion-datetime id="datetime" presentation="time"></ion-datetime>
+            </ng-template>
+        </ion-modal>
+    </div>
+
+    <div>~</div>
+
+    <div>
+        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+
+        <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+                <ion-datetime id="datetime" presentation="time"></ion-datetime>
+            </ng-template>
+        </ion-modal>
+    </div>
+</section>
