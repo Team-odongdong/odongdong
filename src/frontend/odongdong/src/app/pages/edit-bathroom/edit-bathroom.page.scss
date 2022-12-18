@@ -93,5 +93,15 @@ ion-input {
     }
 
     &__checkbox {
+        display: flex;
+
+        p {
+            margin: 0;
+
+            font-size: 14px;
+            color: var(--error_red);
+
+            margin-right: 0.4375rem;
+        }
     }
 }

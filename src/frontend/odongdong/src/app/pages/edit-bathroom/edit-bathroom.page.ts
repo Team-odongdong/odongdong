@@ -23,6 +23,7 @@ export class EditBathroomPage implements OnInit {
     public rating: number;
 
     public isValid = true;
+    public is24hours = true;
 
     constructor(
         public router: Router,
@@ -81,14 +82,16 @@ export class EditBathroomPage implements OnInit {
         this.navController.navigateBack('/tabs/main');
     }
 
+    checkIs24hours() {
+        this.is24hours = !this.is24hours;
+    }
+
     checkIsUnisex() {
         this.isUnisex = !this.isUnisex;
-        console.log(this.isUnisex);
     }
 
     checkIsLocked() {
         this.isLocked = this.isLocked === 'Y' ? 'N' : 'Y';
-        console.log(this.isLocked);
     }
 
     onRatingChange(rating: number) {

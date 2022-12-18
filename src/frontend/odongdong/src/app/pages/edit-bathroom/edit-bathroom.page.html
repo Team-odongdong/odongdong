@@ -43,9 +43,19 @@
 
     <div class="operation-time__label">
         <ion-label class="input__label">운영 시간</ion-label>
+        <div class="operation-time__checkbox">
+            <p>24시간 인가요?</p>
+            <ion-checkbox
+                slot="end"
+                checked="{{ is24hours }}"
+                (ionChange)="checkIs24hours()"
+            ></ion-checkbox>
+        </div>
     </div>
     <div class="empty-space__10"></div>
-    <app-time-picker></app-time-picker>
+    <div *ngIf="!is24hours">
+        <app-time-picker></app-time-picker>
+    </div>
 
     <div class="empty-space__20"></div>
 

@@ -1,23 +1,35 @@
 <section class="time-picker__container">
     <div>
-        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        <ion-datetime-button datetime="datetime-start"></ion-datetime-button>
 
         <ion-modal [keepContentsMounted]="true">
             <ng-template>
-                <ion-datetime id="datetime" presentation="time"></ion-datetime>
+                <ion-datetime
+                    id="datetime-start"
+                    presentation="time"
+                    [(ngModel)]="startTime"
+                    (ionChange)="onChangeStartTime($event)"
+                ></ion-datetime>
             </ng-template>
         </ion-modal>
     </div>
 
-    <div>~</div>
+    <div>&nbsp;~&nbsp;</div>
 
     <div>
-        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        <ion-datetime-button datetime="datetime-end"></ion-datetime-button>
 
         <ion-modal [keepContentsMounted]="true">
             <ng-template>
-                <ion-datetime id="datetime" presentation="time"></ion-datetime>
+                <ion-datetime
+                    id="datetime-end"
+                    presentation="time"
+                    [(ngModel)]="endTime"
+                    (ionChange)="onChangeEndTime($event)"
+                ></ion-datetime>
             </ng-template>
         </ion-modal>
     </div>
+
+    <ion-button (click)="clic()">임시</ion-button>
 </section>
