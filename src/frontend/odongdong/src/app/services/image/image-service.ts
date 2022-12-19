@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable({
     providedIn: 'root',
 })
-export class ImageService{
+export class ImageService {
     constructor() {}
 
     async b64toBlob(b64Data, contentType = '', sliceSize = 512) {
@@ -15,7 +15,7 @@ export class ImageService{
 
             const byteNumbers = new Array(slice.length);
             for (let i = 0; i < slice.length; i++) {
-            byteNumbers[i] = slice.charCodeAt(i);
+                byteNumbers[i] = slice.charCodeAt(i);
             }
 
             const byteArray = new Uint8Array(byteNumbers);
@@ -25,5 +25,9 @@ export class ImageService{
         const blob = new Blob(byteArrays, { type: contentType });
 
         return blob;
+    }
+
+    async httpToHttps(imageUrl: string) {
+        return imageUrl.replace('http', 'https');
     }
 }
