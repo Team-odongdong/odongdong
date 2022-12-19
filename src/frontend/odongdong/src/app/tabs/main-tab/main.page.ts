@@ -486,14 +486,18 @@ export class MainPage implements OnInit {
 
     genBathroomInfo(data) {
         const info = {
+            id: data.bathroomId,
             title: data.title,
             rate: data.rate,
             isLocked: data.isLocked,
             imageUrl: data.imageUrl,
             isOpened: data.isOpened,
             operationTime: data.operationTime,
-            address: data.address + ' ' + data.addressDetail,
+            address: data.address,
+            addressDetail: data.addressDetail,
             isUnisex: data.isUnisex,
+            latitude: data.latitude,
+            longitude: data.longitude,
         };
 
         return info;

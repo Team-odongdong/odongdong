@@ -9,6 +9,7 @@
             <div class="title__rate">
                 <ionic-rating-component
                     #rating
+                    class="rating-container"
                     activeIcon="star"
                     defaultIcon="star"
                     halfStar="true"
@@ -17,14 +18,12 @@
                     readonly="true"
                     fontSize="14px"
                     rating="{{ rate }}"
-                    (ratingChanged)="onRatingChange($event)"
                 ></ionic-rating-component>
             </div>
         </div>
         <div class="locker__container">
             <ion-img
                 *ngIf="isLocked === 'Y'"
-                class="locker__img"
                 [ngClass]="extended ? 'locker__img' : 'locker__img--small'"
                 src="../../../assets/svg/map/locked.svg"
             ></ion-img>
@@ -37,11 +36,33 @@
         <p *ngIf="isOpened === 'Y'" class="available">
             이용 가능 <span *ngIf="isLocked === 'Y'">- 비밀번호 있음</span>
         </p>
-        <p *ngIf="isOpened === 'N'" class="available-not">이용 불가</p>
+        <p *ngIf="isOpened === 'N' || isOpened === 'U'" class="available-not">이용 불가</p>
 
         <p *ngIf="isOpened === 'Y'" class="operation-time">{{ operationTime }}</p>
-        <p *ngIf="isOpened === 'N'" class="operation-time-not">{{ operationTime }}</p>
+        <p *ngIf="isOpened === 'N' || isOpened === 'U'" class="operation-time-not">
+            {{ operationTime }}
+        </p>
         <p class="address">{{ address }}</p>
     </div>
-    <div *ngIf="extended" class="empty-space__10"></div>
+
+    <div *ngIf="extended" class="rating">
+        <ionic-rating-component
+            activeIcon="star"
+            defaultIcon="star"
+            halfStar="true"
+            activeColor="var(--secondary_blue)"
+            defaultColor="var(--middle_gray)"
+            readonly="false"
+            fontSize="20px"
+            rating="{{ editedRate }}"
+            (ratingChanged)="onRatingChange($event)"
+        ></ionic-rating-component>
+        <p class="rating__label">드래그 해서 별점을 남겨보세요!</p>
+    </div>
+    <div *ngIf="extended" class="flex edit" (click)="editBathroom()">
+        <p class="edit__text">정보 수정 제안하기</p>
+        <ion-img class="edit__image" src="../../../assets/svg/map/edit.svg"></ion-img>
+    </div>
+
+    <div class="empty-space__40"></div>
 </div>

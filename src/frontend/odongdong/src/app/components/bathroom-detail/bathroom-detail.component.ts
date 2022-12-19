@@ -1,4 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
+import { NavigationExtras } from '@angular/router';
+import { ModalController, NavController } from '@ionic/angular';
+import { CommonService } from 'src/app/services/common/common-service';
 
 @Component({
     selector: 'app-bathroom-detail',
@@ -10,6 +13,7 @@ export class BathroomDetailComponent implements OnInit {
 
     public bathroomInfoForDisplay: any;
 
+    public bathroomId: number;
     public bathroomName: string;
     public rate: number;
     public isLocked: string;
@@ -20,7 +24,13 @@ export class BathroomDetailComponent implements OnInit {
 
     public extended = false;
 
-    constructor() {}
+    public editedRate = 0;
+
+    constructor(
+        public navController: NavController,
+        public commonService: CommonService,
+        public modalController: ModalController,
+    ) {}
 
     ngOnInit() {
         this.bathroomInfoForDisplay = this.refineBathroomInfo(this.bathroomInfo);
@@ -40,20 +50,36 @@ export class BathroomDetailComponent implements OnInit {
     }
 
     setBathroomDetailInfo(bathroonInfo: any) {
+        this.bathroomId = bathroonInfo.id;
         this.bathroomName = bathroonInfo.title;
         this.rate = bathroonInfo.rate;
         this.isLocked = bathroonInfo.isLocked;
         this.operationTime = bathroonInfo.operationTime;
-        this.address = bathroonInfo.address;
+        this.address = bathroonInfo.address + ' ' + this.bathroomInfo.addressDetail;
         this.imageUrl = bathroonInfo.imageUrl;
         this.isOpened = bathroonInfo.isOpened;
     }
 
     onRatingChange(inputRate: number) {
-        this.rate = inputRate;
+        this.editedRate = inputRate;
     }
 
     extendDetail() {
-        this.extended = !this.extended;
+        this.extended = true;
+    }
+
+    async editBathroom() {
+        this.commonService.closePresentModal();
+
+        const props: NavigationExtras = {
+            state: {
+                bathroomInfo: this.bathroomInfoForDisplay,
+            },
+        };
+
+        this.navController.navigateForward(
+            `/edit-bathroom/${this.bathroomInfoForDisplay.id}`,
+            props,
+        );
     }
 }
