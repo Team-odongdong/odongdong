@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavController } from '@ionic/angular';
 import { BathroomInfo } from 'src/app/entities/bathroom';
 
 @Component({
@@ -9,7 +10,7 @@ import { BathroomInfo } from 'src/app/entities/bathroom';
 export class RegisterListPage implements OnInit {
     public bathroomInfo: BathroomInfo;
 
-    constructor() {}
+    constructor(public navController: NavController) {}
 
     ngOnInit() {
         this.bathroomInfo = {
@@ -26,5 +27,9 @@ export class RegisterListPage implements OnInit {
             rate: 0,
             title: '성지빌딩 화장실',
         };
+    }
+
+    goBack() {
+        this.navController.back();
     }
 }

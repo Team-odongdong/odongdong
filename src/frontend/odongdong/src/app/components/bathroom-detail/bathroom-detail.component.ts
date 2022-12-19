@@ -21,6 +21,7 @@ export class BathroomDetailComponent implements OnInit {
     public operationTime: string;
     public address: string;
     public isOpened: string;
+    public isUnisex: boolean;
 
     public extended = false;
 
@@ -35,6 +36,8 @@ export class BathroomDetailComponent implements OnInit {
     ngOnInit() {
         this.bathroomInfoForDisplay = this.refineBathroomInfo(this.bathroomInfo);
         this.setBathroomDetailInfo(this.bathroomInfoForDisplay);
+
+        console.log(this.bathroomInfo);
     }
 
     refineBathroomInfo(info: any) {
@@ -58,6 +61,7 @@ export class BathroomDetailComponent implements OnInit {
         this.address = bathroonInfo.address + ' ' + this.bathroomInfo.addressDetail;
         this.imageUrl = bathroonInfo.imageUrl;
         this.isOpened = bathroonInfo.isOpened;
+        this.isUnisex = bathroonInfo.isUnisex;
     }
 
     onRatingChange(inputRate: number) {
