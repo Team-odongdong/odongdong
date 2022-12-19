@@ -5,6 +5,7 @@
 >
   <head>
     <link rel="stylesheet" href="/static/css/main.css" />
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   </head>
 
   <th:block layout:fragment="head"></th:block>
@@ -14,7 +15,7 @@
     async function register(id) {
       await axios({
         method: "post",
-        url: "/admin/bathroom/register",
+        url: "https://prod.odongdong.site/admin/bathroom/register",
         params: {
           id: id,
         },
