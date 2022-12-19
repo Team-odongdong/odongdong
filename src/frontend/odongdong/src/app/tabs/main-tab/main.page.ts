@@ -23,8 +23,10 @@ declare let naver;
 const myLocationIconUrl = '../assets/svg/map/current-location.svg';
 const iconUrl = '../assets/svg/map/map-marker.svg';
 const iconDisabledUrl = '../assets/svg/map/map-marker-disabled.svg';
+const iconRedUrl = '../assets/svg/map/map-marker-red.svg';
 const clickedIconUrl = '../assets/images/map/marker-clicked.png';
 const clickedIconDisabledUrl = '../assets/images/map/marker-clicked-disabled.png';
+const clickedIconRedUrl = '../assets/images/map/marker-clicked-red.png';
 const addIconUrl = '../assets/images/map/add-new.png';
 
 @Component({
@@ -53,6 +55,8 @@ export class MainPage implements OnInit {
     public myLocationMarkerIcon: any;
     public defaultDisabledMarkerIcon: any;
     public clickedDisabledMarkerIcon: any;
+    public defaultRedMarkerIcon: any;
+    public clickedRedMarkerIcon: any;
 
     public markerClicked = false;
     public selectedMarker = null;
@@ -213,10 +217,18 @@ export class MainPage implements OnInit {
             25,
         );
 
+        this.defaultRedMarkerIcon = this.kakaoMapService.createMarkerImage(iconRedUrl, 25, 25);
+
         this.clickedMarkerIcon = this.kakaoMapService.createMarkerImage(clickedIconUrl, 31, 43);
 
         this.clickedDisabledMarkerIcon = this.kakaoMapService.createMarkerImage(
             clickedIconDisabledUrl,
+            31,
+            43,
+        );
+
+        this.clickedRedMarkerIcon = this.kakaoMapService.createMarkerImage(
+            clickedIconRedUrl,
             31,
             43,
         );
@@ -239,6 +251,8 @@ export class MainPage implements OnInit {
                     this.selectedMarker.setIcon(this.defaultMarkerIcon);
                 } else if (this.selectedMarker.getIcon().url === clickedIconDisabledUrl) {
                     this.selectedMarker.setIcon(this.defaultDisabledMarkerIcon);
+                } else if (this.selectedMarker.getIcon().url === clickedIconRedUrl) {
+                    this.selectedMarker.setIcon(this.defaultRedMarkerIcon);
                 }
             }
 
@@ -311,13 +325,19 @@ export class MainPage implements OnInit {
     //TODO: refactor (addmarker & addmarkers)
     addMarkers() {
         this.bathroomList.forEach((place) => {
+            let currentMarkerIcon;
+            if (place.isOpened === 'Y') {
+                currentMarkerIcon = this.defaultMarkerIcon;
+            } else if (place.isOpened === 'U') {
+                currentMarkerIcon = this.defaultDisabledMarkerIcon;
+            } else if (place.isOpened === 'N') {
+                currentMarkerIcon = this.defaultRedMarkerIcon;
+            }
+
             const marker = new naver.maps.Marker({
                 map: this.map,
                 position: new naver.maps.LatLng(place.latitude, place.longitude),
-                icon:
-                    place.isOpened === 'Y'
-                        ? this.defaultMarkerIcon
-                        : this.defaultDisabledMarkerIcon,
+                icon: currentMarkerIcon,
             });
 
             //detail component를 위한 값 세팅
@@ -355,6 +375,14 @@ export class MainPage implements OnInit {
                 place.isOpened === 'Y'
                     ? markerRef.setIcon(this.clickedMarkerIcon)
                     : markerRef.setIcon(this.clickedDisabledMarkerIcon);
+
+                if (place.isOpened === 'Y') {
+                    markerRef.setIcon(this.clickedMarkerIcon);
+                } else if (place.isOpened === 'U') {
+                    markerRef.setIcon(this.clickedDisabledMarkerIcon);
+                } else if (place.isOpened === 'N') {
+                    markerRef.setIcon(this.clickedRedMarkerIcon);
+                }
             }
 
             //클릭된 마커가 현재 마커가 아닌 경우
@@ -363,14 +391,24 @@ export class MainPage implements OnInit {
                 this.changeDetectorRef.detectChanges();
 
                 //새로 클릭된 마커는 이미지를 변경한다.
-                markerRef.getIcon().url === iconUrl
-                    ? markerRef.setIcon(this.clickedMarkerIcon)
-                    : markerRef.setIcon(this.clickedDisabledMarkerIcon);
+                const currentMarkerRefUrl = markerRef.getIcon().url;
+                if (currentMarkerRefUrl === iconUrl) {
+                    markerRef.setIcon(this.clickedMarkerIcon);
+                } else if (currentMarkerRefUrl === iconDisabledUrl) {
+                    markerRef.setIcon(this.clickedDisabledMarkerIcon);
+                } else if (currentMarkerRefUrl === iconRedUrl) {
+                    markerRef.setIcon(this.clickedRedMarkerIcon);
+                }
 
                 //기존에 선택되어 있는 마커는 기본으로 바꾼다.
-                this.selectedMarker.getIcon().url === clickedIconUrl
-                    ? this.selectedMarker.setIcon(this.defaultMarkerIcon)
-                    : this.selectedMarker.setIcon(this.defaultDisabledMarkerIcon);
+                const selectedMarkerIconUrl = this.selectedMarker.getIcon().url;
+                if (selectedMarkerIconUrl === clickedIconUrl) {
+                    this.selectedMarker.setIcon(this.defaultMarkerIcon);
+                } else if (selectedMarkerIconUrl === clickedIconDisabledUrl) {
+                    this.selectedMarker.setIcon(this.defaultDisabledMarkerIcon);
+                } else if (selectedMarkerIconUrl === clickedIconRedUrl) {
+                    this.selectedMarker.setIcon(this.defaultRedMarkerIcon);
+                }
                 this.selectedMarker.setZIndex(5);
 
                 this.markerClicked = true;

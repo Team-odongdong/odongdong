@@ -23,9 +23,15 @@
         </div>
         <div class="locker__container">
             <ion-img
-                *ngIf="isLocked === 'Y'"
+                *ngIf="isLocked !== 'Y'"
                 [ngClass]="extended ? 'locker__img' : 'locker__img--small'"
                 src="../../../assets/svg/map/locked.svg"
+            ></ion-img>
+            <ion-img
+                id="unisex"
+                *ngIf="isUnisex === true"
+                [ngClass]="extended ? 'locker__img' : 'locker__img--small'"
+                src="../../../assets/svg/map/unisex.svg"
             ></ion-img>
         </div>
     </div>
@@ -36,11 +42,11 @@
         <p *ngIf="isOpened === 'Y'" class="available">
             이용 가능 <span *ngIf="isLocked === 'Y'">- 비밀번호 있음</span>
         </p>
-        <p *ngIf="isOpened === 'N' || isOpened === 'U'" class="available-not">이용 불가</p>
+        <p *ngIf="isOpened === 'N'" class="available-not">이용 불가</p>
 
         <p *ngIf="isOpened === 'Y'" class="operation-time">{{ operationTime }}</p>
         <p *ngIf="isOpened === 'N' || isOpened === 'U'" class="operation-time-not">
-            {{ operationTime }}
+            {{ operationTime || '시간 정보 없음' }}
         </p>
         <p class="address">{{ address }}</p>
     </div>
@@ -57,7 +63,7 @@
             rating="{{ editedRate }}"
             (ratingChanged)="onRatingChange($event)"
         ></ionic-rating-component>
-        <p class="rating__label">드래그 해서 별점을 남겨보세요!</p>
+        <p class="rating__label">별을 클릭해 별점을 남겨보세요!</p>
     </div>
     <div *ngIf="extended" class="flex edit" (click)="editBathroom()">
         <p class="edit__text">정보 수정 제안하기</p>
