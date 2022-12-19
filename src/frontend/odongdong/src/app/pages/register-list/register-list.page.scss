@@ -8,3 +8,8 @@ ion-title {
     font-weight: bold;
     color: var(--outline_gray);
 }
+
+ion-content {
+    --padding-start: 0.75rem;
+    --padding-end: 0.75rem;
+}

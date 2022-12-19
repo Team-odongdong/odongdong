@@ -6,21 +6,48 @@ p {
     &__container {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+
+        height: 5rem;
+
+        padding: 1rem;
     }
 
     &__labels {
     }
 
     &__buttons {
+        display: flex;
+        gap: 0.8125rem;
     }
 }
 
 .title {
     font-size: 16px;
+    font-weight: bold;
     color: var(--bg_black);
 }
 
 .address {
     font-size: 14px;
     color: var(--outline_gray);
+
+    margin-top: 0.25rem;
+
+    &__waiting {
+        color: var(--error_red);
+    }
+}
+
+.not-registered {
+    background-color: var(--error_container_red);
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.disabled {
+    cursor: default;
+    pointer-events: none;
 }

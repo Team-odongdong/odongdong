@@ -10,5 +10,16 @@
 </ion-header>
 
 <ion-content>
-    <app-registered-bathroom-item></app-registered-bathroom-item>
+    <app-registered-bathroom-item
+        [isRegistered]="true"
+        [bathroomInfo]="bathroomInfo"
+    ></app-registered-bathroom-item>
+    <app-registered-bathroom-item
+        [isRegistered]="false"
+        [bathroomInfo]="bathroomInfo"
+    ></app-registered-bathroom-item>
+    <app-registered-bathroom-item
+        [isRegistered]="true"
+        [bathroomInfo]="bathroomInfo"
+    ></app-registered-bathroom-item>
 </ion-content>

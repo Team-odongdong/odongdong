@@ -1,10 +1,19 @@
-<div class="item__container">
+<div class="item__container" [ngClass]="isRegistered ? null : 'not-registered'">
     <div class="item__labels">
-        <p class="title">가중나무공원 공공화장실</p>
-        <p class="address">서울시 광진구 화양동 32-1</p>
+        <p class="title">{{ bathroomInfo.title }}</p>
+        <p *ngIf="isRegistered" class="address">{{ addressFull }}</p>
+        <p *ngIf="!isRegistered" class="address__waiting">등록 대기중인 화장실입니다.</p>
     </div>
     <div class="item__buttons">
-        <ion-img src="../../../assets/svg/map/edit.svg"></ion-img>
-        <ion-img src="../../../assets/svg/map/edit.svg"></ion-img>
+        <ion-img
+            [ngClass]="isRegistered ? 'pointer' : 'disabled'"
+            src="{{ editImageUrl }}"
+            (click)="editBathroom()"
+        ></ion-img>
+        <ion-img
+            [ngClass]="!isRegistered ? 'pointer' : 'disabled'"
+            src="{{ deleteImageUrl }}"
+            (click)="deleteBathroom()"
+        ></ion-img>
     </div>
 </div>
