@@ -1,0 +1,25 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-buttons>
+            <ion-button slot="start" (click)="goBack()">
+                <ion-icon name="chevron-back-outline"></ion-icon>
+            </ion-button>
+        </ion-buttons>
+        <ion-title>내가 등록한 화장실</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <app-registered-bathroom-item
+        [isRegistered]="true"
+        [bathroomInfo]="bathroomInfo"
+    ></app-registered-bathroom-item>
+    <app-registered-bathroom-item
+        [isRegistered]="false"
+        [bathroomInfo]="bathroomInfo"
+    ></app-registered-bathroom-item>
+    <app-registered-bathroom-item
+        [isRegistered]="true"
+        [bathroomInfo]="bathroomInfo"
+    ></app-registered-bathroom-item>
+</ion-content>

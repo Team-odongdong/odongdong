@@ -72,6 +72,7 @@ export class BathroomService {
                 url: `${environment.apiUrl}/api/bathroom/edit`,
                 data,
                 responseType: 'json',
+                withCredentials: true,
             });
             return response;
         } catch (error) {

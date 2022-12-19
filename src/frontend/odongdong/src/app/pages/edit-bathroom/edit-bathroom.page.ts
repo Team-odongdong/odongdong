@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, NavParams, ToastController } from '@ionic/angular';
+import { AlertController, NavController, NavParams, ToastController } from '@ionic/angular';
 import { BathroomInfo } from 'src/app/entities/bathroom';
 import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 
@@ -38,6 +38,7 @@ export class EditBathroomPage implements OnInit {
         public activatedRoute: ActivatedRoute,
         public bathroomService: BathroomService,
         public toastController: ToastController,
+        public alertController: AlertController,
         public timeService: TimeService,
     ) {}
 
@@ -117,11 +118,13 @@ export class EditBathroomPage implements OnInit {
 
         if (response.data.code === 1000) {
             await this.successEditBathroomToast();
+            await this.navController.back();
+        } else if (response.data.code === 3000) {
+            await this.needLoginAlert();
         } else {
             await this.failEditBathroomToast();
+            await this.navController.back();
         }
-
-        this.navController.back();
     }
 
     async successEditBathroomToast() {
@@ -130,6 +133,27 @@ export class EditBathroomPage implements OnInit {
             duration: 1500,
         });
         await toast.present();
+    }
+
+    async needLoginAlert() {
+        const alert = await this.alertController.create({
+            header: '로그인이 필요합니다!',
+            buttons: [
+                {
+                    text: '로그인 하기',
+                    handler: () => {
+                        this.navController.navigateForward('/tabs/profile');
+                    },
+                },
+                {
+                    text: '수정 취소',
+                    handler: () => {
+                        this.navController.back();
+                    },
+                },
+            ],
+        });
+        await alert.present();
     }
 
     async failEditBathroomToast() {
