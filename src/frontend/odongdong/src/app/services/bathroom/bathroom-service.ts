@@ -97,6 +97,7 @@ export class BathroomService {
         try {
             const response = await axios({
                 method: 'post',
+                withCredentials: true,
                 url: `${environment.apiUrl}/api/rating`,
                 data: {
                     bathroomId,
