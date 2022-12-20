@@ -24,8 +24,4 @@ public class UserController {
 		return userService.findUserProfile();
 	}
 
-	@GetMapping(value = "/login")
-	public String loginPage(){
-		return "login";
-	}
 }

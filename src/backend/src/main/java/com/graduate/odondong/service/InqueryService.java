@@ -1,10 +1,12 @@
 package com.graduate.odondong.service;
 
-import com.graduate.odondong.domain.Inquery;
-import com.graduate.odondong.repository.InqueryRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.graduate.odondong.domain.Inquery;
+import com.graduate.odondong.repository.InqueryRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -12,9 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class InqueryService {
 
     private final InqueryRepository inqueryRepository;
+    private final UserService userService;
 
     public void addInquery(String contents) {
-        Inquery inquery = Inquery.builder().content(contents).build();
-        inqueryRepository.save(inquery);
+        inqueryRepository.save(new Inquery(contents, userService.getUserEmail()));
     }
 }

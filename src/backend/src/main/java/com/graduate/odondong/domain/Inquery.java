@@ -1,15 +1,21 @@
 package com.graduate.odondong.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @Entity
@@ -22,8 +28,8 @@ public class Inquery {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "inquery_id")
     private Long id;
-
     private String content;
+    private String email;
 
     @CreatedDate
     @Column(updatable = false)
@@ -31,11 +37,8 @@ public class Inquery {
     @LastModifiedDate
     private LocalDateTime updated_at;
 
-    @Builder
-    public Inquery(Long id, String content, LocalDateTime created_at, LocalDateTime updated_at) {
-        this.id = id;
+    public Inquery(String content, String email) {
         this.content = content;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+        this.email = email;
     }
 }
