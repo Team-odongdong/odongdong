@@ -25,7 +25,7 @@
     <ion-list lines="none">
         <ion-item (click)="goToRegisterList()">
             <div id="achievement">
-                <ion-label>총 28개 화장실</ion-label>
+                <ion-label>총 {{registeredCount || '?'}}개 화장실</ion-label>
                 <ion-label>등록한 화장실의 수</ion-label>
             </div>
         </ion-item>

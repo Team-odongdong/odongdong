@@ -44,4 +44,18 @@ export class CommonService {
             return false;
         }
     }
+
+    async notOpenedFeatureAlert() {
+        const alert = await this.alertController.create({
+            header: '출시 예정인 기능입니다',
+            message: '다음 버전을 기대해주세요!',
+            buttons: [
+                {
+                    text: '닫기',
+                    handler: () => {},
+                },
+            ],
+        });
+        await alert.present();
+    }
 }
