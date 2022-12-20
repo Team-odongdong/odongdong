@@ -92,4 +92,21 @@ export class BathroomService {
             return error.response;
         }
     }
+
+    async registerRating(bathroomId: number, rate: number) {
+        try {
+            const response = await axios({
+                method: 'post',
+                url: `${environment.apiUrl}/api/rating`,
+                data: {
+                    bathroomId,
+                    score: rate,
+                },
+                responseType: 'json',
+            });
+            return response;
+        } catch (error) {
+            return error.response;
+        }
+    }
 }

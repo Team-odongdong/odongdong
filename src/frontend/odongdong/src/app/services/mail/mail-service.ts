@@ -1,6 +1,7 @@
-import { Injectable } from "@angular/core";
-import { environment } from "src/environments/environment";
-import { CommonService } from "../common/common-service";
+import { Injectable } from '@angular/core';
+import { Mail } from 'src/app/entities/mail';
+import { environment } from 'src/environments/environment';
+import { CommonService } from '../common/common-service';
 
 const axios = require('axios');
 
@@ -8,14 +9,14 @@ const axios = require('axios');
     providedIn: 'root',
 })
 export class MailService {
-    constructor(
-        public commonService: CommonService,
-    ) {}
+    constructor(public commonService: CommonService) {}
 
-    async sendMail(content: string) {
-        if(!(await this.commonService.checkNetworkStatus())) return;
+    async sendMail(content: Mail) {
+        if (!(await this.commonService.checkNetworkStatus())) {
+            return;
+        }
         try {
-            const headers = { 'Content-Type': 'text/plain' };            
+            const headers = { 'Content-Type': 'text/plain' };
 
             const response = await axios({
                 method: 'post',
@@ -25,9 +26,8 @@ export class MailService {
                 responseType: 'json',
             });
             return response;
-        } catch(error) {
+        } catch (error) {
             return error.response;
         }
     }
-
 }
