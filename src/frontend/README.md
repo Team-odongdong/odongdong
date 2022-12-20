@@ -10,14 +10,14 @@
 ionic serve
 ```
 
-- 기본적으로 localhost:8100에서 실행됩니다.
-- 만약 특정 주소로 실행하고 싶다면, 아래와 같이 입력하면 됩니다.
+-   기본적으로 localhost:8100에서 실행됩니다.
+-   만약 특정 주소로 실행하고 싶다면, 아래와 같이 입력하면 됩니다.
 
-  ```
-  ionic serve --host=IP_ADDRESS:PORT_NUM
-  ```
+    ```
+    ionic serve --host=IP_ADDRESS:PORT_NUM
+    ```
 
-- run on device (for capacitor)
+-   run on device (for capacitor)
 
 ```
 ionic capacitor run android --device
@@ -25,7 +25,7 @@ ionic capacitor run android --device
 
 ### 빌드 및 배포
 
-- 빌드
+-   빌드
 
 ```
 ionic build (capacitor)
@@ -33,52 +33,52 @@ ionic build --prod (production version)
 ionic build --prod --release (release version)
 ```
 
-- 프로젝트 생성
+-   프로젝트 생성
 
 ```
 ionic cap add android
 ionic cap add ios
 ```
 
-- 빌드 변경사항 반영
+-   빌드 변경사항 반영
 
 ```
 ionic cap copy
 ```
 
-- sync
+-   sync
 
 ```
 ionic cap sync
 ```
 
-- 실행
+-   실행
 
-  - ios (Xcode)
+    -   ios (Xcode)
 
-  ```
-  ionic cap open ios
-  ```
+    ```
+    ionic cap open ios
+    ```
 
-  - android (Android Studio)
+    -   android (Android Studio)
 
-  ```
-  ionic cap open android
-  ```
+    ```
+    ionic cap open android
+    ```
 
-- 한번에 하기
+-   한번에 하기
 
-  - ios
+    -   ios
 
-  ```
-  ionic build --prod;ionic cap copy;ionic cap sync;ionic cap open ios
-  ```
+    ```
+    ionic build --prod;ionic cap copy ios;ionic cap sync ios;ionic cap open ios
+    ```
 
-  - android
+    -   android
 
-  ```
-  ionic build --prod;ionic cap copy;ionic cap sync;ionic cap open android
-  ```
+    ```
+    ionic build --prod;ionic cap copy android;ionic cap sync android;ionic cap open android
+    ```
 
 ### native의 icon, splash 아이콘 업데이트 하기
 
@@ -86,3 +86,10 @@ ionic cap sync
 cordova-res ios --skip-config --copy
 cordova-res android --skip-config --copy
 ```
+
+### 버전 업그레이드 시 확인할 파일들
+
+-   environments
+-   package files
+-   build.gradle (app)
+-   constants
