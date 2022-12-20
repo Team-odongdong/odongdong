@@ -16,7 +16,7 @@
     </div>
 
     <ion-avatar *ngIf="userImage" class="profile-image__container">
-        <img class="profile-image__image" src="{{userImage}}" alt="profile-image" />
+        <img class="profile-image__image" src="{{ userImage }}" alt="profile-image" />
     </ion-avatar>
     <div *ngIf="!userImage" class="profile-image__container">
         <button class="profile-image__button" (click)="openSocialLogin()">로그인 하기</button>

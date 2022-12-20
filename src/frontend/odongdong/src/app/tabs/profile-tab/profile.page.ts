@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { SocialLoginComponent } from 'src/app/modals/social-login/social-login.component';
 import { LoginService } from 'src/app/services/auth/login-service';
+import { ImageService } from 'src/app/services/image/image-service';
 
 @Component({
     selector: 'app-profile',
@@ -15,6 +16,7 @@ export class ProfilePage implements OnInit {
 
     constructor(
         public loginService: LoginService,
+        public imageService: ImageService,
         public navController: NavController,
         public modalController: ModalController,
     ) {}
@@ -41,7 +43,7 @@ export class ProfilePage implements OnInit {
             const { data } = await this.loginService.getUserProfile();
 
             if (data.code === 1000) {
-                this.setProfile(data.result);
+                await this.setProfile(data.result);
             } else {
                 this.openSocialLogin();
             }
@@ -50,10 +52,10 @@ export class ProfilePage implements OnInit {
         }
     }
 
-    setProfile(userData) {
+    async setProfile(userData) {
         this.userName = userData.name;
         this.userEmail = userData.email;
-        this.userImage = userData.picture;
+        this.userImage = await this.imageService.httpToHttps(userData.picture);
     }
 
     goToRegisterList() {
