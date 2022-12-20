@@ -1,9 +1,12 @@
 package com.graduate.odondong.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.graduate.odondong.config.Security.OAuth2AuthenticationSuccessHandler;
 import com.graduate.odondong.service.OAuth.CustomOAuth2UserService;
@@ -31,6 +34,8 @@ public class SecurityConfig{
             .antMatchers("/health").permitAll()
 			.antMatchers("/admin/**").hasRole("ADMIN")
             .and()
+			.exceptionHandling().defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED), new AntPathRequestMatcher("/api/user/**"))
+			.and()
             .logout()
             .logoutSuccessUrl("/")
             .and()
