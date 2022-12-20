@@ -1,6 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
+import { LoginService } from 'src/app/services/auth/login-service';
+import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 import { CommonService } from 'src/app/services/common/common-service';
 
 @Component({
@@ -30,14 +32,16 @@ export class BathroomDetailComponent implements OnInit {
     constructor(
         public navController: NavController,
         public commonService: CommonService,
+        public loginService: LoginService,
+        public bathroomService: BathroomService,
         public modalController: ModalController,
+        public alertController: AlertController,
+        public toastController: ToastController,
     ) {}
 
     ngOnInit() {
         this.bathroomInfoForDisplay = this.refineBathroomInfo(this.bathroomInfo);
         this.setBathroomDetailInfo(this.bathroomInfoForDisplay);
-
-        console.log(this.bathroomInfo);
     }
 
     refineBathroomInfo(info: any) {
@@ -65,14 +69,26 @@ export class BathroomDetailComponent implements OnInit {
     }
 
     onRatingChange(inputRate: number) {
-        this.editedRate = inputRate;
+        if (this.editedRate > 0) {
+            this.showRatingEditConfirmAlert();
+        } else {
+            this.editRating(inputRate);
+        }
     }
 
     extendDetail() {
         this.extended = true;
     }
 
-    async editBathroom() {
+    async checkLogin() {
+        if (await this.commonService.isLogin()) {
+            this.editBathroom();
+        } else {
+            this.loginService.needLoginAlert(true);
+        }
+    }
+
+    editBathroom() {
         this.commonService.closePresentModal();
 
         const props: NavigationExtras = {
@@ -85,5 +101,58 @@ export class BathroomDetailComponent implements OnInit {
             `/edit-bathroom/${this.bathroomInfoForDisplay.id}`,
             props,
         );
+    }
+
+    async editRating(inputRate: number) {
+        const response = await this.bathroomService.registerRating(this.bathroomId, inputRate);
+
+        if (response.data.code === 1000) {
+            this.successEditRating();
+        } else if (response.data.code === 3000) {
+            this.loginService.needLoginAlert(true);
+        } else {
+            this.failToEditRating();
+        }
+    }
+
+    async showRatingEditConfirmAlert() {
+        const alert = await this.alertController.create({
+            message: '별점을 수정하시겠어요?',
+            buttons: [
+                {
+                    text: '수정하기',
+                    handler: () => {
+                        console.log('수정 요청');
+                    },
+                },
+                {
+                    text: '취소',
+                    handler: () => {},
+                },
+            ],
+        });
+        await alert.present();
+    }
+
+    async successEditRating() {
+        const toast = await this.toastController.create({
+            message: '별점을 수정했습니다!',
+            duration: 1500,
+        });
+        await toast.present();
+    }
+
+    async failToEditRating() {
+        const alert = await this.alertController.create({
+            header: '별점 수정을 실패했습니다',
+            message: '네트워크 상태를 확인 후 다시 시도해주세요.',
+            buttons: [
+                {
+                    text: '닫기',
+                    handler: () => {},
+                },
+            ],
+        });
+        await alert.present();
     }
 }

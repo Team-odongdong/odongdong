@@ -36,8 +36,12 @@ export class CommonService {
     }
 
     async isLogin() {
-        const response = await this.loginService.getUserProfile();
+        try {
+            const response = await this.loginService.getUserProfile();
 
-        return response.data.code === 1000 ? true : false;
+            return response.data.code === 1000 ? true : false;
+        } catch (error) {
+            return false;
+        }
     }
 }
