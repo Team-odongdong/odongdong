@@ -6,6 +6,7 @@ import { BathroomService } from 'src/app/services/bathroom/bathroom-service';
 
 import * as dayjs from 'dayjs';
 import { TimeService } from 'src/app/services/time/time-service';
+import { LoginService } from 'src/app/services/auth/login-service';
 
 @Component({
     selector: 'app-edit-bathroom',
@@ -40,6 +41,7 @@ export class EditBathroomPage implements OnInit {
         public toastController: ToastController,
         public alertController: AlertController,
         public timeService: TimeService,
+        public loginService: LoginService,
     ) {}
 
     ngOnInit() {
@@ -120,7 +122,7 @@ export class EditBathroomPage implements OnInit {
             await this.successEditBathroomToast();
             await this.navController.back();
         } else if (response.data.code === 3000) {
-            await this.needLoginAlert();
+            await this.loginService.needLoginAlert();
         } else {
             await this.failEditBathroomToast();
             await this.navController.back();
@@ -133,27 +135,6 @@ export class EditBathroomPage implements OnInit {
             duration: 1500,
         });
         await toast.present();
-    }
-
-    async needLoginAlert() {
-        const alert = await this.alertController.create({
-            header: '로그인이 필요합니다!',
-            buttons: [
-                {
-                    text: '로그인 하기',
-                    handler: () => {
-                        this.navController.navigateForward('/tabs/profile');
-                    },
-                },
-                {
-                    text: '수정 취소',
-                    handler: () => {
-                        this.navController.back();
-                    },
-                },
-            ],
-        });
-        await alert.present();
     }
 
     async failEditBathroomToast() {

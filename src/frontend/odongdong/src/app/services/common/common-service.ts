@@ -36,8 +36,26 @@ export class CommonService {
     }
 
     async isLogin() {
-        const response = await this.loginService.getUserProfile();
+        try {
+            const response = await this.loginService.getUserProfile();
 
-        return response.data.code === 1000 ? true : false;
+            return response.data.code === 1000 ? true : false;
+        } catch (error) {
+            return false;
+        }
+    }
+
+    async notOpenedFeatureAlert() {
+        const alert = await this.alertController.create({
+            header: '출시 예정인 기능입니다',
+            message: '다음 버전을 기대해주세요!',
+            buttons: [
+                {
+                    text: '닫기',
+                    handler: () => {},
+                },
+            ],
+        });
+        await alert.present();
     }
 }

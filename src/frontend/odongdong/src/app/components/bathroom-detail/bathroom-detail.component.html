@@ -16,7 +16,7 @@
                     activeColor="var(--secondary_blue)"
                     defaultColor="var(--middle_gray)"
                     readonly="true"
-                    fontSize="14px"
+                    fontSize=".875rem"
                     rating="{{ rate }}"
                 ></ionic-rating-component>
             </div>
@@ -58,14 +58,14 @@
             halfStar="true"
             activeColor="var(--secondary_blue)"
             defaultColor="var(--middle_gray)"
-            readonly="false"
-            fontSize="20px"
+            readonly="editedRate>0? true: false"
+            fontSize="1.25rem"
             rating="{{ editedRate }}"
             (ratingChanged)="onRatingChange($event)"
         ></ionic-rating-component>
         <p class="rating__label">별을 클릭해 별점을 남겨보세요!</p>
     </div>
-    <div *ngIf="extended" class="flex edit" (click)="editBathroom()">
+    <div *ngIf="extended" class="flex edit" (click)="checkLogin()">
         <p class="edit__text">정보 수정 제안하기</p>
         <ion-img class="edit__image" src="../../../assets/svg/edit-blue.svg"></ion-img>
     </div>

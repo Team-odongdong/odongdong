@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController, NavController } from '@ionic/angular';
 import { SocialLoginComponent } from 'src/app/modals/social-login/social-login.component';
 import { LoginService } from 'src/app/services/auth/login-service';
+import { CommonService } from 'src/app/services/common/common-service';
 import { ImageService } from 'src/app/services/image/image-service';
 
 @Component({
@@ -14,9 +15,12 @@ export class ProfilePage implements OnInit {
     public userImage: string;
     public userEmail: string;
 
+    public registeredCount: number;
+
     constructor(
         public loginService: LoginService,
         public imageService: ImageService,
+        public commonService: CommonService,
         public navController: NavController,
         public modalController: ModalController,
     ) {}
@@ -59,6 +63,7 @@ export class ProfilePage implements OnInit {
     }
 
     goToRegisterList() {
-        this.navController.navigateForward('/register-list');
+        // this.navController.navigateForward('/register-list');
+        this.commonService.notOpenedFeatureAlert();
     }
 }

@@ -108,9 +108,9 @@ export class MainPage implements OnInit {
         }
     }
 
-    onFilterChanged(event: { value: string }) {
-        console.log('current data', event.value);
-    }
+    // onFilterChanged(event: { value: string }) {
+    //     console.log('current data', event.value);
+    // }
 
     async getBathroomList() {
         const response = await this.bathroomService.get1kmBathroomList(
