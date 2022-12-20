@@ -69,11 +69,7 @@ export class BathroomDetailComponent implements OnInit {
     }
 
     onRatingChange(inputRate: number) {
-        if (this.editedRate > 0) {
-            this.showRatingEditConfirmAlert();
-        } else {
-            this.editRating(inputRate);
-        }
+        this.showRatingEditConfirmAlert(inputRate);
     }
 
     extendDetail() {
@@ -115,14 +111,14 @@ export class BathroomDetailComponent implements OnInit {
         }
     }
 
-    async showRatingEditConfirmAlert() {
+    async showRatingEditConfirmAlert(inputRate: number) {
         const alert = await this.alertController.create({
             message: '별점을 수정하시겠어요?',
             buttons: [
                 {
                     text: '수정하기',
                     handler: () => {
-                        console.log('수정 요청');
+                        this.editRating(inputRate);
                     },
                 },
                 {
