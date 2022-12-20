@@ -12,18 +12,18 @@
     &__detail {
         background: transparent;
         position: absolute;
-        bottom: 15.5%;
-        left: 10px;
-        right: 10px;
+        bottom: 130px;
+        left: 0.625rem;
+        right: 0.625rem;
         z-index: 3;
     }
 }
 
 .handler__container {
     position: absolute;
-    bottom: 17%;
+    bottom: 140px;
 
-    padding: 0 15px;
+    padding: 0 0.9375rem;
 
     z-index: 5;
 
@@ -38,14 +38,14 @@
         align-items: center;
         justify-content: center;
 
-        width: 45px;
-        height: 45px;
+        width: 2.8125rem;
+        height: 2.8125rem;
 
-        margin-bottom: 10px;
+        margin-bottom: 0.625rem;
 
         img {
-            width: 25px;
-            height: 25px;
+            width: 1.5625rem;
+            height: 1.5625rem;
         }
     }
     &--current:active {
@@ -53,20 +53,20 @@
     }
 
     &--zoom {
-        width: 45px;
-        height: 90px;
+        width: 2.8125rem;
+        height: 5.625rem;
 
         button {
-            width: 45px;
-            height: 45px;
+            width: 2.8125rem;
+            height: 2.8125rem;
 
             background: var(--bg_white);
 
-            border-radius: 12px;
+            border-radius: 0.75rem;
 
             img {
-                width: 18px;
-                height: 18px;
+                width: 1.125rem;
+                height: 1.125rem;
             }
         }
         button:first-child:active {
@@ -82,16 +82,16 @@
     }
 
     &--refresh {
-        width: 45px;
-        height: 45px;
+        width: 2.8125rem;
+        height: 2.8125rem;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
         img {
-            width: 20px;
-            height: 20px;
+            width: 1.25rem;
+            height: 1.25rem;
         }
     }
     &--refresh:active {
