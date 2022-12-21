@@ -95,7 +95,7 @@ export class MainPage implements OnInit {
             // .then(() => {
             //   this.trackLocation();
             // });
-        }, 300);
+        }, 500);
     }
 
     setPlatform() {
