@@ -5,6 +5,7 @@ import static com.graduate.odondong.util.BaseResponseStatus.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.*;
 import com.graduate.odondong.util.operationTime.OperationTimeValidation;
 import org.springframework.stereotype.Service;
@@ -88,8 +89,8 @@ public class BathroomService {
         return bathroomRepository.findBathroomsByRegisterIsFalse();
     }
 
-    public BaseResponse<String> addBathroom(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) {
-        Bathroom bathroom = bathroomRequestDto.toBathroom(bathroomImgUrl);
+    public BaseResponse<String> addBathroom(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl, User user) {
+        Bathroom bathroom = bathroomRequestDto.toBathroom(bathroomImgUrl, user);
         bathroomRepository.save(bathroom);
 
         Rating rating = bathroomRequestDto.toRating(bathroom);

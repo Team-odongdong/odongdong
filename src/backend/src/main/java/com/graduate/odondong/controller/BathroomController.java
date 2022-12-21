@@ -1,15 +1,18 @@
 package com.graduate.odondong.controller;
 
 import static com.graduate.odondong.util.BaseResponseStatus.SUCCESS;
+import static com.graduate.odondong.util.BaseResponseStatus.USER_NOT_LOGIN;
 import static com.graduate.odondong.util.ErrorLogWriter.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.graduate.odondong.domain.UpdatedBathroom;
 import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.*;
+import com.graduate.odondong.dto.OAuth.SessionUser;
 import com.graduate.odondong.service.BathroomService.DeletedBathroomService;
 import com.graduate.odondong.service.BathroomService.UpdatedBathroomService;
 import com.graduate.odondong.service.UserService;
@@ -79,6 +82,7 @@ public class BathroomController {
 	public BaseResponse<String> addBathroomRequest(HttpServletRequest request,
 												   @RequestPart BathroomRequestDto bathroomRequestDto,
 												   @RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile) {
+		User user = userService.getUserId();
 		String bathroomImgUrl = bathroomRequestDto.getImageUrl();
 		String dirName = "info/";
 
@@ -90,7 +94,7 @@ public class BathroomController {
 				return new BaseResponse<>(e.getStatus());
 			}
 		}
-		return bathroomService.addBathroom(bathroomRequestDto, bathroomImgUrl);
+		return bathroomService.addBathroom(bathroomRequestDto, bathroomImgUrl, user);
 	}
 
 	/**

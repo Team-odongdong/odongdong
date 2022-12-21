@@ -26,6 +26,16 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final BathroomRepository bathroomRepository;
 
+	public User getUserId() {
+		Long userId =  Optional.ofNullable((SessionUser)httpSession.getAttribute("user"))
+				.map(SessionUser::getId)
+				.orElse(null);
+		if (userId == null) {
+			return null;
+		}
+		return userRepository.findById(userId).orElse(null);
+	}
+
 	public User getUserInfo() throws BaseException {
 		SessionUser sessionUser = Optional.ofNullable((SessionUser)httpSession.getAttribute("user")).orElseThrow(() -> new BaseException(USER_NOT_LOGIN));
 		return userRepository.findById(sessionUser.getId())

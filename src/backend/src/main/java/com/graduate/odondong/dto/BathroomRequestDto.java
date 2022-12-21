@@ -3,6 +3,7 @@ package com.graduate.odondong.dto;
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.Rating;
 import com.graduate.odondong.domain.UpdatedBathroom;
+import com.graduate.odondong.domain.User;
 import lombok.Data;
 
 @Data
@@ -18,8 +19,9 @@ public class BathroomRequestDto {
     private Boolean isUnisex;
     private Double rate;
 
-    public Bathroom toBathroom(String bathroomImgUrl) {
+    public Bathroom toBathroom(String bathroomImgUrl, User user) {
         return Bathroom.builder()
+                .user(user)
                 .title(title)
                 .latitude(latitude)
                 .longitude(longitude)

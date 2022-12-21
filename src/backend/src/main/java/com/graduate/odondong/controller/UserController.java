@@ -1,5 +1,6 @@
 package com.graduate.odondong.controller;
 
+import com.graduate.odondong.domain.Bathroom;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,8 @@ import com.graduate.odondong.service.UserService;
 import com.graduate.odondong.util.BaseResponse;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/api/user")
