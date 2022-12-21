@@ -66,4 +66,8 @@ export class ProfilePage implements OnInit {
         // this.navController.navigateForward('/register-list');
         this.commonService.notOpenedFeatureAlert();
     }
+
+    logout() {
+        this.commonService.notOpenedFeatureAlert();
+    }
 }
