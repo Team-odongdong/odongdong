@@ -1,0 +1,19 @@
+* {
+    // width: auto;
+    width: 100%;
+}
+
+.rating {
+    &__container {
+        display: flex;
+    }
+
+    &__item {
+        cursor: pointer;
+    }
+}
+
+.disabled {
+    pointer-events: none;
+    cursor: default;
+}

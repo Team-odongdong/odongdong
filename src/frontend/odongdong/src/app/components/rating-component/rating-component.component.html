@@ -1,0 +1,11 @@
+<div class="rating__container">
+    <div
+        *ngFor="let star of stars; index as i"
+        class="rating__item"
+        [ngClass]="readonly ? 'disabled' : null"
+        (click)="onRatingChange(i)"
+    >
+        <ion-img *ngIf="star" src="../../../assets/svg/star-blue.svg"></ion-img>
+        <ion-img *ngIf="!star" src="../../../assets/svg/star-gray.svg"></ion-img>
+    </div>
+</div>

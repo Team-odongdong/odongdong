@@ -9,17 +9,19 @@ import { CustomerServiceComponent } from 'src/app/modals/customer-service/custom
 import { PolicyComponent } from 'src/app/modals/policy/policy.component';
 import { PolicyComponentModule } from 'src/app/modals/policy/policy.module';
 import { CustomerServiceComponentModule } from 'src/app/modals/customer-service/customer-service.module';
+import { RatingComponentComponentModule } from 'src/app/components/rating-component/rating-component.module';
 
 @NgModule({
-  imports: [
-    IonicModule,
-    CommonModule,
-    FormsModule,
-    SettingPageRoutingModule,
-    PolicyComponentModule,
-    CustomerServiceComponentModule,
-  ],
-  declarations: [SettingPage],
-  entryComponents: [PolicyComponent, CustomerServiceComponent],
+    imports: [
+        IonicModule,
+        CommonModule,
+        FormsModule,
+        SettingPageRoutingModule,
+        PolicyComponentModule,
+        CustomerServiceComponentModule,
+        RatingComponentComponentModule,
+    ],
+    declarations: [SettingPage],
+    entryComponents: [PolicyComponent, CustomerServiceComponent],
 })
 export class SettingPageModule {}
