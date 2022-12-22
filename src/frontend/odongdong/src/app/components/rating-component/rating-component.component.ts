@@ -1,28 +1,58 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Input,
+    Output,
+    QueryList,
+    Component,
+    ViewChildren,
+    EventEmitter,
+    AfterViewInit,
+    ChangeDetectorRef,
+} from '@angular/core';
 
 @Component({
     selector: 'app-rating-component',
     templateUrl: './rating-component.component.html',
     styleUrls: ['./rating-component.component.scss'],
 })
-export class RatingComponentComponent implements OnInit {
+export class RatingComponentComponent implements AfterViewInit {
+    @ViewChildren('star') starRef: QueryList<HTMLElement>;
+
     @Input() readonly: boolean;
+    @Input() starSize: string;
     @Input() rating: number;
+
+    @Output() ratingChanged = new EventEmitter<{ rate: number }>();
 
     public stars = [0, 0, 0, 0, 0];
 
-    constructor() {}
+    constructor(public changeDetectorRef: ChangeDetectorRef) {}
 
-    ngOnInit() {
-        this.readonly = false;
+    ngAfterViewInit() {
+        this.updateRate(this.rating - 1, true);
+        this.setStarSize();
     }
 
-    onRatingChange(idx: number) {
+    updateRate(idx: number, initial?: boolean) {
         this.rating = idx + 1;
 
-        this.stars = [0, 0, 0, 0, 0];
         for (let i = 0; i <= idx; i++) {
             this.stars[i] = 1;
         }
+        for (let i = idx + 1; i < 5; i++) {
+            this.stars[i] = 0;
+        }
+
+        this.changeDetectorRef.detectChanges();
+        this.setStarSize();
+
+        if (!initial) {
+            this.ratingChanged.emit({ rate: this.rating });
+        }
     }
+
+    /* eslint-disable */
+    setStarSize() {
+        this.starRef.map((starEl) => starEl['el'].style.setProperty('width', this.starSize));
+    }
+    /* eslint-enable */
 }
