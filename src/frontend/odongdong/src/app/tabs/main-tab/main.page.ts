@@ -506,7 +506,7 @@ export class MainPage implements OnInit {
 
         const modal = await this.modalController.create({
             component: AddBathroomComponent,
-            cssClass: 'add-bathroom-compo',
+            cssClass: 'add-bathroom-modal',
             componentProps: {
                 lat,
                 lng,
