@@ -24,6 +24,14 @@ export class RatingComponentComponent implements AfterViewInit {
     @Output() ratingChanged = new EventEmitter<{ rate: number }>();
 
     public stars = [0, 0, 0, 0, 0];
+    public starsMap = {
+        0: [0, 0, 0, 0, 0],
+        1: [1, 0, 0, 0, 0],
+        2: [1, 1, 0, 0, 0],
+        3: [1, 1, 1, 0, 0],
+        4: [1, 1, 1, 1, 0],
+        5: [1, 1, 1, 1, 1],
+    };
 
     constructor(public changeDetectorRef: ChangeDetectorRef) {}
 
@@ -33,14 +41,8 @@ export class RatingComponentComponent implements AfterViewInit {
     }
 
     updateRate(idx: number, initial?: boolean) {
-        this.rating = idx + 1;
-
-        for (let i = 0; i <= idx; i++) {
-            this.stars[i] = 1;
-        }
-        for (let i = idx + 1; i < 5; i++) {
-            this.stars[i] = 0;
-        }
+        this.rating = Math.ceil(idx + 1);
+        this.stars = this.starsMap[this.rating];
 
         this.changeDetectorRef.detectChanges();
         this.setStarSize();
