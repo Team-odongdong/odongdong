@@ -1,8 +1,8 @@
 {
     "name": "odongdong",
-    "version": "1.3.2",
+    "version": "1.3.3",
     "author": "ramjongseok",
-    "homepage": "https://ionicframework.com/",
+    "homepage": "https://odongdong.site/",
     "scripts": {
         "ng": "ng",
         "start": "ng serve",
