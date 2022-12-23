@@ -63,15 +63,3 @@ export class RatingComponentComponent implements AfterViewInit {
     }
     /* eslint-enable */
 }
-
-// class Stars {
-//     private starsMap = {
-//         0: [0, 0, 0, 0, 0],
-//         1: [1, 0, 0, 0, 0],
-//         2: [1, 1, 0, 0, 0],
-//         3: [1, 1, 1, 0, 0],
-//         4: [1, 1, 1, 1, 0],
-//         5: [1, 1, 1, 1, 1],
-//     };
-
-// }
