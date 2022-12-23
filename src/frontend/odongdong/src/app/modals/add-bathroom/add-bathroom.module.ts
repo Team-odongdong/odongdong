@@ -1,20 +1,14 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { IonicModule } from "@ionic/angular";
+import { IonicModule } from '@ionic/angular';
 
-import { AddBathroomComponent } from "./add-bathroom.component";
-import { IonicRatingComponentModule } from "ionic-rating-component";
-
+import { AddBathroomComponent } from './add-bathroom.component';
+import { RatingComponentComponentModule } from 'src/app/components/rating-component/rating-component.module';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        IonicRatingComponentModule,
-    ],
+    imports: [CommonModule, FormsModule, IonicModule, RatingComponentComponentModule],
     declarations: [AddBathroomComponent],
     exports: [AddBathroomComponent],
 })

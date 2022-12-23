@@ -68,8 +68,8 @@ export class BathroomDetailComponent implements OnInit {
         this.isUnisex = bathroonInfo.isUnisex;
     }
 
-    onRatingChange(inputRate: number) {
-        this.showRatingEditConfirmAlert(inputRate);
+    onRatingChange(event) {
+        this.showRatingEditConfirmAlert(event.rate);
     }
 
     extendDetail() {

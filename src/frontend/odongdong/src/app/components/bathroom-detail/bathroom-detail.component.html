@@ -7,23 +7,16 @@
         <div class="title">
             <p class="title__name">{{ bathroomName }}</p>
             <div class="title__rate">
-                <ionic-rating-component
-                    #rating
-                    class="rating-container"
-                    activeIcon="star"
-                    defaultIcon="star"
-                    halfStar="true"
-                    activeColor="var(--secondary_blue)"
-                    defaultColor="var(--middle_gray)"
-                    readonly="true"
-                    fontSize=".875rem"
+                <app-rating-component
+                    [readonly]="editedRate > 0 ? true : false"
+                    starSize="0.875rem"
                     rating="{{ rate }}"
-                ></ionic-rating-component>
+                ></app-rating-component>
             </div>
         </div>
         <div class="locker__container">
             <ion-img
-                *ngIf="isLocked !== 'Y'"
+                *ngIf="isLocked === 'Y'"
                 [ngClass]="extended ? 'locker__img' : 'locker__img--small'"
                 src="../../../assets/svg/map/locked.svg"
             ></ion-img>
@@ -52,17 +45,12 @@
     </div>
 
     <div *ngIf="extended" class="rating">
-        <ionic-rating-component
-            activeIcon="star"
-            defaultIcon="star"
-            halfStar="true"
-            activeColor="var(--secondary_blue)"
-            defaultColor="var(--middle_gray)"
-            readonly="editedRate>0? true: false"
-            fontSize="1.25rem"
+        <app-rating-component
+            [readonly]="editedRate > 0 ? true : false"
+            starSize="1.25rem"
             rating="{{ editedRate }}"
             (ratingChanged)="onRatingChange($event)"
-        ></ionic-rating-component>
+        ></app-rating-component>
         <p class="rating__label">별을 클릭해 별점을 남겨보세요!</p>
     </div>
     <div *ngIf="extended" class="flex edit" (click)="checkLogin()">
