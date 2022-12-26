@@ -1,15 +1,7 @@
 /* eslint-disable */
-import {
-    ChangeDetectorRef,
-    Component,
-    ElementRef,
-    Input,
-    OnInit,
-    SimpleChanges,
-    ViewChild,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import { AlertController, IonInput, ModalController, Platform } from '@ionic/angular';
+import { AlertController, ModalController, Platform } from '@ionic/angular';
 
 import { Geolocation } from '@capacitor/geolocation';
 
@@ -324,15 +316,14 @@ export class MainPage implements OnInit {
 
     //TODO: refactor (addmarker & addmarkers)
     addMarkers() {
+        const addMarkerIconByIsOpened = {
+            'Y': this.defaultMarkerIcon,
+            'U': this.defaultDisabledMarkerIcon,
+            'N': this.defaultRedMarkerIcon,
+        };
+
         this.bathroomList.forEach((place) => {
-            let currentMarkerIcon;
-            if (place.isOpened === 'Y') {
-                currentMarkerIcon = this.defaultMarkerIcon;
-            } else if (place.isOpened === 'U') {
-                currentMarkerIcon = this.defaultDisabledMarkerIcon;
-            } else if (place.isOpened === 'N') {
-                currentMarkerIcon = this.defaultRedMarkerIcon;
-            }
+            const currentMarkerIcon = addMarkerIconByIsOpened[place.isOpened];
 
             const marker = new naver.maps.Marker({
                 map: this.map,
@@ -352,6 +343,12 @@ export class MainPage implements OnInit {
     }
 
     markerLeftClickListener(markerRef, place) {
+        const markerIconByIsOpened = {
+            'Y': this.clickedMarkerIcon,
+            'U': this.clickedDisabledMarkerIcon,
+            'N': this.clickedRedMarkerIcon,
+        };
+
         //마커 클릭 리스너
         naver.maps.Event.addListener(markerRef, 'click', () => {
             this.bathroomInfo = markerRef.bathroomInfo;
@@ -372,17 +369,7 @@ export class MainPage implements OnInit {
                 this.markerClicked = true;
                 this.selectedMarker = markerRef;
 
-                place.isOpened === 'Y'
-                    ? markerRef.setIcon(this.clickedMarkerIcon)
-                    : markerRef.setIcon(this.clickedDisabledMarkerIcon);
-
-                if (place.isOpened === 'Y') {
-                    markerRef.setIcon(this.clickedMarkerIcon);
-                } else if (place.isOpened === 'U') {
-                    markerRef.setIcon(this.clickedDisabledMarkerIcon);
-                } else if (place.isOpened === 'N') {
-                    markerRef.setIcon(this.clickedRedMarkerIcon);
-                }
+                markerRef.setIcon(markerIconByIsOpened[place.isOpened]);
             }
 
             //클릭된 마커가 현재 마커가 아닌 경우
