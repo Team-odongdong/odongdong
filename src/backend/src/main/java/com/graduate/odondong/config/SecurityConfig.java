@@ -9,7 +9,7 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.graduate.odondong.config.Security.OAuth2AuthenticationSuccessHandler;
-import com.graduate.odondong.service.OAuth.CustomOAuth2UserService;
+import com.graduate.odondong.config.Security.CustomOAuth2UserService;
 
 import lombok.RequiredArgsConstructor;
 
