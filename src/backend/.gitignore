@@ -39,3 +39,6 @@ out/
 applicaton-secret.yml
 resources/application-secret.yml
 src/backend/src/main/resources/application-secret.yml
+src/backend/src/main/resources/static/AuthKey_T68HJLVXKX.p8
+src/main/resources/static/AuthKey_T68HJLVXKX.p8
+keystore.p12

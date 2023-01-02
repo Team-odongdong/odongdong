@@ -48,6 +48,11 @@ dependencies {
 	implementation group: 'org.json', name: 'json', version: '20090211'
 	implementation group: 'org.apache.poi', name: 'poi', version: '3.9'
 	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
+
+	implementation ('org.bouncycastle:bcpkix-jdk15on:1.70')
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 }
 
 tasks.named('test') {
