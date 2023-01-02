@@ -55,6 +55,15 @@ jobs:
           touch ./application-secret.yml
           echo "${{ secrets.SECRET_YML }}" > ./application-secret.yml
         shell: bash
+        
+      ## create authkey.p8
+      - name: make authkey.p8
+        #if: contains(github.ref, 'main')
+        run: |
+          cd ./src/backend/src/main/resources/static
+          touch ./AuthKey_T68HJLVXKX.p8
+          echo "${{ secrets.AUTH_KEY }}" > ./AuthKey_T68HJLVXKX.p8
+        shell: bash
 
       - name: Grant execute permission for gradlew
         run: |
