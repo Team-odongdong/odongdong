@@ -7,7 +7,8 @@
 </a>
 
 <div align="center">
-Web &nbsp; ➡️ &nbsp; https://odongdong.site/
+Web &nbsp; ➡️ &nbsp; https://odongdong.site/ <br />
+Android &nbsp; ➡️ &nbsp; <a href="https://play.google.com/store/apps/details?id=com.ramjongseok.bathroom">android link</a>
 </div>
 
 <br/>
