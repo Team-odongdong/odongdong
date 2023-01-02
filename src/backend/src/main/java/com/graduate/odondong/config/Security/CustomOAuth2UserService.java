@@ -33,7 +33,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 	@Override
 	public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 		OAuth2UserService<OAuth2UserRequest, OAuth2User> service = new DefaultOAuth2UserService();
-		OAuth2User oAuth2User = service.loadUser(userRequest); // Oath2 정보를 가져옴
+		OAuth2User oAuth2User = service.loadUser(userRequest); // Oauth2 정보를 가져옴
 
 		String registrationId = userRequest.getClientRegistration().getRegistrationId(); // 소셜 정보 가져옴
 		String userNameAttributeName = userRequest.getClientRegistration()
