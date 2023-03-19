@@ -99,6 +99,7 @@ jobs:
             ./scripts/build.sh || exit 1
             ./scripts/stop.sh || exit 1
             ./scripts/start.sh || exit 1
+            
 
 
 
