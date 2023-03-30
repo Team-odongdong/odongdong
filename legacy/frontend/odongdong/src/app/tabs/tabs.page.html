@@ -1,0 +1,26 @@
+<ion-tabs #tabs (ionTabsDidChange)="currentTab()">
+<!-- <ion-tabs #tabs> -->
+  
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button (click)="showEnrollComponent()">
+      <ion-icon [src]="addMarkerIcon"></ion-icon>
+      <ion-label>신규 등록</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="main">
+      <ion-icon [src]="mapIcon"></ion-icon>
+      <ion-label>화장실</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="profile" defaultHref="/main">
+      <ion-icon [src]="userProfileIcon"></ion-icon>
+      <ion-label>프로필</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="setting">
+      <ion-icon [src]="settingsIcon"></ion-icon>
+      <ion-label>설정</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>
+

@@ -1,0 +1,30 @@
+server:
+  port:
+
+spring:
+  profiles:
+    include: secret
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:
+
+logging:
+  slack:
+    webhook-uri:
+  config:
+
+cloud:
+  aws:
+    credentials:
+      access-key:
+      secret-key:
+    # AWS S3 bucket Info
+    s3:
+      bucket:
+    region:
+      static:
+    stack:
+      auto:

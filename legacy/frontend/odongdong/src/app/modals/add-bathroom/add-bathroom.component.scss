@@ -1,0 +1,141 @@
+ion-content {
+    --padding-start: 16px;
+    --padding-end: 16px;
+}
+
+ion-label {
+    font-weight: 700;
+}
+
+ion-input {
+    --padding-start: 16px;
+    margin: 4px 0;
+}
+
+ion-checkbox {
+    --size: 24px;
+    --background-checked: var(--primary_blue);
+    --checkmark-width: 3px;
+    --size: 24px;
+}
+ion-checkbox::part(container) {
+    border-radius: 4px;
+}
+
+.input {
+    &__container {
+        margin-top: 10px;
+    }    
+}
+#bathroom-name {
+    padding-right: 50px;
+    z-index: 1;
+}
+
+.camera {
+    &__container {
+        ion-button {
+            --border-color: var(--primary_blue);
+            --border-radius: 4px;
+            --border-width: 1px;
+            margin-top: 10px;
+
+            img {
+                margin-right: 6px;
+            }
+
+            p {
+                font-weight: 700;
+                color: var(--primary_blue);
+            }
+        }
+
+        &-warning {
+            color: var(--outline_gray);
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 16px;
+            letter-spacing: 0.4px;
+            padding-left: 22px;
+            margin-top: 4px;
+        }
+    }
+
+    &__images {
+        display: flex;
+        
+        gap: 10px;
+        
+        &--image {
+            position: relative;
+        }
+        &--image img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+        }
+
+        &--close {
+            position: absolute;
+            top: 0;
+            right: 0;
+
+            background-color: rgba(0, 0, 0, 0.5);
+
+            img {
+                width: 25px;
+                height: 25px;
+                object-fit: cover;
+
+                display: flex;
+                align-items: center;
+            }
+        }
+    }
+}
+
+.unisex {
+    &__container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-right: 10px;
+
+        color: var(--surface-gray);
+    }
+}
+
+.rating {
+    &__container {
+        margin-top: 12.5px;
+    }
+}
+
+.save-button {
+    --background: var(--secondary_blue);
+    --border-radius: 4px;
+
+    margin: 16px 0;
+    font-weight: 700;
+}
+
+.valid-text {    
+    
+    &__name {
+        color: var(--error_red);
+        font-size: 12px;
+
+        margin: 0 16px;
+    }
+}
+
+.warning {
+    width: 20px;
+    height: 20px;
+
+    position: absolute;
+    right: 27px;
+
+    transform: translateY(-170%);
+}

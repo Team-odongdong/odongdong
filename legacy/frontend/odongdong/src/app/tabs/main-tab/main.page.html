@@ -1,0 +1,29 @@
+<div id="container" class="container">
+    <!-- <app-data-filter (filterValue)="onFilterChanged($event)"></app-data-filter> -->
+    <div id="map" class="map"></div>
+    <div #detailContainer class="container__detail" *ngIf="markerClicked">
+        <app-bathroom-detail [bathroomInfo]="bathroomInfo"></app-bathroom-detail>
+    </div>
+
+    <div *ngIf="!markerClicked" class="handler__container">
+        <button class="handler__container--refresh elevation__1" (click)="refresh()">
+            <img src="../../../assets/svg/map/refresh.svg" alt="refresh" />
+        </button>
+        <div>
+            <button
+                class="handler__container--current elevation__1"
+                (click)="moveToCurrentButton()"
+            >
+                <img src="../../../assets/svg/map/move-current.svg" alt="move" />
+            </button>
+            <div class="handler__container--zoom elevation__1">
+                <button (click)="zoomIn()">
+                    <img src="../../../assets/svg/map/plus.svg" alt="plus" />
+                </button>
+                <button (click)="zoomOut()">
+                    <img src="../../../assets/svg/map/minus.svg" alt="minus" />
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
