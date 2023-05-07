@@ -8,3 +8,37 @@ out
 gen
 
 src/backend/src/main/resources/application-secret.yml
+
+
+# Front-end
+src/frontend/.angular
+src/frontend/idea
+src/frontend/ionic
+
+src/frontend/.sass-cache
+src/frontend/.sourcemaps
+src/frontend/.versions
+src/frontend/.vscode
+src/frontend/coverage
+src/frontend/dist
+src/frontend/node_modules
+src/frontend/platforms
+src/frontend/plugins
+src/frontend/www
+
+src/frontend/*.log
+src/frontend/log.txt
+src/frontend/npm-debug.log*
+
+src/frontend/*~
+src/frontend/*.sw[mnpcod]
+src/frontend/.tmp
+src/frontend/*.tmp
+src/frontend/*.tmp.*
+src/frontend/*.sublime-project
+src/frontend/*.sublime-workspace
+src/frontend/Thumbs.db
+src/frontend/UserInterfaceState.xcuserstate
+
+$RECYCLE.BIN/
+.DS_Store
