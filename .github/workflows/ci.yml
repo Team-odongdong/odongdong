@@ -8,6 +8,8 @@ on:
   # Triggers the workflow on push or pull request events but only for the "Develop" branch
   push:
     branches: [ "feature/*", "bugfix/*", "refactor/*" ]
+    paths :
+      - "src/backend/**"
 
 # pull_request:
 
