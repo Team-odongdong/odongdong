@@ -9,6 +9,8 @@ on:
   # Triggers the workflow on push or pull request events but only for the "Develop" branch
   push:
     branches: [ "main" ]
+    paths :
+      - "src/backend/**"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 

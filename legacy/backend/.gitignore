@@ -36,6 +36,10 @@ out/
 
 ### VS Code ###
 .vscode/
+
+
+
+
 applicaton-secret.yml
 resources/application-secret.yml
 src/backend/src/main/resources/application-secret.yml
