@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">odongdong</string>
+    <string name="title_activity_main">odongdong</string>
+    <string name="package_name">com.ramjongseok.bathroom</string>
+    <string name="custom_url_scheme">com.ramjongseok.bathroom</string>
+</resources>

@@ -1,0 +1,7 @@
+{
+  "name": "odongdong",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

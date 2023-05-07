@@ -1,0 +1,62 @@
+<div
+    class="container elevation__3 small-pd"
+    [ngClass]="extended ? null : 'flex'"
+    (click)="extendDetail()"
+>
+    <div class="container__header">
+        <div class="title">
+            <p class="title__name">{{ bathroomName }}</p>
+            <div class="title__rate">
+                <app-rating-component
+                    [readonly]="true"
+                    starSize="0.875rem"
+                    rating="{{ rate }}"
+                ></app-rating-component>
+            </div>
+        </div>
+        <div class="locker__container">
+            <ion-img
+                *ngIf="isLocked === 'Y'"
+                [ngClass]="extended ? 'locker__img' : 'locker__img--small'"
+                src="../../../assets/svg/map/locked.svg"
+            ></ion-img>
+            <ion-img
+                id="unisex"
+                *ngIf="isUnisex"
+                [ngClass]="extended ? 'locker__img' : 'locker__img--small'"
+                src="../../../assets/svg/map/unisex.svg"
+            ></ion-img>
+        </div>
+    </div>
+    <div *ngIf="imageUrl" [ngClass]="extended ? 'images' : 'images-small'">
+        <ion-img src="{{ imageUrl }}"></ion-img>
+    </div>
+    <div *ngIf="extended" class="container__body">
+        <p *ngIf="isOpened === 'Y'" class="available">
+            이용 가능 <span *ngIf="isLocked === 'Y'">- 비밀번호 있음</span>
+        </p>
+        <p *ngIf="isOpened === 'N'" class="available-not">이용 불가</p>
+
+        <p *ngIf="isOpened === 'Y'" class="operation-time">{{ operationTime }}</p>
+        <p *ngIf="isOpened === 'N' || isOpened === 'U'" class="operation-time-not">
+            {{ operationTime || '시간 정보 없음' }}
+        </p>
+        <p class="address">{{ address }}</p>
+    </div>
+
+    <div *ngIf="extended" class="rating">
+        <app-rating-component
+            [readonly]="editedRate > 0 ? true : false"
+            starSize="1.25rem"
+            rating="{{ editedRate }}"
+            (ratingChanged)="onRatingChange($event)"
+        ></app-rating-component>
+        <p class="rating__label">별을 클릭해 별점을 남겨보세요!</p>
+    </div>
+    <div *ngIf="extended" class="flex edit" (click)="checkLogin()">
+        <p class="edit__text">정보 수정 제안하기</p>
+        <ion-img class="edit__image" src="../../../assets/svg/edit-blue.svg"></ion-img>
+    </div>
+
+    <div class="empty-space__40"></div>
+</div>

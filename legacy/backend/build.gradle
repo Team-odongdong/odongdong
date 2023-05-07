@@ -1,0 +1,60 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.4'
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+	id 'java'
+}
+
+group = 'com.graduate'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	runtimeOnly 'mysql:mysql-connector-java'
+
+	// aws
+	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.1'
+
+	// Swagger
+	implementation ('io.springfox:springfox-boot-starter:3.0.0')
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
+
+	// Security, Authentication
+	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'com.github.maricn:logback-slack-appender:1.4.0'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//other
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation group: 'org.json', name: 'json', version: '20090211'
+	implementation group: 'org.apache.poi', name: 'poi', version: '3.9'
+	implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.9'
+
+	implementation ('org.bouncycastle:bcpkix-jdk15on:1.70')
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}

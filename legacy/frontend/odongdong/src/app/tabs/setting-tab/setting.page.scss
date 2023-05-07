@@ -1,0 +1,50 @@
+ion-title {
+    color: var(--primary_blue);
+}
+
+ion-toolbar {
+    --border-style: none;
+}
+
+.back-button {
+    color: var(--primary_blue);
+}
+
+.list {
+    padding: 0 1rem;
+
+    &__header {
+        position: relative;
+        padding-left: 1rem;
+        margin-top: 2.25rem;
+        margin-bottom: 1.15rem;
+
+        p {
+            font-weight: 700;
+        }
+    }
+
+    img {
+        padding: 0 1rem;
+    }
+
+    &__version {
+        display: flex;
+        background-color: var(--primary_container_blue);
+        border-radius: 100px;
+
+        transform: translateX(-0.125rem);
+
+        p {
+            transform: translateX(-0.125rem);
+        }
+    }
+
+    &__item {
+        display: flex;
+    }
+}
+
+.pointer {
+    cursor: pointer;
+}

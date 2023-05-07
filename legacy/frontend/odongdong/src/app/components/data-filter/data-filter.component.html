@@ -1,0 +1,18 @@
+<div>
+    <ion-item class="marker-filter__container">
+        <ion-select
+            placeholder="필터"
+            interface="popover"
+            class="marker-filter__filter"
+            [(ngModel)]="currentFilterValue"
+            (ionChange)="filterChanged($event)"
+        >
+            <ion-select-option value="bathroom" class="marker-filter__filter--item">
+                🚻 화장실</ion-select-option
+            >
+            <ion-select-option value="trashcan" class="marker-filter__filter--item"
+                >🚮 쓰레기통</ion-select-option
+            >
+        </ion-select>
+    </ion-item>
+</div>
