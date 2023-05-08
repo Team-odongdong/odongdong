@@ -1,0 +1,96 @@
+<ion-content>
+  <div class="empty-space__10"></div>
+
+  <ion-label>화장실 이름</ion-label>
+  <div class="input__container">
+    <ion-input
+      id="bathroom-name"
+      placeholder="화장실 이름을 입력하세요"
+      clear-input="true"
+      [(ngModel)]="bathroomName"
+    >
+    </ion-input>
+    <ion-img
+      *ngIf="!isValid"
+      class="warning"
+      src="../../../assets/svg/map/warning.svg"
+    ></ion-img>
+    <ion-label *ngIf="!isValid" class="valid-text__name"
+      >화장실 이름을 입력하세요</ion-label
+    >
+  </div>
+  <div class="empty-space__20"></div>
+
+  <ion-label>위치</ion-label>
+  <div class="input__container">
+    <ion-input
+      placeholder="주소를 입력하세요."
+      [(ngModel)]="bathroomAddress"
+    ></ion-input>
+    <ion-input
+      placeholder="상세주소를 입력하세요"
+      [(ngModel)]="bathroomAddressDetail"
+    ></ion-input>
+  </div>
+
+  <div class="empty-space__20"></div>
+
+  <div class="camera__container">
+    <ion-label>사진 첨부</ion-label>
+    <div *ngIf="imageListForDisplay.length > 0" class="camera__images">
+      <div
+        *ngFor="let image of imageListForDisplay; index as i"
+        class="camera__images--image"
+      >
+        <img src="{{ image.image }}" alt="image" />
+
+        <div class="camera__images--close" (click)="deleteImage(i)">
+          <img src="../../../assets/svg/map/close-white.svg" />
+        </div>
+      </div>
+    </div>
+    <ion-button
+      expand="block"
+      fill="outline"
+      (click)="takePictureOrOpenLibrary()"
+    >
+      <img src="../../../assets/svg/map/camera.svg" alt="camera" />
+      <p>사진 첨부</p>
+      <input
+        #imageInput
+        style="display: none"
+        type="file"
+        accept="image/*"
+        (change)="onFileChange(imageInput.files)"
+      />
+    </ion-button>
+    <p class="camera__container-warning">
+      공공화장실 실내 촬영은 불법입니다.<br />화장실 외부를 촬영해주세요.
+    </p>
+  </div>
+
+  <div class="empty-space__20"></div>
+
+  <div class="unisex__container">
+    <p>남녀 공용 화장실이라면 체크해주세요!</p>
+    <ion-checkbox slot="end" (ionChange)="checkIsUnisex()"></ion-checkbox>
+  </div>
+
+  <div class="empty-space__20"></div>
+
+  <ion-label>별점</ion-label>
+  <div class="rating__container">
+    <app-rating-component
+      [readonly]="false"
+      starSize="2rem"
+      rating="{{ rate }}"
+      (ratingChanged)="onRatingChange($event)"
+    ></app-rating-component>
+  </div>
+
+  <div class="empty-space__30"></div>
+
+  <ion-button class="save-button" expand="block" (click)="onClickSaveButton()"
+    >저장하기</ion-button
+  >
+</ion-content>

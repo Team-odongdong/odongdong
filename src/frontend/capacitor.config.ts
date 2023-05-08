@@ -4,7 +4,9 @@ const config: CapacitorConfig = {
   appId: 'com.ramjongseok.bathroom',
   appName: 'odongdong',
   webDir: 'www',
-  bundledWebRuntime: false
+  server: {
+    androidScheme: 'https',
+  },
 };
 
 export default config;
