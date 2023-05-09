@@ -20,10 +20,10 @@ import {
 
 declare let naver: any;
 
-const myLocationIconUrl = '../assets/svg/map/current-location.svg';
-const iconUrl = '../assets/svg/map/map-marker.svg';
-const iconDisabledUrl = '../assets/svg/map/map-marker-disabled.svg';
-const iconRedUrl = '../assets/svg/map/map-marker-red.svg';
+const myLocationIconUrl = '../assets/svgs/map/current-location.svg';
+const iconUrl = '../assets/svgs/map/map-marker.svg';
+const iconDisabledUrl = '../assets/svgs/map/map-marker-disabled.svg';
+const iconRedUrl = '../assets/svgs/map/map-marker-red.svg';
 const clickedIconUrl = '../assets/images/map/marker-clicked.png';
 const clickedIconDisabledUrl =
   '../assets/images/map/marker-clicked-disabled.png';
