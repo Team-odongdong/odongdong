@@ -15,27 +15,25 @@
     <p><span class="profile__title--name">{{ userName }}</span> 님!</p>
   </div>
 
-  <ion-avatar *ngIf="userImage" class="profile-image__container">
-    <img
+  <ion-avatar class="profile-image__container">
+    <!-- <img
       class="profile-image__image"
       src="{{ userImage }}"
       alt="profile-image"
-    />
+    /> -->
   </ion-avatar>
-  <div *ngIf="!userImage" class="profile-image__container">
-    <button class="profile-image__button" (click)="openSocialLogin()">
-      로그인 하기
-    </button>
+  <div class="profile-image__container">
+    <button class="profile-image__button">로그인 하기</button>
   </div>
 
   <ion-list lines="none">
-    <ion-item class="pointer" (click)="goToRegisterList()">
+    <ion-item class="pointer">
       <div id="achievement">
-        <ion-label>총 {{registeredCount || ' ? '}}개 화장실</ion-label>
+        <ion-label>총 {{registeredCount || '?'}}개 화장실</ion-label>
         <ion-label>등록한 화장실의 수</ion-label>
       </div>
     </ion-item>
-    <ion-item (click)="logout()">
+    <ion-item>
       <div class="profile-item">
         <ion-label>로그아웃</ion-label>
         <ion-label> </ion-label>

@@ -8,6 +8,9 @@ import { CommonService } from 'src/app/services/commonService';
   styleUrls: ['profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
+  public registeredCount = 0;
+  public userName = '오동동';
+
   constructor(
     private common: CommonService,
     private navController: NavController
