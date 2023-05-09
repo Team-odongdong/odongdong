@@ -1,55 +1,49 @@
-import { Location } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-
-import { AlertController, IonTabs, ModalController, ToastController } from '@ionic/angular';
-
-import { AddBathroomComponent } from '../modals/add-bathroom/add-bathroom.component';
+import {
+  AlertController,
+  IonTabs,
+  ModalController,
+  ToastController,
+} from '@ionic/angular';
+import { AddBathroomComponent } from '../components/add-bathroom/add-bathroom.component';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
-  styleUrls: ['tabs.page.scss']
+  styleUrls: ['tabs.page.scss'],
 })
 export class TabsPage {
   @ViewChild('tabs', { static: false })
   tabs: IonTabs;
-  
+
   public addMarkerIcon = '../assets/svg/tab/add-marker.svg';
   public mapIcon = '../assets/svg/tab/map.svg';
   public userProfileIcon = '../assets/svg/tab/user-profile.svg';
   public settingsIcon = '../assets/svg/tab/settings.svg';
 
-  public currentLocation;
+  public currentLocation: any;
 
-  constructor(
-    public router: Router,
-    public location: Location,
-    public alertController: AlertController,
-    public modalController: ModalController,
-    public toastController: ToastController,
-  ) {}
+  constructor(private router: Router, private modal: ModalController) {}
 
   ionViewDidEnter() {
     navigator.geolocation.getCurrentPosition((position) => {
       this.currentLocation = position;
     });
-
-    
   }
 
   async showEnrollComponent() {
     this.router.navigateByUrl('/tabs/main');
-    const modal = await this.modalController.create({
+    const modal = await this.modal.create({
       component: AddBathroomComponent,
       componentProps: {
         currentLat: this.currentLocation.coords.latitude,
-        currentLng: this.currentLocation.coords.longitude
+        currentLng: this.currentLocation.coords.longitude,
       },
       showBackdrop: false,
       cssClass: 'add-bathroom-modal',
       canDismiss: true,
-      
+
       breakpoints: [0, 0.5, 0.75, 1],
       initialBreakpoint: 0.75,
       backdropDismiss: false,

@@ -1,31 +1,31 @@
 <section class="time-picker__container">
-    <div>
-        <ion-datetime-button datetime="datetime-start"></ion-datetime-button>
+  <div>
+    <ion-datetime-button datetime="datetime-start"></ion-datetime-button>
 
-        <ion-modal [keepContentsMounted]="true">
-            <ng-template>
-                <ion-datetime
-                    id="datetime-start"
-                    presentation="time"
-                    (ionChange)="onChangeStartTime($event)"
-                ></ion-datetime>
-            </ng-template>
-        </ion-modal>
-    </div>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime
+          id="datetime-start"
+          presentation="time"
+          (ionChange)="onChangeStartTime($event)"
+        ></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </div>
 
-    <div>&nbsp;~&nbsp;</div>
+  <div>&nbsp;~&nbsp;</div>
 
-    <div>
-        <ion-datetime-button datetime="datetime-end"></ion-datetime-button>
+  <div>
+    <ion-datetime-button datetime="datetime-end"></ion-datetime-button>
 
-        <ion-modal [keepContentsMounted]="true">
-            <ng-template>
-                <ion-datetime
-                    id="datetime-end"
-                    presentation="time"
-                    (ionChange)="onChangeEndTime($event)"
-                ></ion-datetime>
-            </ng-template>
-        </ion-modal>
-    </div>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime
+          id="datetime-end"
+          presentation="time"
+          (ionChange)="onChangeEndTime($event)"
+        ></ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </div>
 </section>

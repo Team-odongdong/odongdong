@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title> 문의하기 </ion-title>
+    <ion-buttons>
+      <ion-button slot="end" (click)="onClickCloseButton()">
+        <ion-icon name="close-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="empty"></div>
+  <div class="input--container">
+    <textarea
+      name="cs-input"
+      id="cs-input"
+      cols="30"
+      rows="10"
+      [(ngModel)]="customerServiceContent"
+      placeholder="문의할 내용을 입력해주세요!"
+    ></textarea>
+  </div>
+  <div class="button-container">
+    <ion-button class="submit-button" (click)="onClickSubmitButton()">
+      문의하기
+    </ion-button>
+  </div>
+</ion-content>

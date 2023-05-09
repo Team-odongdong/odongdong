@@ -1,107 +1,107 @@
 ion-content {
-    --padding-start: 1.75rem;
-    --padding-end: 1.75rem;
+  --padding-start: 1.75rem;
+  --padding-end: 1.75rem;
 }
 
 ion-toolbar {
-    --border-width: 0 !important;
-    --background-color: var(--bg_white);
+  --border-width: 0 !important;
+  --background-color: var(--bg_white);
 }
 
 ion-icon {
-    color: var(--outline_gray);
+  color: var(--outline_gray);
 }
 
 ion-title {
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--outline_gray);
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--outline_gray);
 }
 
 ion-checkbox {
-    --size: 24px;
-    --background-checked: var(--primary_blue);
-    --checkmark-width: 3px;
-    --size: 18px;
+  --size: 24px;
+  --background-checked: var(--primary_blue);
+  --checkmark-width: 3px;
+  --size: 18px;
 }
 ion-checkbox::part(container) {
-    border-radius: 4px;
+  border-radius: 4px;
 }
 
 ion-input {
-    font-size: 15px;
+  font-size: 15px;
 
-    --padding-start: 16px;
-    --padding-top: 10px;
-    --padding-bottom: 10px;
+  --padding-start: 16px;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
 }
 
 .input {
-    &__container {
-        margin-top: 10px;
-    }
+  &__container {
+    margin-top: 10px;
+  }
 
-    &__label {
-        font-size: 16px;
-        font-weight: bold;
-    }
+  &__label {
+    font-size: 16px;
+    font-weight: bold;
+  }
 
-    &__address {
-        margin-bottom: 4px;
-    }
+  &__address {
+    margin-bottom: 4px;
+  }
 }
 #bathroom-name {
-    padding-right: 50px;
-    z-index: 1;
+  padding-right: 50px;
+  z-index: 1;
 }
 
 .unisex {
-    &__container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-        margin-right: 10px;
+    margin-right: 10px;
 
-        color: var(--surface-gray);
+    color: var(--surface-gray);
 
-        p {
-            font-size: 16px;
+    p {
+      font-size: 16px;
 
-            margin: 10px 0;
-        }
+      margin: 10px 0;
     }
+  }
 }
 
 .rating {
-    &__container {
-        margin-top: 12.5px;
-    }
+  &__container {
+    margin-top: 12.5px;
+  }
 }
 
 .submit {
-    --border-radius: 4px;
+  --border-radius: 4px;
 
-    --color: var(--bg_white);
-    --background: var(--secondary_blue);
+  --color: var(--bg_white);
+  --background: var(--secondary_blue);
 }
 
 .operation-time {
-    &__label {
-        display: flex;
-        justify-content: space-between;
+  &__label {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__checkbox {
+    display: flex;
+
+    p {
+      margin: 0;
+
+      font-size: 14px;
+      color: var(--error_red);
+
+      margin-right: 0.4375rem;
     }
-
-    &__checkbox {
-        display: flex;
-
-        p {
-            margin: 0;
-
-            font-size: 14px;
-            color: var(--error_red);
-
-            margin-right: 0.4375rem;
-        }
-    }
+  }
 }
