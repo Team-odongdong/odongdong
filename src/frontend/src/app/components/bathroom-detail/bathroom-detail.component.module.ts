@@ -10,4 +10,4 @@ import { BathroomDetailComponent } from './bathroom-detail.component';
   declarations: [BathroomDetailComponent],
   exports: [BathroomDetailComponent],
 })
-export class AddBathroomComponentModule {}
+export class BathroomDetailComponentModule {}

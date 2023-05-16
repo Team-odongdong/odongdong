@@ -10,4 +10,4 @@ import { PolicyComponent } from './policy.component';
   declarations: [PolicyComponent],
   exports: [PolicyComponent],
 })
-export class AddBathroomComponentModule {}
+export class PolicyComponentModule {}

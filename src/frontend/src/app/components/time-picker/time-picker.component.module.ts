@@ -10,4 +10,4 @@ import { TimePickerComponent } from './time-picker.component';
   declarations: [TimePickerComponent],
   exports: [TimePickerComponent],
 })
-export class AddBathroomComponentModule {}
+export class TimePickerComponentModule {}

@@ -10,4 +10,4 @@ import { CustomerServiceComponent } from './customer-service.component';
   declarations: [CustomerServiceComponent],
   exports: [CustomerServiceComponent],
 })
-export class AddBathroomComponentModule {}
+export class CustomerServiceComponentModule {}

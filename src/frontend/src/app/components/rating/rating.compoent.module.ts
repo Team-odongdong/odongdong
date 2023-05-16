@@ -10,4 +10,4 @@ import { RatingComponent } from './rating.component';
   declarations: [RatingComponent],
   exports: [RatingComponent],
 })
-export class AddBathroomComponentModule {}
+export class RatingComponentModule {}
