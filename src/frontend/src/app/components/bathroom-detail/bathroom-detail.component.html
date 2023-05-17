@@ -7,11 +7,11 @@
     <div class="title">
       <p class="title__name">{{ bathroomName }}</p>
       <div class="title__rate">
-        <app-rating-component
+        <app-rating
           [readonly]="true"
           starSize="0.875rem"
           rating="{{ rate }}"
-        ></app-rating-component>
+        ></app-rating>
       </div>
     </div>
     <div class="locker__container">
@@ -45,15 +45,15 @@
   </div>
 
   <div *ngIf="extended" class="rating">
-    <app-rating-component
+    <app-rating
       [readonly]="editedRate > 0 ? true : false"
       starSize="1.25rem"
       rating="{{ editedRate }}"
       (ratingChanged)="onRatingChange($event)"
-    ></app-rating-component>
+    ></app-rating>
     <p class="rating__label">별을 클릭해 별점을 남겨보세요!</p>
   </div>
-  <div *ngIf="extended" class="flex edit" (click)="checkLogin()">
+  <div *ngIf="extended" class="flex edit">
     <p class="edit__text">정보 수정 제안하기</p>
     <ion-img
       class="edit__image"
