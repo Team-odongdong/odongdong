@@ -5,8 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { MainPage } from './main.page';
 
 import { MainPageRoutingModule } from './main-routing.module';
-import { BathroomDetailComponent } from 'src/app/components/bathroom-detail/bathroom-detail.component';
 import { AddBathroomComponentModule } from 'src/app/components/add-bathroom/add-bathroom.component.module';
+import { BathroomDetailComponentModule } from 'src/app/components/bathroom-detail/bathroom-detail.component.module';
 
 @NgModule({
   imports: [
@@ -15,7 +15,8 @@ import { AddBathroomComponentModule } from 'src/app/components/add-bathroom/add-
     FormsModule,
     MainPageRoutingModule,
     AddBathroomComponentModule,
+    BathroomDetailComponentModule,
   ],
-  declarations: [MainPage, BathroomDetailComponent],
+  declarations: [MainPage],
 })
 export class MainPageModule {}

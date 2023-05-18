@@ -5,9 +5,10 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { AddBathroomComponent } from './add-bathroom.component';
+import { RatingComponentModule } from '../rating/rating.component.module';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule],
+  imports: [CommonModule, FormsModule, IonicModule, RatingComponentModule],
   declarations: [AddBathroomComponent],
   exports: [AddBathroomComponent],
 })
