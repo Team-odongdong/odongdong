@@ -63,7 +63,7 @@ export class MainPage implements AfterViewInit {
   public selectedMarker: any;
   public addMarker: any;
   public myLocationMarker: any;
-  public markerList: any[];
+  public markerList: any[] = [];
 
   public mapLevel = 16;
 
