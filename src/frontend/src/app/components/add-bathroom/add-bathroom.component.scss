@@ -14,7 +14,7 @@ ion-input {
 
 ion-checkbox {
   --size: 24px;
-  --background-checked: var(--primary_blue);
+  --background-checked: #22659a;
   --checkmark-width: 3px;
   --size: 24px;
 }
@@ -35,7 +35,7 @@ ion-checkbox::part(container) {
 .camera {
   &__container {
     ion-button {
-      --border-color: var(--primary_blue);
+      --border-color: #22659a;
       --border-radius: 4px;
       --border-width: 1px;
       margin-top: 10px;
@@ -46,12 +46,12 @@ ion-checkbox::part(container) {
 
       p {
         font-weight: 700;
-        color: var(--primary_blue);
+        color: #22659a;
       }
     }
 
     &-warning {
-      color: var(--outline_gray);
+      color: #79747e;
       font-size: 12px;
       font-weight: 400;
       line-height: 16px;
@@ -102,7 +102,7 @@ ion-checkbox::part(container) {
 
     margin-right: 10px;
 
-    color: var(--surface-gray);
+    color: #49454f;
   }
 }
 
@@ -113,7 +113,7 @@ ion-checkbox::part(container) {
 }
 
 .save-button {
-  --background: var(--secondary_blue);
+  --background: #6d9dcd;
   --border-radius: 4px;
 
   margin: 16px 0;
@@ -122,7 +122,7 @@ ion-checkbox::part(container) {
 
 .valid-text {
   &__name {
-    color: var(--error_red);
+    color: #b3261e;
     font-size: 12px;
 
     margin: 0 16px;
