@@ -257,6 +257,7 @@ export class PolicyComponent implements OnInit {
   - 정보보호마크인증위원회 ([http://www.eprivacy.or.kr](http://www.eprivacy.or.kr/) / 02-580-0533~4)
   - 대검찰청 인터넷범죄수사센터 ([http://icic.sppo.go.kr](http://icic.sppo.go.kr/) / 02-3480-3600)
   - 경찰청 사이버테러대응센터 ([www.ctrc.go.kr](http://www.ctrc.go.kr/) / 02-392-0330)`;
+
   constructor(private modal: ModalController) {}
 
   ngOnInit() {}

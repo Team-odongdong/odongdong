@@ -13,7 +13,7 @@
     <ion-img
       *ngIf="!isValid"
       class="warning"
-      src="../../../assets/svg/map/warning.svg"
+      src="../../../assets/svgs/map/warning.svg"
     ></ion-img>
     <ion-label *ngIf="!isValid" class="valid-text__name"
       >화장실 이름을 입력하세요</ion-label
@@ -45,7 +45,7 @@
         <img src="{{ image.image }}" alt="image" />
 
         <div class="camera__images--close" (click)="deleteImage(i)">
-          <img src="../../../assets/svg/map/close-white.svg" />
+          <img src="../../../assets/svgs/map/close-white.svg" />
         </div>
       </div>
     </div>
@@ -54,7 +54,7 @@
       fill="outline"
       (click)="takePictureOrOpenLibrary()"
     >
-      <img src="../../../assets/svg/map/camera.svg" alt="camera" />
+      <img src="../../../assets/svgs/map/camera.svg" alt="camera" />
       <p>사진 첨부</p>
       <input
         #imageInput
@@ -80,12 +80,12 @@
 
   <ion-label>별점</ion-label>
   <div class="rating__container">
-    <app-rating-component
+    <app-rating
       [readonly]="false"
       starSize="2rem"
       rating="{{ rate }}"
       (ratingChanged)="onRatingChange($event)"
-    ></app-rating-component>
+    ></app-rating>
   </div>
 
   <div class="empty-space__30"></div>

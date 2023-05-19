@@ -17,10 +17,10 @@ export class TabsPage {
   @ViewChild('tabs', { static: false })
   tabs: IonTabs;
 
-  public addMarkerIcon = '../assets/svg/tab/add-marker.svg';
-  public mapIcon = '../assets/svg/tab/map.svg';
-  public userProfileIcon = '../assets/svg/tab/user-profile.svg';
-  public settingsIcon = '../assets/svg/tab/settings.svg';
+  public addMarkerIcon = '../assets/svgs/tab/add-marker.svg';
+  public mapIcon = '../assets/svgs/tab/map.svg';
+  public userProfileIcon = '../assets/svgs/tab/user-profile.svg';
+  public settingsIcon = '../assets/svgs/tab/settings.svg';
 
   public currentLocation: any;
 

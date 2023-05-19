@@ -71,12 +71,12 @@
 
     <ion-label>별점</ion-label>
     <div class="rating__container">
-        <app-rating-component
+        <app-rating
             [readonly]="false"
             starSize="2rem"
             rating="{{ rate }}"
             (ratingChanged)="onRatingChange($event)"
-        ></app-rating-component>
+        ></app-rating>
     </div>
 
     <div class="empty-space__30"></div>
