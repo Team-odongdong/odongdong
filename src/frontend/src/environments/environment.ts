@@ -11,7 +11,7 @@ export const environment = {
     build: 3,
   },
 
-  apiUrl: 'https://prod.odongdong.site/',
+  apiUrl: 'https://prod.odongdong.site',
 };
 
 /*

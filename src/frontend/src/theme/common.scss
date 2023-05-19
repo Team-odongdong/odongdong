@@ -8,8 +8,8 @@ ion-input {
 
 ion-content,
 ion-header {
-  --ion-background-color: var(--bg_white);
-  --ion-toolbar-background: var(--bg_white);
+  --ion-background-color: #fbfeff;
+  --ion-toolbar-background: #fbfeff;
 }
 
 ion-modal.add-bathroom-modal::part(content) {
@@ -123,8 +123,4 @@ ion-modal.add-bathroom-modal::part(content) {
       0px 4px 4px rgba(0, 0, 0, 0.3);
     border-radius: 16px;
   }
-}
-
-.ionic5-star-rating {
-  width: max-content;
 }

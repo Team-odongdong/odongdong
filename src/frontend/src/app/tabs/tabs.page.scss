@@ -9,14 +9,14 @@ ion-tab-bar {
   height: 100px;
   bottom: 0;
 
-  background: var(--bg_white);
+  background-color: #fbfeff;
   box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.3),
     0px -2px 6px 2px rgba(0, 0, 0, 0.15);
   border-radius: 18px 18px 0px 0px;
 }
 
 ion-tab-button {
-  background: var(--bg_white);
+  background: #fbfeff;
 }
 
 ion-tab-button[aria-selected="true"] ion-icon {
@@ -25,7 +25,7 @@ ion-tab-button[aria-selected="true"] ion-icon {
   padding: 5px 0;
   margin-bottom: 4px;
 
-  background-color: var(--primary_container_blue);
+  background-color: #def0ff;
   border-radius: 20px;
 }
 
@@ -39,7 +39,7 @@ ion-label {
   text-align: center;
   letter-spacing: 0.5px;
 
-  color: var(--surface_gray);
+  color: #49454f;
 }
 
 ion-icon {
