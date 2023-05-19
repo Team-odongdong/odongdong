@@ -86,13 +86,12 @@ export class MainPage implements AfterViewInit {
 
   ionViewWillEnter() {
     setTimeout(() => {
-      this.checkPermissions()
-        .then(() => {
-          this.getBathroomList();
-        })
-        .then(() => {
-          this.trackLocation();
-        });
+      this.checkPermissions().then(() => {
+        this.getBathroomList();
+      });
+      // .then(() => {
+      //   this.trackLocation();
+      // });
     }, 500);
   }
 
@@ -132,8 +131,8 @@ export class MainPage implements AfterViewInit {
       const currentCenter = this.map.getCenter();
 
       const response = await this.bathroomService.get1kmBathroomList({
-        lat: this.currentLat,
-        lng: this.currentLng,
+        lat: currentCenter._lat,
+        lng: currentCenter._lng,
       });
       if (response.data.code === 1000) {
         this.bathroomList = response.data.result as any;
@@ -313,6 +312,8 @@ export class MainPage implements AfterViewInit {
 
   //TODO: refactor (addmarker & addmarkers)
   addMarkers() {
+    console.log('list', this.bathroomList);
+
     this.bathroomList.forEach((place) => {
       let currentMarkerIcon;
       if (place.isOpened === 'Y') {
