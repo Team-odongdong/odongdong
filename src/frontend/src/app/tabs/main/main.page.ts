@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { AlertController, ModalController, Platform } from '@ionic/angular';
+
 import { AddBathroomComponent } from 'src/app/components/add-bathroom/add-bathroom.component';
 import { BathroomService } from 'src/app/services/bathroomService';
 import { CommonService } from 'src/app/services/commonService';
@@ -312,8 +313,6 @@ export class MainPage implements AfterViewInit {
 
   //TODO: refactor (addmarker & addmarkers)
   addMarkers() {
-    console.log('list', this.bathroomList);
-
     this.bathroomList.forEach((place) => {
       let currentMarkerIcon;
       if (place.isOpened === 'Y') {
