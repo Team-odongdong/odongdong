@@ -12,14 +12,17 @@ import { ApiResponse } from '../types/response';
 export class BathroomService {
   constructor(private commonService: CommonService) {}
 
-  async get1kmBathroomList({ lat, lng }: LatLng): Promise<ApiResponse> {
+  async get1kmBathroomList({
+    latitude,
+    longitude,
+  }: LatLng): Promise<ApiResponse> {
     try {
       const response = await customAxios.get(
-        `api/bathroom/list?latitude=${lat}&longitude=${lng}&distance=1`
+        `api/bathroom/list?latitude=${latitude}&longitude=${longitude}&distance=1`
       );
       return response;
     } catch (error) {
-      throw new Error('에러 발생');
+      throw new Error('화장실 목록 조회 에러 발생');
     }
   }
 
@@ -33,7 +36,7 @@ export class BathroomService {
       const response = await customAxios.post('api/bathroom/add', formData);
       return response;
     } catch (error) {
-      throw new Error('에러 발생');
+      throw new Error('화장실 추가 에러 발생');
     }
   }
 
@@ -42,18 +45,18 @@ export class BathroomService {
       const response = await customAxios.post('api/bathroom/edit', data);
       return response;
     } catch (error) {
-      throw new Error('에러 발생');
+      throw new Error('화장실 편집 에러 발생');
     }
   }
 
-  async getAddressName({ lat, lng }: LatLng): Promise<ApiResponse> {
+  async getAddressName({ latitude, longitude }: LatLng): Promise<ApiResponse> {
     try {
       const response = await customAxios.get(
-        `api/bathroom/address?latitude=${lat}&longitude=${lng}`
+        `api/bathroom/address?latitude=${latitude}&longitude=${longitude}`
       );
       return response;
     } catch (error) {
-      throw new Error('에러 발생');
+      throw new Error('도로명 주소 조희 에러 발생');
     }
   }
 
@@ -65,7 +68,7 @@ export class BathroomService {
       });
       return response;
     } catch (error) {
-      throw new Error('에러 발생');
+      throw new Error('별점 등록 에러 발생');
     }
   }
 }

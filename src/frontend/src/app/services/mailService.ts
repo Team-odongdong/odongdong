@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { CommonService } from './commonService';
 import { customAxios } from '../utils/axios';
-import { ApiResponse, ApiResponseError } from '../types/response';
-import { AxiosError } from 'axios';
+import { ApiResponse } from '../types/response';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +20,7 @@ export class MailService {
       });
       return response;
     } catch (error) {
-      throw new Error('에러 발생');
+      throw new Error('문의 전송 에러 발생');
     }
   }
 }

@@ -108,8 +108,8 @@ export class MainPage implements AfterViewInit {
 
   async getBathroomList() {
     const response = await this.bathroomService.get1kmBathroomList({
-      lat: this.currentLat,
-      lng: this.currentLng,
+      latitude: this.currentLat,
+      longitude: this.currentLng,
     });
 
     if (response.data.code === 1000) {
@@ -132,8 +132,8 @@ export class MainPage implements AfterViewInit {
       const currentCenter = this.map.getCenter();
 
       const response = await this.bathroomService.get1kmBathroomList({
-        lat: currentCenter._lat,
-        lng: currentCenter._lng,
+        latitude: currentCenter._lat,
+        longitude: currentCenter._lng,
       });
       if (response.data.code === 1000) {
         this.bathroomList = response.data.result as any;
@@ -325,7 +325,7 @@ export class MainPage implements AfterViewInit {
 
       const marker = new naver.maps.Marker({
         map: this.map,
-        position: new naver.maps.LatLng(place.lat, place.lng),
+        position: new naver.maps.LatLng(place.latitude, place.longitude),
         icon: currentMarkerIcon,
       });
 
