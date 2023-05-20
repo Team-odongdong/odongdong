@@ -1,9 +1,9 @@
 * {
-  --background: #fbfeff;
+  --background: var(--bg_white);
 }
 
 ion-title {
-  color: #22659a;
+  color: var(--primary_blue);
 }
 
 ion-toolbar {
@@ -27,7 +27,7 @@ textarea {
   text-align: center;
 
   .submit-button {
-    --background: #6d9dcd;
+    --background: var(--secondary_blue);
     width: 50%;
     font-weight: 700;
   }
