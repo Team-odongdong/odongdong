@@ -12,6 +12,7 @@ import { AddBathroomComponent } from 'src/app/components/add-bathroom/add-bathro
 import { BathroomService } from 'src/app/services/bathroomService';
 import { CommonService } from 'src/app/services/commonService';
 import { BathroomDetailInfo } from 'src/app/types/bathroomInfo';
+import { Distance, DistanceOptions } from 'src/app/types/distance';
 import {
   createMarkerImage,
   deleteAllMarkers,
@@ -49,6 +50,7 @@ export class MainPage implements AfterViewInit {
 
   public bathroomList: Partial<BathroomDetailInfo>[];
   public bathroomInfo: any;
+  public bathroomRadius = '1km';
 
   public defaultMarkerIcon: any;
   public clickedMarkerIcon: any;
@@ -555,5 +557,10 @@ export class MainPage implements AfterViewInit {
 
   refresh() {
     window.location.reload();
+  }
+
+  onFilterChanged(event: { value: DistanceOptions }) {
+    this.bathroomRadius = event.value;
+    console.log('current data', this.bathroomRadius);
   }
 }
