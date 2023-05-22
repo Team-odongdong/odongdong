@@ -3,7 +3,8 @@
 }
 
 .container {
-  background: #fbfeff;
+  background: var(--bg_white);
+  border-radius: 20px;
 
   &__header {
     display: flex;
@@ -54,13 +55,13 @@
     margin: -3px 16px;
 
     .available {
-      color: #22659a;
+      color: var(--primary_blue);
       font-weight: bold;
       font-size: 16px;
       margin-bottom: -10px;
     }
     .available-not {
-      color: #b3261e;
+      color: var(--error_red);
       font-weight: bold;
       font-size: 16px;
       margin-bottom: -10px;
@@ -68,11 +69,11 @@
 
     .operation-time {
       font-size: 14px;
-      color: #79747e;
+      color: var(--outline_gray);
     }
     .operation-time-not {
       font-size: 14px;
-      color: #b3261e;
+      color: var(--error_red);
     }
 
     .address {
@@ -80,7 +81,7 @@
       margin-bottom: 0.9375rem;
 
       font-size: 14px;
-      color: #49454f;
+      color: var(--surface_gray);
     }
   }
 }
@@ -114,7 +115,7 @@ ion-img {
   margin: 0px 16px;
 
   &__label {
-    color: #6d9dcd;
+    color: var(--secondary_blue);
     font-size: 12px;
   }
 }
@@ -122,7 +123,7 @@ ion-img {
 .edit {
   align-items: center;
 
-  background-color: #f1faff;
+  background-color: var(--tertiary_container_blue);
 
   position: absolute;
   bottom: 0;
@@ -135,7 +136,7 @@ ion-img {
 
   &__text {
     font-size: 0.875rem;
-    color: #6d9dcd;
+    color: var(--secondary_blue);
   }
 
   &__image {

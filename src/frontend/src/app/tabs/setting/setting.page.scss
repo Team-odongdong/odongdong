@@ -1,5 +1,5 @@
 ion-title {
-  color: #22659a;
+  color: var(--primary_blue);
 }
 
 ion-toolbar {
@@ -7,7 +7,7 @@ ion-toolbar {
 }
 
 .back-button {
-  color: #22659a;
+  color: var(--primary_blue);
 }
 
 .list {
@@ -30,7 +30,7 @@ ion-toolbar {
 
   &__version {
     display: flex;
-    background-color: #def0ff;
+    background-color: var(--primary_container_blue);
     border-radius: 100px;
 
     transform: translateX(-0.125rem);

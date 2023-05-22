@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { AlertController, ModalController, Platform } from '@ionic/angular';
+
 import { AddBathroomComponent } from 'src/app/components/add-bathroom/add-bathroom.component';
 import { BathroomService } from 'src/app/services/bathroomService';
 import { CommonService } from 'src/app/services/commonService';
@@ -86,13 +87,12 @@ export class MainPage implements AfterViewInit {
 
   ionViewWillEnter() {
     setTimeout(() => {
-      this.checkPermissions()
-        .then(() => {
-          this.getBathroomList();
-        })
-        .then(() => {
-          this.trackLocation();
-        });
+      this.checkPermissions().then(() => {
+        this.getBathroomList();
+      });
+      // .then(() => {
+      //   this.trackLocation();
+      // });
     }, 500);
   }
 
@@ -108,8 +108,8 @@ export class MainPage implements AfterViewInit {
 
   async getBathroomList() {
     const response = await this.bathroomService.get1kmBathroomList({
-      lat: this.currentLat,
-      lng: this.currentLng,
+      latitude: this.currentLat,
+      longitude: this.currentLng,
     });
 
     if (response.data.code === 1000) {
@@ -132,8 +132,8 @@ export class MainPage implements AfterViewInit {
       const currentCenter = this.map.getCenter();
 
       const response = await this.bathroomService.get1kmBathroomList({
-        lat: this.currentLat,
-        lng: this.currentLng,
+        latitude: currentCenter._lat,
+        longitude: currentCenter._lng,
       });
       if (response.data.code === 1000) {
         this.bathroomList = response.data.result as any;
@@ -325,7 +325,7 @@ export class MainPage implements AfterViewInit {
 
       const marker = new naver.maps.Marker({
         map: this.map,
-        position: new naver.maps.LatLng(place.lat, place.lng),
+        position: new naver.maps.LatLng(place.latitude, place.longitude),
         icon: currentMarkerIcon,
       });
 

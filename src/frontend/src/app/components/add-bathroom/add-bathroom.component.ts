@@ -63,11 +63,14 @@ export class AddBathroomComponent implements OnInit {
     if (!this.lat) {
       await this.addBathroomAtCurrentAlert();
       await this.getAddressWithLatLng({
-        lat: this.currentLat,
-        lng: this.currentLng,
+        latitude: this.currentLat,
+        longitude: this.currentLng,
       });
     } else {
-      await this.getAddressWithLatLng({ lat: this.lat, lng: this.lng });
+      await this.getAddressWithLatLng({
+        latitude: this.lat,
+        longitude: this.lng,
+      });
     }
   }
 
@@ -89,9 +92,12 @@ export class AddBathroomComponent implements OnInit {
     await alert.present();
   }
 
-  async getAddressWithLatLng({ lat, lng }: LatLng) {
+  async getAddressWithLatLng({ latitude, longitude }: LatLng) {
     try {
-      const response = await this.bathroomService.getAddressName({ lat, lng });
+      const response = await this.bathroomService.getAddressName({
+        latitude,
+        longitude,
+      });
 
       if (response.data.code === 1000) {
         this.fetchBathroomAddress(response.data.result);
@@ -119,8 +125,8 @@ export class AddBathroomComponent implements OnInit {
     }
 
     const info: BathroomInfo = {
-      lat: this.lat,
-      lng: this.lng,
+      latitude: this.lat,
+      longitude: this.lng,
       title: this.bathroomName,
       isLocked: 'N',
       address: this.bathroomAddress,

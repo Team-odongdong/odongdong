@@ -51,8 +51,8 @@ export class EditBathroomPage implements OnInit {
 
   setBathroomInfo() {
     this.bathroomName = this.bathroomInfo.title;
-    this.latitude = this.bathroomInfo.lat;
-    this.longitude = this.bathroomInfo.lng;
+    this.latitude = this.bathroomInfo.latitude;
+    this.longitude = this.bathroomInfo.longitude;
     this.bathroomAddress = this.bathroomInfo.address;
     this.bathroomAddressDetail = this.bathroomInfo.addressDetail;
     this.isUnisex = this.bathroomInfo.isUnisex;
@@ -74,8 +74,8 @@ export class EditBathroomPage implements OnInit {
       id: this.bathroomInfo.id,
       isLocked: this.isLocked,
       isUnisex: this.isUnisex,
-      lat: this.bathroomInfo.lat,
-      lng: this.bathroomInfo.lng,
+      latitude: this.bathroomInfo.latitude,
+      longitude: this.bathroomInfo.longitude,
       operationTime: this.is24hours
         ? '24시간'
         : this.inputStartTime + '~' + this.inputEndTime,
