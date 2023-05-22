@@ -50,7 +50,7 @@ export class MainPage implements AfterViewInit {
 
   public bathroomList: Partial<BathroomDetailInfo>[];
   public bathroomInfo: any;
-  public bathroomRadius = '1km';
+  public bathroomRadius: DistanceOptions = '1km';
 
   public defaultMarkerIcon: any;
   public clickedMarkerIcon: any;
@@ -109,9 +109,10 @@ export class MainPage implements AfterViewInit {
   }
 
   async getBathroomList() {
-    const response = await this.bathroomService.get1kmBathroomList({
+    const response = await this.bathroomService.getBathrooms({
       latitude: this.currentLat,
       longitude: this.currentLng,
+      distance: Distance[this.bathroomRadius],
     });
 
     if (response.data.code === 1000) {
@@ -133,9 +134,10 @@ export class MainPage implements AfterViewInit {
     setTimeout(async () => {
       const currentCenter = this.map.getCenter();
 
-      const response = await this.bathroomService.get1kmBathroomList({
+      const response = await this.bathroomService.getBathrooms({
         latitude: currentCenter._lat,
         longitude: currentCenter._lng,
+        distance: Distance[this.bathroomRadius],
       });
       if (response.data.code === 1000) {
         this.bathroomList = response.data.result as any;
