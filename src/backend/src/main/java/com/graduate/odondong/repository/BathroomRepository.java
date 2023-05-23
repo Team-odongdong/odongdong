@@ -26,5 +26,4 @@ public interface BathroomRepository extends JpaRepository<Bathroom, Long> {
             "on r.bathroom = b where b.register = true and b.latitude >= :lati_minus and b.latitude <= :lati_plus and b.longitude >= :long_minus and b.longitude <= :long_plus" +
             " group by b")
     List<BathroomResponseInterface> findBathroomResponseDto(@Param("lati_minus")Double x1, @Param("lati_plus")Double x2, @Param("long_minus")Double y1, @Param("long_plus")Double y2);
-    List<Bathroom> findByRegisterIsTrueAndLatitudeGreaterThanAndLatitudeLessThanAndLongitudeGreaterThanAndLongitudeLessThan(Double x1, Double x2, Double y1, Double y2);
 }

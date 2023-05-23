@@ -1,29 +1,39 @@
 package com.graduate.odondong.controller;
 
-import static com.graduate.odondong.util.BaseResponseStatus.SUCCESS;
+import static com.graduate.odondong.util.BaseResponseStatus.*;
 import static com.graduate.odondong.util.ErrorLogWriter.*;
 
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.graduate.odondong.domain.UpdatedBathroom;
-import com.graduate.odondong.domain.User;
-import com.graduate.odondong.dto.*;
-import com.graduate.odondong.service.BathroomService.DeletedBathroomService;
-import com.graduate.odondong.service.BathroomService.UpdatedBathroomService;
-import com.graduate.odondong.service.UserService;
-import com.graduate.odondong.util.BaseResponseStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.graduate.odondong.domain.Bathroom;
+import com.graduate.odondong.domain.UpdatedBathroom;
+import com.graduate.odondong.domain.User;
+import com.graduate.odondong.dto.BathroomRequestDto;
+import com.graduate.odondong.dto.BathroomResponseDto;
+import com.graduate.odondong.dto.BathroomResponseInterface;
+import com.graduate.odondong.dto.BathroomUpdateRequestDto;
+import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.service.AwsS3Service;
 import com.graduate.odondong.service.BathroomService.BathroomService;
+import com.graduate.odondong.service.BathroomService.DeletedBathroomService;
+import com.graduate.odondong.service.BathroomService.UpdatedBathroomService;
+import com.graduate.odondong.service.UserService;
 import com.graduate.odondong.util.BaseException;
 import com.graduate.odondong.util.BaseResponse;
+import com.graduate.odondong.util.BaseResponseStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -58,7 +68,7 @@ public class BathroomController {
 	 **/
 	@ResponseBody
 	@GetMapping("/api/bathroom/list")
-	public BaseResponse<List<BathroomResponseDto>> findBathroomsAroundDistanceFromCoordinate(HttpServletRequest request,
+	public BaseResponse<List<BathroomResponseDto.BathroomInfo>> findBathroomsAroundDistanceFromCoordinate(HttpServletRequest request,
 																							 @RequestParam("longitude") Double x, @RequestParam("latitude") Double y,
 																							 @RequestParam("distance") Double distance) {
 		try {
