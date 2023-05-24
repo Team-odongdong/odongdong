@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.graduate.odondong.domain.Bathroom;
+import com.graduate.odondong.domain.Member;
 import com.graduate.odondong.domain.Rating;
 import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.BathroomResponseDto;
@@ -16,6 +17,7 @@ import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.dto.Point;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.RatingRepository;
+import com.graduate.odondong.service.MemberService;
 import com.graduate.odondong.service.UserLocationCalculator;
 import com.graduate.odondong.util.BaseException;
 import com.graduate.odondong.util.BaseResponse;
@@ -32,6 +34,7 @@ public class BathroomService {
 	private final RatingRepository ratingRepository;
 	private final ChangeByGeocoderKakao changeByGeocoderKakao;
 	private final ChangeByGeocoderNaver changeByGeocoderNaver;
+	private final MemberService memberService;
 
 	public BaseResponse<CoordinateInfoDto> findAllBathroomsFromCoordinate(Double x, Double y) throws BaseException {
 		try {
@@ -45,10 +48,10 @@ public class BathroomService {
 		}
 	}
 
-	public BaseResponse<List<BathroomResponseDto.BathroomInfo>> findBathroomsAroundDistanceFromCoordinate(Double x,
-		Double y, Double distance) throws BaseException {
+	public BaseResponse<List<BathroomResponseDto.BathroomInfo>> findBathroomsAroundDistanceFromCoordinate(Double latitude,
+		Double longitude, Double distance) throws BaseException {
 		try {
-			UserLocationCalculator locationService = new UserLocationCalculator(new Point(x, y), distance);
+			UserLocationCalculator locationService = new UserLocationCalculator(new Point(latitude, longitude), distance);
 
 			List<BathroomResponseInterface> bathroomResponseDto = bathroomRepository.findBathroomResponseDto(
 				locationService.getLatitudeMinus(),
@@ -76,13 +79,14 @@ public class BathroomService {
 		return bathroomRepository.findBathroomsByRegisterIsFalse();
 	}
 
-	public BaseResponse<String> addBathroom(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl) {
+	public BaseResponse<String> addBathroom(BathroomRequestDto bathroomRequestDto, String bathroomImgUrl, Member member) {
 		Bathroom bathroom = bathroomRequestDto.toBathroom(bathroomImgUrl);
+		bathroom.setMember(member);
 		bathroomRepository.save(bathroom);
 
 		Rating rating = bathroomRequestDto.toRating(bathroom);
 		ratingRepository.save(rating);
-		return new BaseResponse<>(SUCCESS);
+		return new BaseResponse<>(member.getUuid().toString());
 	}
 
 	public void saveAddedBathroom(Long bathroomId) throws BaseException {

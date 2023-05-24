@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.graduate.odondong.config.Login;
 import com.graduate.odondong.domain.Bathroom;
+import com.graduate.odondong.domain.Member;
 import com.graduate.odondong.domain.UpdatedBathroom;
 import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.BathroomRequestDto;
@@ -36,6 +38,7 @@ import com.graduate.odondong.util.BaseResponse;
 import com.graduate.odondong.util.BaseResponseStatus;
 
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Controller
 @RequiredArgsConstructor
@@ -53,7 +56,7 @@ public class BathroomController {
 	@ResponseBody
 	@GetMapping("/api/bathroom/address")
 	public BaseResponse<CoordinateInfoDto> findAllBathroomsFromCoordinate(HttpServletRequest request,
-																		  @RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
+		@RequestParam("longitude") Double x, @RequestParam("latitude") Double y) {
 		try {
 			return bathroomService.findAllBathroomsFromCoordinate(x, y);
 		} catch (BaseException e) {
@@ -68,11 +71,12 @@ public class BathroomController {
 	 **/
 	@ResponseBody
 	@GetMapping("/api/bathroom/list")
-	public BaseResponse<List<BathroomResponseDto.BathroomInfo>> findBathroomsAroundDistanceFromCoordinate(HttpServletRequest request,
-																							 @RequestParam("longitude") Double x, @RequestParam("latitude") Double y,
-																							 @RequestParam("distance") Double distance) {
+	public BaseResponse<List<BathroomResponseDto.BathroomInfo>> findBathroomsAroundDistanceFromCoordinate(
+		HttpServletRequest request,
+		@RequestParam("latitude") Double latitude, @RequestParam("longitude") Double longitude,
+		@RequestParam("distance") Double distance) {
 		try {
-			return bathroomService.findBathroomsAroundDistanceFromCoordinate(y, x, distance);
+			return bathroomService.findBathroomsAroundDistanceFromCoordinate(latitude, longitude, distance);
 		} catch (BaseException e) {
 			e.printStackTrace();
 			writeExceptionWithRequest(e, request);
@@ -86,21 +90,16 @@ public class BathroomController {
 	 **/
 	@ResponseBody
 	@PostMapping("/api/bathroom/add")
-	public BaseResponse<String> addBathroomRequest(HttpServletRequest request,
-												   @RequestPart BathroomRequestDto bathroomRequestDto,
-												   @RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile) {
+	public BaseResponse<String> addBathroomRequest(BathroomRequestDto bathroomRequestDto,
+		@RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile, @ApiIgnore @Login Member member) {
+
 		String bathroomImgUrl = bathroomRequestDto.getImageUrl();
 		String dirName = "info/";
 
 		if (multipartFile != null) {
-			try {
-				bathroomImgUrl = awsS3Service.upload(multipartFile, dirName);
-			} catch (BaseException e) {
-				writeExceptionWithRequest(e, request);
-				return new BaseResponse<>(e.getStatus());
-			}
+			bathroomImgUrl = awsS3Service.upload(multipartFile, dirName);
 		}
-		return bathroomService.addBathroom(bathroomRequestDto, bathroomImgUrl);
+		return bathroomService.addBathroom(bathroomRequestDto, bathroomImgUrl, member);
 	}
 
 	/**
@@ -109,10 +108,11 @@ public class BathroomController {
 	 **/
 	@ResponseBody
 	@PostMapping("/api/bathroom/edit")
-	public BaseResponse<BaseResponseStatus> modifyBathroomRequest(HttpServletRequest request, @RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
+	public BaseResponse<BaseResponseStatus> modifyBathroomRequest(HttpServletRequest request,
+		@RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
 		try {
 			User user = userService.getUserInfo();
-			updatedBathroomService.addUpdatedBathroom(bathroomUpdateRequestDto,user);
+			updatedBathroomService.addUpdatedBathroom(bathroomUpdateRequestDto, user);
 			return new BaseResponse<>(SUCCESS);
 		} catch (BaseException e) {
 			writeExceptionWithRequest(e, request);
@@ -184,7 +184,7 @@ public class BathroomController {
 	public String acceptBathroomModify(HttpServletRequest request, @RequestParam("id") Long updatedBathroomId) {
 		try {
 			updatedBathroomService.saveModifiedBathroom(updatedBathroomId);
-		} catch (BaseException e){
+		} catch (BaseException e) {
 			writeExceptionWithRequest(e, request);
 		}
 		return "redirect:/admin/bathroom/not-edited";
@@ -196,12 +196,7 @@ public class BathroomController {
 	 **/
 	@DeleteMapping("/admin/bathroom/delete")
 	@ResponseBody
-	public String removeNotAddedBathroom(HttpServletRequest request, @RequestParam("id") Long bathroomId) {
-		try {
-			deletedBathroomService.addDeletedBathroom(bathroomId);
-		} catch (BaseException e) {
-			writeExceptionWithRequest(e, request);
-		}
+	public String removeNotAddedBathroom(@RequestParam("id") Long bathroomId) {
 		bathroomService.removeNotAddedBathroom(bathroomId);
 		return "Delete";
 	}

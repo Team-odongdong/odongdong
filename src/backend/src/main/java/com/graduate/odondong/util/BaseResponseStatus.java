@@ -28,6 +28,7 @@ public enum BaseResponseStatus {
      */
     DATABASE_ERROR(false, 4000, "데이터베이스 연결에 실패하였습니다."),
 
+    SERVER_ERROR(false, 5000, "서버 에러입니다."),
     /**
      * 5000 : AWS관련 오류
      */
