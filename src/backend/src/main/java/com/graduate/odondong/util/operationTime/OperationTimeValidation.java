@@ -6,12 +6,9 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.regex.Pattern;
 
-import org.springframework.stereotype.Service;
-
-@Service
 public class OperationTimeValidation {
 
-    public String checkBathroomOpen(String operation){
+    public static String checkBathroomOpen(String operation){
         SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
         LocalDateTime now = LocalDateTime.now();
         int dayOfWeekValue = now.getDayOfWeek().getValue();
