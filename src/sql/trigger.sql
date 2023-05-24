@@ -16,7 +16,7 @@ BEGIN
     DECLARE operation_time varchar(100);
     DECLARE created_at datetime;
     DECLARE deleted_at datetime default CURRENT_TIMESTAMP;
-    DECLARE user_id bigint;
+    DECLARE member_id bigint;
 
     SET title = OLD.title;
     SET latitude = OLD.latitude;
@@ -29,13 +29,13 @@ BEGIN
     SET operation_time = OLD.operation_time;
     SET created_at = OLD.created_at;
     SET deleted_at = CURRENT_TIMESTAMP;
-    SET user_id = OLD.user_id;
+    SET member_id = OLD.member_id;
 
 
     INSERT INTO deleted_bathroom (title, latitude, longitude, is_locked, address, address_detail, register, is_unisex,
-                                  image_url, operation_time, created_at, deleted_at, user_id)
+                                  image_url, operation_time, created_at, deleted_at, member_id)
     VALUES (title, latitude, longitude, is_locked, address, address_detail, register, is_unisex, image_url,
-            operation_time, created_at, deleted_at, user_id);
+            operation_time, created_at, deleted_at, member_id);
 
 END $$
 DELIMITER ;
