@@ -14,7 +14,7 @@ create table bathroom
     operation_time varchar(100)                         null,
     created_at     datetime   default CURRENT_TIMESTAMP not null,
     updated_at     datetime   default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP,
-    user_id        bigint                               null
+    member_id        bigint                               null
 )
     charset = utf8;
 
@@ -36,7 +36,7 @@ create table deleted_bathroom
     operation_time varchar(100)                         null,
     created_at     datetime                             not null,
     deleted_at     datetime   default CURRENT_TIMESTAMP not null,
-    user_id        bigint                               null
+    member_id        bigint                               null
 )
     charset = utf8;
 
@@ -59,7 +59,7 @@ create table rating
     score       double      null,
     updated_at  datetime(6) null,
     bathroom_id bigint      null,
-    user_id     bigint      null
+    member_id     bigint      null
 )
     charset = utf8mb4;
 
@@ -67,7 +67,7 @@ create table updated_bathroom
 (
     id             bigint auto_increment
         primary key,
-    user_id        bigint               null,
+    member_id        bigint               null,
     bathroom_id    bigint               null,
     title          varchar(45)          not null,
     latitude       double               not null,
