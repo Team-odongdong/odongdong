@@ -38,9 +38,9 @@ public class RatingService {
         return new MemberResponseDto(member);
     }
 
-    public RatingResponseDto findBathroomRateById(Long bathroomId, Long userId) {
-        Rating rating = findRatingById(bathroomId, userId);
-        return new RatingResponseDto(rating);
+    public RatingResponseDto findBathroomRateById(Long bathroomId, Member member) {
+        Rating rating = findRatingById(bathroomId, member.getId());
+        return new RatingResponseDto(rating, member);
     }
 
     public Rating findRatingById(Long bathroomId, Long userId) {

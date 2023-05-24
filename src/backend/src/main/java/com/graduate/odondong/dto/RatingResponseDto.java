@@ -1,6 +1,8 @@
 package com.graduate.odondong.dto;
 
+import com.graduate.odondong.domain.Member;
 import com.graduate.odondong.domain.Rating;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,7 +12,11 @@ import lombok.Data;
 public class RatingResponseDto {
     private Double score;
 
-    public RatingResponseDto(Rating rating) {
+    private String name;
+    private String uuid;
+    public RatingResponseDto(Rating rating, Member member) {
+        this.name = member.getName();
+        this.uuid = member.getUuid().toString();
         if (rating != null) {
             this.score = rating.getScore();
         }
