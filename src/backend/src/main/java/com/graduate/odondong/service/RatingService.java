@@ -1,26 +1,23 @@
 package com.graduate.odondong.service;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
+import static com.graduate.odondong.util.BaseResponseStatus.*;
+
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.graduate.odondong.domain.Bathroom;
+import com.graduate.odondong.domain.Member;
 import com.graduate.odondong.domain.Rating;
-import com.graduate.odondong.domain.User;
+import com.graduate.odondong.dto.MemberResponseDto;
 import com.graduate.odondong.dto.RatingRequestDto;
 import com.graduate.odondong.dto.RatingResponseDto;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.RatingRepository;
-import com.graduate.odondong.repository.UserRepository;
 import com.graduate.odondong.util.BaseException;
-import com.graduate.odondong.util.BaseResponse;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
-import static com.graduate.odondong.util.BaseResponseStatus.NOT_FOUND_BATHROOM;
 
 @Service
 @RequiredArgsConstructor
@@ -28,15 +25,17 @@ import static com.graduate.odondong.util.BaseResponseStatus.NOT_FOUND_BATHROOM;
 public class RatingService {
     private final BathroomRepository bathroomRepository;
     private final RatingRepository ratingRepository;
-    private final UserRepository userRepository;
-    public String addRating(RatingRequestDto ratingRequestDto, User user) throws BaseException {
-        Bathroom bathroom = bathroomRepository.findById(ratingRequestDto.getBathroomId()).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
-        Rating rating = findRatingById(ratingRequestDto.getBathroomId(), user.getId());
 
-        rating = Optional.ofNullable(rating).orElseGet(() -> ratingRequestDto.toRating(bathroom, user));
+    private final MemberService memberService;
+    public MemberResponseDto addRating(RatingRequestDto ratingRequestDto, Member member) throws BaseException {
+
+        Bathroom bathroom = bathroomRepository.findById(ratingRequestDto.getBathroomId()).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
+        Rating rating = findRatingById(ratingRequestDto.getBathroomId(), member.getId());
+
+        rating = Optional.ofNullable(rating).orElseGet(() -> ratingRequestDto.toRating(bathroom, member));
         rating.setScore(ratingRequestDto.getScore());
         ratingRepository.save(rating);
-        return "SUCCESS";
+        return new MemberResponseDto(member);
     }
 
     public RatingResponseDto findBathroomRateById(Long bathroomId, Long userId) {
@@ -45,7 +44,7 @@ public class RatingService {
     }
 
     public Rating findRatingById(Long bathroomId, Long userId) {
-        return ratingRepository.findByBathroomIdAndUserId(bathroomId, userId).orElseGet(() -> null);
+        return ratingRepository.findByBathroomIdAndMemberId(bathroomId, userId).orElseGet(() -> null);
     }
 
 }

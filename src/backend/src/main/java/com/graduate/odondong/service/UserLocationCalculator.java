@@ -7,9 +7,6 @@ import java.util.stream.Collectors;
 import com.graduate.odondong.dto.BathroomResponseDto;
 import com.graduate.odondong.dto.Point;
 
-import lombok.Data;
-
-@Data
 public class UserLocationCalculator {
 
 	private static final double EARTH_RADIUS = 6371.0;

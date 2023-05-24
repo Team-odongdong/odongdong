@@ -1,16 +1,25 @@
 package com.graduate.odondong.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.Cascade;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Data
@@ -26,9 +35,9 @@ public class Rating {
     @JoinColumn(name="bathroom_id")
     private Bathroom bathroom;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name= "user_id")
-    private User user;
+    @ManyToOne(targetEntity = Member.class, fetch = FetchType.LAZY)
+    @JoinColumn(name= "member_id")
+    private Member member;
 
     @CreatedDate
     @Column(updatable = false)
@@ -37,11 +46,11 @@ public class Rating {
     private LocalDateTime updated_at;
 
     @Builder
-    public Rating(Long id, Double score, Bathroom bathroom, User user) {
+    public Rating(Long id, Double score, Bathroom bathroom, Member member) {
         this.id = id;
         this.score = score;
         this.bathroom = bathroom;
-        this.user = user;
+        this.member = member;
     }
 
 

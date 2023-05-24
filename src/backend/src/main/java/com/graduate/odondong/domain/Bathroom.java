@@ -1,17 +1,24 @@
 package com.graduate.odondong.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-
-import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Entity
@@ -37,6 +44,9 @@ public class Bathroom {
 	private Boolean register;
 	private String operationTime;
 	private Boolean isUnisex;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	private Member member;
 
 	@CreatedDate
 	@Column(updatable = false)
