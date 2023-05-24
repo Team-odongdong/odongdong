@@ -30,7 +30,7 @@ public class RatingController {
 	@GetMapping("")
 	public BaseResponse<RatingResponseDto> findBathroomRate(@RequestParam("id") Long bathroomId,
 		@ApiIgnore @Login Member member) {
-		return new BaseResponse<>(ratingService.findBathroomRateById(bathroomId, member.getId()));
+		return new BaseResponse<>(ratingService.findBathroomRateById(bathroomId, member));
 	}
 
 	@PostMapping("")
