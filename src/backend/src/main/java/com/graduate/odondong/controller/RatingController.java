@@ -1,9 +1,5 @@
 package com.graduate.odondong.controller;
 
-import static com.graduate.odondong.util.ErrorLogWriter.*;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +14,6 @@ import com.graduate.odondong.dto.RatingRequestDto;
 import com.graduate.odondong.dto.RatingResponseDto;
 import com.graduate.odondong.service.RatingService;
 import com.graduate.odondong.service.UserService;
-import com.graduate.odondong.util.BaseException;
 import com.graduate.odondong.util.BaseResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -33,21 +28,14 @@ public class RatingController {
 	private final UserService userService;
 
 	@GetMapping("")
-	public BaseResponse<RatingResponseDto> findBathroomRate(HttpServletRequest request,
-		@RequestParam("id") Long bathroomId) {
-		Long userId;
-		try {
-			userId = userService.getUserInfo().getId();
-		} catch (BaseException e) {
-			writeExceptionWithRequest(e, request);
-			return new BaseResponse<>(e.getStatus());
-		}
-		return new BaseResponse<>(ratingService.findBathroomRateById(bathroomId, userId));
+	public BaseResponse<RatingResponseDto> findBathroomRate(@RequestParam("id") Long bathroomId,
+		@ApiIgnore @Login Member member) {
+		return new BaseResponse<>(ratingService.findBathroomRateById(bathroomId, member.getId()));
 	}
 
-
 	@PostMapping("")
-	public BaseResponse<MemberResponseDto> addBathroomRate(@RequestBody RatingRequestDto ratingRequestDto, @ApiIgnore @Login Member member) {
+	public BaseResponse<MemberResponseDto> addBathroomRate(@RequestBody RatingRequestDto ratingRequestDto,
+		@ApiIgnore @Login Member member) {
 		return new BaseResponse<>(ratingService.addRating(ratingRequestDto, member));
 	}
 }
