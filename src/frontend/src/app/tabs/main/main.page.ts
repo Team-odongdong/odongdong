@@ -12,6 +12,7 @@ import { AddBathroomComponent } from 'src/app/components/add-bathroom/add-bathro
 import { BathroomService } from 'src/app/services/bathroomService';
 import { CommonService } from 'src/app/services/commonService';
 import { BathroomDetailInfo } from 'src/app/types/bathroomInfo';
+import { Distance, DistanceOptions } from 'src/app/types/distance';
 import {
   createMarkerImage,
   deleteAllMarkers,
@@ -49,6 +50,7 @@ export class MainPage implements AfterViewInit {
 
   public bathroomList: Partial<BathroomDetailInfo>[];
   public bathroomInfo: any;
+  public bathroomRadius: DistanceOptions = '1km';
 
   public defaultMarkerIcon: any;
   public clickedMarkerIcon: any;
@@ -107,9 +109,10 @@ export class MainPage implements AfterViewInit {
   }
 
   async getBathroomList() {
-    const response = await this.bathroomService.get1kmBathroomList({
+    const response = await this.bathroomService.getBathrooms({
       latitude: this.currentLat,
       longitude: this.currentLng,
+      distance: Distance[this.bathroomRadius],
     });
 
     if (response.data.code === 1000) {
@@ -131,9 +134,10 @@ export class MainPage implements AfterViewInit {
     setTimeout(async () => {
       const currentCenter = this.map.getCenter();
 
-      const response = await this.bathroomService.get1kmBathroomList({
+      const response = await this.bathroomService.getBathrooms({
         latitude: currentCenter._lat,
         longitude: currentCenter._lng,
+        distance: Distance[this.bathroomRadius],
       });
       if (response.data.code === 1000) {
         this.bathroomList = response.data.result as any;
@@ -555,5 +559,10 @@ export class MainPage implements AfterViewInit {
 
   refresh() {
     window.location.reload();
+  }
+
+  onFilterChanged(event: { value: DistanceOptions }) {
+    this.bathroomRadius = event.value;
+    console.log('current data', this.bathroomRadius);
   }
 }

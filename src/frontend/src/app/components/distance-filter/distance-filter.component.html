@@ -1,0 +1,17 @@
+<div class="marker-filter__container">
+  <ion-select
+    placeholder="필터"
+    class="marker-filter__filter"
+    [(ngModel)]="currentFilterValue"
+    (ionChange)="filterChanged($event)"
+    aria-label="distance-options"
+  >
+    <ion-select-option
+      *ngFor="let distance of distanceOptions"
+      class="marker-filter__filter--item"
+      value="{{ distance }}"
+    >
+      내 주변 {{ distance }}
+    </ion-select-option>
+  </ion-select>
+</div>

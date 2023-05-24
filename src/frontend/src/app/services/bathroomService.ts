@@ -5,6 +5,11 @@ import { LatLng } from '../types/location';
 import { BathroomInfo } from '../types/bathroomInfo';
 import { createFormData } from '../utils/bathroomData';
 import { ApiResponse } from '../types/response';
+import { DistanceOptionValues } from '../types/distance';
+
+interface GetBathroomProps extends LatLng {
+  distance: DistanceOptionValues;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +17,14 @@ import { ApiResponse } from '../types/response';
 export class BathroomService {
   constructor(private commonService: CommonService) {}
 
-  async get1kmBathroomList({
+  async getBathrooms({
     latitude,
     longitude,
-  }: LatLng): Promise<ApiResponse> {
+    distance,
+  }: GetBathroomProps): Promise<ApiResponse> {
     try {
       const response = await customAxios.get(
-        `api/bathroom/list?latitude=${latitude}&longitude=${longitude}&distance=1`
+        `api/bathroom/list?latitude=${latitude}&longitude=${longitude}&distance=${distance}`
       );
       return response;
     } catch (error) {
