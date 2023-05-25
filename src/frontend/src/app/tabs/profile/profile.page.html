@@ -28,7 +28,7 @@
         <ion-label>등록한 화장실의 수</ion-label>
       </div>
     </ion-item>
-    <ion-item>
+    <ion-item id="open-modal" (click)="showNotRegisteredList()">
       <div class="profile-item">
         <ion-label>등록 대기중 {{ notRegistered }}개</ion-label>
         <ion-label> </ion-label>
@@ -40,4 +40,25 @@
       ></ion-img>
     </ion-item>
   </ion-list>
+
+  <ion-modal *ngIf="notRegistered !== 0" #modal trigger="open-modal">
+    <ng-template>
+      <ion-content>
+        <ion-toolbar>
+          <ion-title class="modal-title">등록 대기중 리스트</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="light" (click)="modal.dismiss()"
+              >닫기</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+
+        <ion-list>
+          <ion-item class="modal-list" *ngFor="let title of notRegisteredList">
+            <h4>{{ title }}</h4>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

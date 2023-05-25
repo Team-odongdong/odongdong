@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NavigationExtras } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/authService';
 import { CommonService } from 'src/app/services/commonService';
@@ -13,6 +14,7 @@ export class ProfilePage implements OnInit {
   public userName = '';
   public registered = 0;
   public notRegistered = 0;
+  public notRegisteredList: string[] = [];
 
   constructor(
     private auth: AuthService,
@@ -45,6 +47,7 @@ export class ProfilePage implements OnInit {
     if (data.code === 1000) {
       this.registered = data.result.allRegisterBathroomNum;
       this.notRegistered = data.result.notRegisterBathroomNum;
+      this.notRegisteredList = data.result.notRegisterBathroomTitles;
     }
   }
 
@@ -52,7 +55,17 @@ export class ProfilePage implements OnInit {
     await this.common.showAlert('등록한 화장실이 없습니다.');
   }
 
-  goRegisteredList() {
-    this.navController.navigateForward('/registered-list');
+  async goRegisteredList() {
+    if (this.registered === 0) {
+      await this.emptyListAlert();
+    } else {
+      this.navController.navigateForward('/registered-list');
+    }
+  }
+
+  async showNotRegisteredList() {
+    if (this.notRegistered === 0) {
+      await this.emptyListAlert();
+    }
   }
 }
