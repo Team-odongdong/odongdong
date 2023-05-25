@@ -26,7 +26,7 @@ public class ControllerAdvice {
 	@ExceptionHandler(BaseException.class)
 	public BaseResponse<String> exceptionHandler(BaseException exception, HttpServletRequest request) {
 		writeExceptionWithRequest(exception, request);
-		return new BaseResponse<>(BaseResponseStatus.SERVER_ERROR);
+		return new BaseResponse<>(exception.getStatus());
 	}
 
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

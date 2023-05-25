@@ -10,6 +10,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.graduate.odondong.domain.Member;
 import com.graduate.odondong.service.MemberService;
+import com.graduate.odondong.util.BaseException;
+import com.graduate.odondong.util.BaseResponseStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,12 +26,10 @@ public class LoginInterceptor implements HandlerInterceptor {
 		Exception {
 
 		String authentication = request.getHeader("Authorization");
-		if (authentication != null) {
-			Member member = memberService.registerOrLoginMemberUUID(UUID.fromString(authentication));
-			request.setAttribute("Member", member);
-			return true;
+		if (authentication == null) {
+			throw new BaseException(BaseResponseStatus.MEMBER_HEADER_EMPTY_UUID);
 		}
-		Member member = memberService.registerMember();
+		Member member = memberService.findMemberByUUID(UUID.fromString(authentication));
 		request.setAttribute("Member", member);
 		return true;
 	}

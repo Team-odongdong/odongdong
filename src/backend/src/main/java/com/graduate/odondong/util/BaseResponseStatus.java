@@ -23,6 +23,10 @@ public enum BaseResponseStatus {
     USER_NOT_LOGIN(false, 3000, "로그인 해주세요."),
     USERS_EMPTY_USER_ID(false, 3010, "유저 아이디 값을 확인해주세요."),
 
+    MEMBER_HEADER_EMPTY_UUID(false, 3010, "헤더에 UUID가 존재하지 않습니다."),
+
+    MEMBER_HEADER_INVAILD_UUID(false, 3010, "헤더에 UUID가 유효하지 않습니다."),
+
     /**
      * 4000 : Database, Server 오류
      */
