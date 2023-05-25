@@ -22,7 +22,6 @@ import com.graduate.odondong.config.Login;
 import com.graduate.odondong.domain.Bathroom;
 import com.graduate.odondong.domain.Member;
 import com.graduate.odondong.domain.UpdatedBathroom;
-import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.BathroomRequestDto;
 import com.graduate.odondong.dto.BathroomResponseDto;
 import com.graduate.odondong.dto.BathroomResponseInterface;
@@ -91,7 +90,8 @@ public class BathroomController {
 	@ResponseBody
 	@PostMapping("/api/bathroom/add")
 	public BaseResponse<String> addBathroomRequest(@RequestPart BathroomRequestDto bathroomRequestDto,
-		@RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile, @ApiIgnore @Login Member member) {
+		@RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile,
+		@ApiIgnore @Login Member member) {
 
 		String bathroomImgUrl = bathroomRequestDto.getImageUrl();
 		String dirName = "info/";
@@ -108,16 +108,10 @@ public class BathroomController {
 	 **/
 	@ResponseBody
 	@PostMapping("/api/bathroom/edit")
-	public BaseResponse<BaseResponseStatus> modifyBathroomRequest(HttpServletRequest request,
-		@RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto) {
-		try {
-			User user = userService.getUserInfo();
-			updatedBathroomService.addUpdatedBathroom(bathroomUpdateRequestDto, user);
-			return new BaseResponse<>(SUCCESS);
-		} catch (BaseException e) {
-			writeExceptionWithRequest(e, request);
-			return new BaseResponse<>(e.getStatus());
-		}
+	public BaseResponse<BaseResponseStatus> modifyBathroomRequest(
+		@RequestBody BathroomUpdateRequestDto bathroomUpdateRequestDto, @ApiIgnore @Login Member member) {
+		updatedBathroomService.addUpdatedBathroom(bathroomUpdateRequestDto, member);
+		return new BaseResponse<>(SUCCESS);
 	}
 
 	/**

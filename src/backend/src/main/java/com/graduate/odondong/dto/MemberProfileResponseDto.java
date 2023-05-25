@@ -18,7 +18,7 @@ public class MemberProfileResponseDto {
 	private Integer registerBathroomNum;
 	private Integer notRegisterBathroomNum;
 
-	private List<String> registerBathroomTitles;
+	private List<BathroomUpdateRequestDto> registerBathrooms;
 	private List<String> notRegisterBathroomTitles;
 
 	public MemberProfileResponseDto(Member member) {
@@ -32,7 +32,20 @@ public class MemberProfileResponseDto {
 
 		this.allRegisterBathroomNum = memberBathrooms.size();
 		this.registerBathroomNum = registerBathroom.size();
-		this.registerBathroomTitles = registerBathroom.stream().map(Bathroom::getTitle).collect(Collectors.toList());
+		this.registerBathrooms = registerBathroom.stream().map((bathroom -> BathroomUpdateRequestDto.builder()
+			.isLocked(bathroom.getIsLocked())
+			.bathroomId(bathroom.getId())
+			.address(bathroom.getAddress())
+			.isLocked(bathroom.getIsLocked())
+			.addressDetail(bathroom.getAddressDetail())
+			.isUnisex(bathroom.getIsUnisex())
+			.operationTime(bathroom.getOperationTime())
+			.title(bathroom.getTitle())
+			.latitude(bathroom.getLatitude())
+			.longitude(bathroom.getLongitude())
+			.imageUrl(bathroom.getImageUrl())
+			.build()
+		)).collect(Collectors.toList());
 
 		this.notRegisterBathroomNum = notRegisterBathroom.size();
 		this.notRegisterBathroomTitles = notRegisterBathroom.stream().map(Bathroom::getTitle).collect(Collectors.toList());

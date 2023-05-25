@@ -35,6 +35,6 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(loginInterceptor)
 			.order(1)
-			.addPathPatterns("/api/bathroom/add", "/api/rating", "/api/member/profile");
+			.addPathPatterns("/api/bathroom/add", "/api/rating", "/api/member/profile", "/api/bathroom/edit");
 	}
 }

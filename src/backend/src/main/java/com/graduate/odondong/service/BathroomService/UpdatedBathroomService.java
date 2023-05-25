@@ -1,20 +1,21 @@
 package com.graduate.odondong.service.BathroomService;
 
+import static com.graduate.odondong.util.BaseResponseStatus.*;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.graduate.odondong.domain.Bathroom;
+import com.graduate.odondong.domain.Member;
 import com.graduate.odondong.domain.UpdatedBathroom;
-import com.graduate.odondong.domain.User;
 import com.graduate.odondong.dto.BathroomUpdateRequestDto;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.UpdatedBathroomRepository;
 import com.graduate.odondong.util.BaseException;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-
-import static com.graduate.odondong.util.BaseResponseStatus.DATABASE_ERROR;
-import static com.graduate.odondong.util.BaseResponseStatus.NOT_FOUND_BATHROOM;
 
 @Service
 @RequiredArgsConstructor
@@ -28,9 +29,9 @@ public class UpdatedBathroomService {
         return updatedBathroomRepository.findUpdatedBathroomsByRegisterIsFalse();
     }
 
-    public void addUpdatedBathroom(BathroomUpdateRequestDto bathroomUpdateRequestDto, User user) throws BaseException {
+    public void addUpdatedBathroom(BathroomUpdateRequestDto bathroomUpdateRequestDto, Member member) throws BaseException {
         Bathroom bathroom = bathroomRepository.findById(bathroomUpdateRequestDto.getBathroomId()).orElseThrow(() -> new BaseException(NOT_FOUND_BATHROOM));
-        UpdatedBathroom updatedBathroom = bathroomUpdateRequestDto.toUpdatedBathroom(bathroom, user);
+        UpdatedBathroom updatedBathroom = bathroomUpdateRequestDto.toUpdatedBathroom(bathroom, member);
         updatedBathroomRepository.save(updatedBathroom);
     }
 
