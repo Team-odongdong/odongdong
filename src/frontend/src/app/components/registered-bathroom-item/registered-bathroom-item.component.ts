@@ -25,8 +25,6 @@ export class RegisteredBathroomItemComponent implements OnInit {
   ngOnInit() {
     this.setImages();
     this.makeFullAddress();
-
-    console.log('list', this.bathroomInfo);
   }
 
   setImages() {

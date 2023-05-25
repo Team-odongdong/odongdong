@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 
 import * as dayjs from 'dayjs';
+import { BathroomService } from 'src/app/services/bathroomService';
+import { CommonService } from 'src/app/services/commonService';
 import { BathroomDetailInfo } from 'src/app/types/bathroomInfo';
 import { timeToHourAndMinute } from 'src/app/utils/formatting';
 
@@ -32,8 +34,10 @@ export class EditBathroomPage implements OnInit {
 
   constructor(
     private router: Router,
+    private common: CommonService,
     private navController: NavController,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    public bathroomService: BathroomService
   ) {}
 
   ngOnInit() {
@@ -68,7 +72,7 @@ export class EditBathroomPage implements OnInit {
       this.inputEndTime = timeToHourAndMinute(dayjs().format()) ?? '';
     }
 
-    const updatedBathroom: Partial<BathroomDetailInfo> = {
+    const updatedBathroom: any = {
       address: this.bathroomAddress,
       addressDetail: this.bathroomAddressDetail,
       id: this.bathroomInfo.id,
@@ -85,5 +89,51 @@ export class EditBathroomPage implements OnInit {
     };
 
     return updatedBathroom;
+  }
+
+  goBack() {
+    this.navController.back();
+  }
+
+  checkIs24hours() {
+    this.is24hours = !this.is24hours;
+  }
+
+  checkIsUnisex() {
+    this.isUnisex = !this.isUnisex;
+  }
+
+  checkIsLocked() {
+    this.isLocked = this.isLocked === 'Y' ? 'N' : 'Y';
+  }
+
+  async onClickSaveButton() {
+    const data = this.genBathroomInfo();
+
+    const response = await this.bathroomService.editBathroom(data);
+
+    if (response.data.code === 1000) {
+      await this.successEditBathroomToast();
+    } else {
+      await this.failEditBathroomToast();
+    }
+
+    this.navController.back();
+  }
+
+  async successEditBathroomToast() {
+    await this.common.showToast('화장실 수정을 요청했습니다!', 1500);
+  }
+
+  async failEditBathroomToast() {
+    await this.common.showToast('네트워크를 확인 후 다시 시도해주세요!', 2000);
+  }
+
+  onStartTimeChanged(time: any) {
+    this.inputStartTime = time.time;
+  }
+
+  onEndTimeChanged(time: any) {
+    this.inputEndTime = time.time;
   }
 }
