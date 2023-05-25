@@ -3,6 +3,8 @@ package com.graduate.odondong.util.operationTime;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -10,7 +12,11 @@ public class OperationTimeValidation {
 
     public static String checkBathroomOpen(String operation){
         SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm");
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime dateTime = LocalDateTime.now();
+        ZoneId koreaZone = ZoneId.of("Asia/Seoul");
+        ZonedDateTime now = ZonedDateTime.of(dateTime, koreaZone);
+
+
         int dayOfWeekValue = now.getDayOfWeek().getValue();
         String nowTime = now.getHour() + ":" + now.getMinute();
         Date nowDateTime = null;
