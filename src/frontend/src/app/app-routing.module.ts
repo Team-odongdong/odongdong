@@ -9,7 +9,7 @@ const routes: Routes = [
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
   },
   {
-    path: 'edit-bathroom',
+    path: 'edit-bathroom/:id',
     loadChildren: () =>
       import('./pages/edit-bathroom/edit-bathroom.module').then(
         (m) => m.EditBathroomPageModule
