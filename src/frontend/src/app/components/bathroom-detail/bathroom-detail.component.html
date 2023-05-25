@@ -5,7 +5,10 @@
 >
   <div class="container__header">
     <div class="title">
-      <p class="title__name">{{ bathroomName }}</p>
+      <div class="flex">
+        <p class="title__name">{{ bathroomName }}</p>
+        <p class="title__distance">{{ distance }}m</p>
+      </div>
       <div class="title__rate">
         <app-rating
           [readonly]="true"

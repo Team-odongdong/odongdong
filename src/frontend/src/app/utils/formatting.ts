@@ -3,3 +3,7 @@ export const timeToHourAndMinute = (time: string) => {
 
   return time.match(regexp)?.[0];
 };
+
+export const roundDistance = (d: number) => {
+  return Math.round(d);
+};

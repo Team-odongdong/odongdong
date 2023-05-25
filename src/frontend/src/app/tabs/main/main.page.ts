@@ -527,6 +527,7 @@ export class MainPage implements AfterViewInit {
       isUnisex: data.isUnisex,
       latitude: data.latitude,
       longitude: data.longitude,
+      distance: data.distance,
     };
 
     return info;
@@ -563,6 +564,5 @@ export class MainPage implements AfterViewInit {
 
   onFilterChanged(event: { value: DistanceOptions }) {
     this.bathroomRadius = event.value;
-    console.log('current data', this.bathroomRadius);
   }
 }
