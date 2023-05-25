@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/authService';
-import { CommonService } from 'src/app/services/commonService';
 import { StorageService } from 'src/app/services/storageService';
 
 @Component({
@@ -10,8 +9,9 @@ import { StorageService } from 'src/app/services/storageService';
   styleUrls: ['profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-  public registeredCount = 0;
   public userName = '';
+  public registered = 0;
+  public notRegistered = 0;
 
   constructor(
     private auth: AuthService,
@@ -34,7 +34,6 @@ export class ProfilePage implements OnInit {
 
     if (name) {
       this.userName = name;
-      console.log('name', this.userName);
     }
   }
 
@@ -42,7 +41,8 @@ export class ProfilePage implements OnInit {
     const { data } = await this.auth.getProfile();
 
     if (data.code === 1000) {
-      console.log('profile', data.result);
+      this.registered = data.result.allRegisterBathroomNum;
+      this.notRegistered = data.result.notRegisterBathroomNum;
     }
   }
 }

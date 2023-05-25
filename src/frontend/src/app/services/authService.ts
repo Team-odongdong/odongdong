@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { customAxios } from '../utils/axios';
 import { CommonService } from './commonService';
-import { ApiResponse, AuthResponse } from '../types/response';
+import { AuthResponse, ProfileResponse } from '../types/response';
 import { StorageService } from './storageService';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class AuthService {
     }
   }
 
-  async getProfile(): Promise<ApiResponse> {
+  async getProfile(): Promise<ProfileResponse> {
     try {
       const id = await this.storage.getStorage('UUID');
 

@@ -24,13 +24,13 @@
   <ion-list lines="none">
     <ion-item class="pointer">
       <div id="achievement">
-        <ion-label>총 {{registeredCount || '?'}}개 화장실</ion-label>
+        <ion-label>총 {{ registered }}개 화장실</ion-label>
         <ion-label>등록한 화장실의 수</ion-label>
       </div>
     </ion-item>
     <ion-item>
       <div class="profile-item">
-        <ion-label>로그아웃</ion-label>
+        <ion-label>등록 대기중 {{ notRegistered }}개</ion-label>
         <ion-label> </ion-label>
       </div>
       <ion-img
