@@ -58,7 +58,15 @@ export class BathroomService {
 
   async editBathroom(data: BathroomInfo): Promise<ApiResponse> {
     try {
-      const response = await customAxios.post('api/bathroom/edit', data);
+      const id = await this.storage.getStorage('UUID');
+
+      console.log('send', data);
+
+      const response = await customAxios.post('api/bathroom/edit', data, {
+        headers: {
+          Authorization: id,
+        },
+      });
       return response;
     } catch (error) {
       throw new Error('화장실 편집 에러 발생');

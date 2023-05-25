@@ -13,7 +13,7 @@ ion-header {
 }
 
 ion-modal.add-bathroom-modal::part(content) {
-  --width: 100%;
+  --width: 100% !important;
 }
 
 .empty-space {

@@ -15,27 +15,22 @@
     <p><span class="profile__title--name">{{ userName }}</span> 님!</p>
   </div>
 
-  <ion-avatar class="profile-image__container">
-    <!-- <img
-      class="profile-image__image"
-      src="{{ userImage }}"
-      alt="profile-image"
-    /> -->
-  </ion-avatar>
-  <div class="profile-image__container">
-    <button class="profile-image__button">로그인 하기</button>
-  </div>
+  <!-- <ion-avatar class="profile-image__container">
+    <img class="profile-image__image" />
+  </ion-avatar> -->
+
+  <div class="empty-space__30"></div>
 
   <ion-list lines="none">
-    <ion-item class="pointer">
+    <ion-item class="pointer" (click)="goRegisteredList()">
       <div id="achievement">
-        <ion-label>총 {{registeredCount || '?'}}개 화장실</ion-label>
+        <ion-label>총 {{ registered }}개 화장실</ion-label>
         <ion-label>등록한 화장실의 수</ion-label>
       </div>
     </ion-item>
-    <ion-item>
+    <ion-item id="open-modal" (click)="showNotRegisteredList()">
       <div class="profile-item">
-        <ion-label>로그아웃</ion-label>
+        <ion-label>등록 대기중 {{ notRegistered }}개</ion-label>
         <ion-label> </ion-label>
       </div>
       <ion-img
@@ -45,4 +40,25 @@
       ></ion-img>
     </ion-item>
   </ion-list>
+
+  <ion-modal *ngIf="notRegistered !== 0" #modal trigger="open-modal">
+    <ng-template>
+      <ion-content>
+        <ion-toolbar>
+          <ion-title class="modal-title">등록 대기중 리스트</ion-title>
+          <ion-buttons slot="end">
+            <ion-button color="light" (click)="modal.dismiss()"
+              >닫기</ion-button
+            >
+          </ion-buttons>
+        </ion-toolbar>
+
+        <ion-list>
+          <ion-item class="modal-list" *ngFor="let title of notRegisteredList">
+            <h4>{{ title }}</h4>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

@@ -1,3 +1,5 @@
+import { BathroomDetailInfo } from './bathroomInfo';
+
 export interface ApiResponse {
   status: number;
   data: {
@@ -13,6 +15,7 @@ export interface ApiResponseError extends ApiResponse {
 }
 
 export interface AuthResponse {
+  status: number;
   data: {
     code: number;
     status: number;
@@ -20,6 +23,24 @@ export interface AuthResponse {
     message: string;
     result: {
       name: string;
+      uuid: string;
+    };
+  };
+}
+
+export interface ProfileResponse {
+  status: number;
+  data: {
+    code: number;
+    isSuccess: boolean;
+    message: string;
+    result: {
+      allRegisterBathroomNum: number;
+      name: string;
+      notRegisterBathroomNum: 0;
+      notRegisterBathroomTitles: string[];
+      registerBathroomNum: 0;
+      registerBathrooms: BathroomDetailInfo[];
       uuid: string;
     };
   };

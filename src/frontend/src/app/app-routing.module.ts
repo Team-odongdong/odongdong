@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { RegisteredBathroomItemComponent } from './components/registered-bathroom-item/registered-bathroom-item.component';
 
 const routes: Routes = [
   {
@@ -8,8 +9,18 @@ const routes: Routes = [
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
   },
   {
-    path: 'edit-bathroom',
-    loadChildren: () => import('./pages/edit-bathroom/edit-bathroom.module').then( m => m.EditBathroomPageModule)
+    path: 'edit-bathroom/:id',
+    loadChildren: () =>
+      import('./pages/edit-bathroom/edit-bathroom.module').then(
+        (m) => m.EditBathroomPageModule
+      ),
+  },
+  {
+    path: 'registered-list',
+    loadChildren: () =>
+      import('./pages/registered-list/registered-list.module').then(
+        (m) => m.RegisteredListPageModule
+      ),
   },
 ];
 @NgModule({
