@@ -7,14 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { RegisteredListPageRoutingModule } from './registered-list-routing.module';
 
 import { RegisteredListPage } from './registered-list.page';
+import { RegisteredBathroomItemComponentModule } from 'src/app/components/registered-bathroom-item/registered-bathroom-item.component.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    RegisteredListPageRoutingModule
+    RegisteredListPageRoutingModule,
+    RegisteredBathroomItemComponentModule,
   ],
-  declarations: [RegisteredListPage]
+  declarations: [RegisteredListPage],
 })
 export class RegisteredListPageModule {}

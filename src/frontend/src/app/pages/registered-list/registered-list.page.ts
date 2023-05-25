@@ -12,7 +12,9 @@ export class RegisteredListPage implements OnInit {
 
   constructor(public navController: NavController) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getBathroomInfo();
+  }
 
   getBathroomInfo() {
     this.bathroomInfo = {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/authService';
+import { CommonService } from 'src/app/services/commonService';
 import { StorageService } from 'src/app/services/storageService';
 
 @Component({
@@ -15,6 +16,7 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private auth: AuthService,
+    private common: CommonService,
     private storage: StorageService,
     private navController: NavController
   ) {}
@@ -44,5 +46,13 @@ export class ProfilePage implements OnInit {
       this.registered = data.result.allRegisterBathroomNum;
       this.notRegistered = data.result.notRegisterBathroomNum;
     }
+  }
+
+  async emptyListAlert() {
+    await this.common.showAlert('등록한 화장실이 없습니다.');
+  }
+
+  goRegisteredList() {
+    this.navController.navigateForward('/registered-list');
   }
 }
