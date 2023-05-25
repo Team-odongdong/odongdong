@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.graduate.odondong.domain.Member;
 import com.graduate.odondong.dto.MemberProfileResponseDto;
 import com.graduate.odondong.repository.MemberRepository;
+import com.graduate.odondong.util.BaseException;
 import com.graduate.odondong.util.BaseResponse;
+import com.graduate.odondong.util.BaseResponseStatus;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +33,7 @@ public class MemberService {
 
 	public Member findMemberByUUID(UUID uuid) {
 		return memberRepository.findByUuid(uuid)
-			.orElseThrow(() -> new RuntimeException("UUID에 저장된 Member를 찾을 수가 없습니다."));
+			.orElseThrow(() -> new BaseException(BaseResponseStatus.MEMBER_HEADER_INVAILD_UUID));
 	}
 
 	public BaseResponse<MemberProfileResponseDto> findMemberProfile(Member member) {
