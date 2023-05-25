@@ -1,3 +1,5 @@
+import { BathroomDetailInfo } from './bathroomInfo';
+
 export interface ApiResponse {
   status: number;
   data: {
@@ -38,7 +40,7 @@ export interface ProfileResponse {
       notRegisterBathroomNum: 0;
       notRegisterBathroomTitles: string[];
       registerBathroomNum: 0;
-      registerBathroomTitles: string[];
+      registerBathrooms: BathroomDetailInfo[];
       uuid: string;
     };
   };
