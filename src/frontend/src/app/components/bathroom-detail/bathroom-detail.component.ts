@@ -9,6 +9,7 @@ import {
 import { BathroomService } from 'src/app/services/bathroomService';
 import { CommonService } from 'src/app/services/commonService';
 import { BathroomDetailInfo } from 'src/app/types/bathroomInfo';
+import { roundDistance } from 'src/app/utils/formatting';
 
 @Component({
   selector: 'app-bathroom-detail',
@@ -29,6 +30,7 @@ export class BathroomDetailComponent implements OnInit {
   public address: string;
   public isOpened: string;
   public isUnisex = false;
+  public distance: number;
 
   public extended = false;
 
@@ -60,16 +62,17 @@ export class BathroomDetailComponent implements OnInit {
     return info;
   }
 
-  setBathroomDetailInfo(bathroonInfo: BathroomDetailInfo) {
-    this.bathroomId = bathroonInfo.id;
-    this.bathroomName = bathroonInfo.title;
-    this.rate = bathroonInfo.rate;
-    this.isLocked = bathroonInfo.isLocked;
-    this.operationTime = bathroonInfo.operationTime;
-    this.address = bathroonInfo.address + ' ' + this.bathroomInfo.addressDetail;
-    this.imageUrl = bathroonInfo.imageUrl;
-    this.isOpened = bathroonInfo.isOpened;
-    this.isUnisex = bathroonInfo.isUnisex;
+  setBathroomDetailInfo(bathroomInfo: BathroomDetailInfo) {
+    this.bathroomId = bathroomInfo.id;
+    this.bathroomName = bathroomInfo.title;
+    this.rate = bathroomInfo.rate;
+    this.isLocked = bathroomInfo.isLocked;
+    this.operationTime = bathroomInfo.operationTime;
+    this.address = bathroomInfo.address + ' ' + this.bathroomInfo.addressDetail;
+    this.imageUrl = bathroomInfo.imageUrl;
+    this.isOpened = bathroomInfo.isOpened;
+    this.isUnisex = bathroomInfo.isUnisex;
+    this.distance = roundDistance(bathroomInfo.distance);
   }
 
   onRatingChange(event: any) {

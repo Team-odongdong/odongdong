@@ -25,6 +25,17 @@
         width: max-content;
       }
 
+      &__distance {
+        color: var(--outline_gray);
+        font-size: 12px;
+
+        margin: 0;
+        margin-top: 1.2rem;
+        margin-left: 0.25rem;
+
+        width: max-content;
+      }
+
       &__rate {
         margin-top: 0.5rem;
         margin-bottom: 0.875rem;
@@ -160,4 +171,9 @@ ion-img {
   height: 1.25rem;
 
   margin-left: 0.1875rem;
+}
+
+.flex {
+  display: flex;
+  justify-content: flex-end;
 }
