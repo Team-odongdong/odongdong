@@ -10,7 +10,11 @@ const routes: Routes = [
   {
     path: 'edit-bathroom',
     loadChildren: () => import('./pages/edit-bathroom/edit-bathroom.module').then( m => m.EditBathroomPageModule)
+  },  {
+    path: 'registered-list',
+    loadChildren: () => import('./pages/registered-list/registered-list.module').then( m => m.RegisteredListPageModule)
   },
+
 ];
 @NgModule({
   imports: [
