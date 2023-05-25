@@ -15,7 +15,7 @@ export class StorageService {
   }
 
   async getStorage(key: string) {
-    const value = await Preferences.get({ key });
+    const { value } = await Preferences.get({ key });
 
     return value;
   }

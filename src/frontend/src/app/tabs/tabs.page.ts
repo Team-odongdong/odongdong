@@ -78,9 +78,9 @@ export class TabsPage {
   }
 
   async checkId() {
-    const { value } = await this.storage.getStorage('UUID');
+    const id = await this.storage.getStorage('UUID');
 
-    if (!value) {
+    if (!id) {
       this.createId();
     }
   }

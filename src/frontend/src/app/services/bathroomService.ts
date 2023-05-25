@@ -6,6 +6,7 @@ import { BathroomInfo } from '../types/bathroomInfo';
 import { createFormData } from '../utils/bathroomData';
 import { ApiResponse } from '../types/response';
 import { DistanceOptionValues } from '../types/distance';
+import { StorageService } from './storageService';
 
 interface GetBathroomProps extends LatLng {
   distance: DistanceOptionValues;
@@ -15,7 +16,10 @@ interface GetBathroomProps extends LatLng {
   providedIn: 'root',
 })
 export class BathroomService {
-  constructor(private commonService: CommonService) {}
+  constructor(
+    private commonService: CommonService,
+    private storage: StorageService
+  ) {}
 
   async getBathrooms({
     latitude,
@@ -37,9 +41,15 @@ export class BathroomService {
       throw new Error('네트워크가 연결되지 않았습니다.');
     }
 
+    const id = await this.storage.getStorage('UUID');
+
     const formData = createFormData(data, images);
     try {
-      const response = await customAxios.post('api/bathroom/add', formData);
+      const response = await customAxios.post('api/bathroom/add', formData, {
+        headers: {
+          Authorization: id,
+        },
+      });
       return response;
     } catch (error) {
       throw new Error('화장실 추가 에러 발생');
@@ -68,10 +78,20 @@ export class BathroomService {
 
   async registerRating(bathroomId: number, rate: number): Promise<ApiResponse> {
     try {
-      const response = await customAxios.post('api/rating', {
-        bathroomId,
-        score: rate,
-      });
+      const id = await this.storage.getStorage('UUID');
+
+      const response = await customAxios.post(
+        'api/rating',
+        {
+          bathroomId,
+          score: rate,
+        },
+        {
+          headers: {
+            Authorization: id,
+          },
+        }
+      );
       return response;
     } catch (error) {
       throw new Error('별점 등록 에러 발생');
