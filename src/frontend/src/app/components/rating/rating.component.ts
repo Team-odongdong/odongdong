@@ -34,7 +34,7 @@ export class RatingComponent implements AfterViewInit {
   }
 
   updateRate(idx: number, initial?: boolean) {
-    this.rating = Math.ceil(idx + 1) as Rating;
+    this.rating = Math.round(idx + 1) as Rating;
     this.setStars(this.rating);
 
     this.changeDetectorRef.detectChanges();

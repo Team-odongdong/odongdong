@@ -1,12 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  AlertController,
-  IonTabs,
-  ModalController,
-  ToastController,
-} from '@ionic/angular';
+import { IonTabs, ModalController } from '@ionic/angular';
 import { AddBathroomComponent } from '../components/add-bathroom/add-bathroom.component';
+import { StorageService } from '../services/storageService';
+import { AuthService } from '../services/authService';
 
 @Component({
   selector: 'app-tabs',
@@ -24,12 +21,19 @@ export class TabsPage {
 
   public currentLocation: any;
 
-  constructor(private router: Router, private modal: ModalController) {}
+  constructor(
+    private router: Router,
+    private modal: ModalController,
+    private storage: StorageService,
+    private auth: AuthService
+  ) {}
 
   ionViewDidEnter() {
     navigator.geolocation.getCurrentPosition((position) => {
       this.currentLocation = position;
     });
+
+    this.checkId();
   }
 
   async showEnrollComponent() {
@@ -71,5 +75,23 @@ export class TabsPage {
     //   ],
     // });
     // await alert.present();
+  }
+
+  async checkId() {
+    const id = await this.storage.getStorage('UUID');
+
+    if (!id) {
+      this.createId();
+    }
+  }
+
+  async createId() {
+    const response = await this.auth.createUUID();
+
+    this.storage.setStorage('UUID', response.data.result.uuid);
+  }
+
+  async deleteId() {
+    await this.storage.removeStorage('UUID');
   }
 }
