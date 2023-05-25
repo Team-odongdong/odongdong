@@ -1,8 +1,9 @@
 package com.graduate.odondong.dto;
 
 import com.graduate.odondong.domain.Bathroom;
+import com.graduate.odondong.domain.Member;
 import com.graduate.odondong.domain.UpdatedBathroom;
-import com.graduate.odondong.domain.User;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class BathroomUpdateRequestDto {
 
     private Long bathroomId;
-    private Long userId;
     private String title;
     private Double latitude;
     private Double longitude;
@@ -26,7 +26,6 @@ public class BathroomUpdateRequestDto {
     @Builder
     public BathroomUpdateRequestDto(Long bathroomId, Long userId, String title, Double latitude, Double longitude, String isLocked, String address, String addressDetail, String imageUrl,String operationTime, Boolean isUnisex) {
         this.bathroomId = bathroomId;
-        this.userId = userId;
         this.title = title;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -39,11 +38,11 @@ public class BathroomUpdateRequestDto {
     }
 
 
-    public UpdatedBathroom toUpdatedBathroom(Bathroom bathroom, User user) {
+    public UpdatedBathroom toUpdatedBathroom(Bathroom bathroom, Member member) {
         return UpdatedBathroom.builder()
                 .title(title)
                 .bathroom(bathroom)
-                .user(user)
+                .member(member)
                 .latitude(latitude)
                 .longitude(longitude)
                 .isLocked(isLocked)

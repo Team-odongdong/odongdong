@@ -1,15 +1,25 @@
 package com.graduate.odondong.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDateTime;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity()
 @Data
@@ -37,6 +47,10 @@ public class UpdatedBathroom {
     private Boolean isUnisex;
     private Boolean register;
 
+    @ManyToOne(targetEntity = Member.class, fetch = FetchType.LAZY)
+    @JoinColumn(name= "member_id")
+    private Member member;
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime created_at;
@@ -44,7 +58,7 @@ public class UpdatedBathroom {
     private LocalDateTime updated_at;
 
     @Builder
-    public UpdatedBathroom(Long id, User user, Bathroom bathroom, String title, Double latitude, Double longitude, String isLocked, String address, String addressDetail, String imageUrl, String operationTime, Boolean isUnisex, Boolean register) {
+    public UpdatedBathroom(Long id, User user, Bathroom bathroom, String title, Double latitude, Double longitude, String isLocked, String address, String addressDetail, String imageUrl, String operationTime, Boolean isUnisex, Boolean register, Member member) {
         this.id = id;
         this.user = user;
         this.bathroom = bathroom;
@@ -58,6 +72,7 @@ public class UpdatedBathroom {
         this.operationTime = operationTime;
         this.isUnisex = isUnisex;
         this.register = register;
+        this.member = member;
     }
 
 

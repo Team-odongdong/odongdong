@@ -22,6 +22,7 @@ public class BathroomRequestDto {
     private Boolean isUnisex;
     private Double rate;
 
+
     public Bathroom toBathroom(String bathroomImgUrl) {
         return Bathroom.builder()
                 .title(title)
