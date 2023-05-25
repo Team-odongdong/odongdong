@@ -5,9 +5,11 @@ import com.graduate.odondong.domain.Rating;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class BathroomRequestDto {
 
     private String title;
