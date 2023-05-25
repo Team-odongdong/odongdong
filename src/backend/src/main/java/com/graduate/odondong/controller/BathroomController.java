@@ -90,7 +90,7 @@ public class BathroomController {
 	 **/
 	@ResponseBody
 	@PostMapping("/api/bathroom/add")
-	public BaseResponse<String> addBathroomRequest(BathroomRequestDto bathroomRequestDto,
+	public BaseResponse<String> addBathroomRequest(@RequestPart BathroomRequestDto bathroomRequestDto,
 		@RequestPart(value = "bathroomImg", required = false) MultipartFile multipartFile, @ApiIgnore @Login Member member) {
 
 		String bathroomImgUrl = bathroomRequestDto.getImageUrl();

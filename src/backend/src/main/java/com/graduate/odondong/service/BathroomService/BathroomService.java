@@ -17,10 +17,10 @@ import com.graduate.odondong.dto.CoordinateInfoDto;
 import com.graduate.odondong.dto.Point;
 import com.graduate.odondong.repository.BathroomRepository;
 import com.graduate.odondong.repository.RatingRepository;
-import com.graduate.odondong.service.MemberService;
 import com.graduate.odondong.service.UserLocationCalculator;
 import com.graduate.odondong.util.BaseException;
 import com.graduate.odondong.util.BaseResponse;
+import com.graduate.odondong.util.OdongdongSlack;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderKakao;
 import com.graduate.odondong.util.ReverseGeocoding.ChangeByGeocoderNaver;
 
@@ -34,7 +34,7 @@ public class BathroomService {
 	private final RatingRepository ratingRepository;
 	private final ChangeByGeocoderKakao changeByGeocoderKakao;
 	private final ChangeByGeocoderNaver changeByGeocoderNaver;
-	private final MemberService memberService;
+	private final OdongdongSlack odongdongSlack;
 
 	public BaseResponse<CoordinateInfoDto> findAllBathroomsFromCoordinate(Double x, Double y) throws BaseException {
 		try {
@@ -86,6 +86,7 @@ public class BathroomService {
 
 		Rating rating = bathroomRequestDto.toRating(bathroom);
 		ratingRepository.save(rating);
+		odongdongSlack.send(bathroom.getAddress() + bathroom.getAddressDetail(), bathroom.getTitle());
 		return new BaseResponse<>(member.getUuid().toString());
 	}
 
