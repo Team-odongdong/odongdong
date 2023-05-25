@@ -45,7 +45,7 @@ export class ProfilePage implements OnInit {
     const { data } = await this.auth.getProfile();
 
     if (data.code === 1000) {
-      this.registered = data.result.allRegisterBathroomNum;
+      this.registered = data.result.registerBathroomNum;
       this.notRegistered = data.result.notRegisterBathroomNum;
       this.notRegisteredList = data.result.notRegisterBathroomTitles;
     }

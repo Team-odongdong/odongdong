@@ -60,6 +60,8 @@ export class BathroomService {
     try {
       const id = await this.storage.getStorage('UUID');
 
+      console.log('send', data);
+
       const response = await customAxios.post('api/bathroom/edit', data, {
         headers: {
           Authorization: id,

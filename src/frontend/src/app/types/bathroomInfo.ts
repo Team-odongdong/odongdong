@@ -15,4 +15,5 @@ export interface BathroomDetailInfo extends BathroomInfo {
   isOpened: string;
   operationTime: string;
   distance: number;
+  bathroomId?: number;
 }

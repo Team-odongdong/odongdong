@@ -75,7 +75,7 @@ export class EditBathroomPage implements OnInit {
     const updatedBathroom: any = {
       address: this.bathroomAddress,
       addressDetail: this.bathroomAddressDetail,
-      id: this.bathroomInfo.id,
+      bathroomId: this.bathroomInfo.bathroomId,
       isLocked: this.isLocked,
       isUnisex: this.isUnisex,
       latitude: this.bathroomInfo.latitude,
