@@ -5,10 +5,10 @@
 export const environment = {
   production: false,
   appVersion: {
-    name: '1.3.3',
+    name: '1.4.0',
     major: 1,
-    minor: 3,
-    build: 3,
+    minor: 4,
+    build: 0,
   },
 
   apiUrl: 'https://prod.odongdong.site',
