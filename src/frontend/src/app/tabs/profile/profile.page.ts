@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationExtras } from '@angular/router';
+import { Component } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/authService';
 import { CommonService } from 'src/app/services/commonService';
@@ -10,7 +9,7 @@ import { StorageService } from 'src/app/services/storageService';
   templateUrl: 'profile.page.html',
   styleUrls: ['profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage {
   public userName = '';
   public registered = 0;
   public notRegistered = 0;
@@ -23,7 +22,7 @@ export class ProfilePage implements OnInit {
     private navController: NavController
   ) {}
 
-  ngOnInit() {
+  ionViewDidEnter() {
     this.getUserName().then(() => {
       this.getProfileInfo();
     });
