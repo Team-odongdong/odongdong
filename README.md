@@ -1,4 +1,4 @@
-# 오동동 : 내 주변 화장실 
+# 오동동 : 내 주변 화장실, 교내 경진대회 우수상 수상작 🏆️
 
 <a href="https://odongdong.site/">
   <div align="center">
